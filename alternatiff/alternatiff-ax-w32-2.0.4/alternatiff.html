@@ -1,0 +1,570 @@
+<html>
+<head>
+<title>AlternaTIFF Documentation</title>
+<style type="text/css"><!--
+ .h { color:#252;background-color: #f4f4f4;font-weight:bold; }
+//--></style>
+</head>
+<body bgcolor="#ffffff" text="#000000" link="#0000ff" vlink="#0000ff">
+
+<table border=0 width="100%">
+<tr><td valign=top><h1>AlternaTIFF</h1></td>
+<td valign=top align=right><small>Version 2.0.4<br>
+Developed by Medical Informatics Engineering, Inc.<br><br>
+</small>
+</td></tr></table>
+
+<table border=0 width="100%"><tr>
+<td valign=top>
+<b>In this document:</b><br>
+&nbsp; &nbsp;<a href="#introduction">Introduction</a><br>
+&nbsp; &nbsp;<a href="#installation">Installation</a><br>
+&nbsp; &nbsp;<a href="#uninstall">Uninstallation</a><br>
+&nbsp; &nbsp;<a href="#features">Program Features</a><br>
+&nbsp; &nbsp;<a href="#imagetypes">Supported Image Types</a><br>
+&nbsp; &nbsp;<a href="#license">Terms of Use</a><br>
+&nbsp; &nbsp;<a href="#feedback">Feedback</a><br>
+</td>
+
+<td valign=top>
+<b>At the <a href="http://www.alternatiff.com/">AlternaTIFF web site</a>:</b><br>
+&nbsp; &nbsp;Answers to <a href="http://www.alternatiff.com/faq.html">frequently
+asked questions</a><br>
+&nbsp; &nbsp;<a href="http://www.alternatiff.com/relnotes.html">Release notes</a><br>
+&nbsp; &nbsp;<a href="http://www.alternatiff.com/technical.html">Technical documentation</a><br>
+&nbsp; &nbsp;<a href="http://www.alternatiff.com/terms.html">Full terms of use</a><br>
+&nbsp; &nbsp;<a href="http://www.alternatiff.com/purchaseinfo.html">Information on
+purchasing licensed copies</a>
+</td>
+</tr></table>
+
+<h2><a name=introduction>Introduction</a></h2>
+
+AlternaTIFF is free browser add-on which can display most of the
+common types of TIFF image files. It is available in two versions:
+an ActiveX control for Internet Explorer, and a Netscape-style browser
+plug-in for most other web browsers. The plug-in also works in some
+versions of Internet Explorer.
+It requires Windows 2000/XP/Vista/7/etc., and a supported
+web browser.
+It is intended to work with 32- and 64-bit versions of Microsoft
+Internet Explorer,
+and 32-bit versions of most other browsers (Firefox, Opera, Chrome,
+etc.).
+
+<p>
+<h2><a name=installation>Installation</a></h2>
+AlternaTIFF is available in two forms: a <b>ActiveX control for Internet
+Explorer</b>, and a <b>Netscape-style plug-in</b> for most other web browsers.
+
+<h3><a name="installx">Installation of the ActiveX version</a></h3>
+The AlternaTIFF web site may offer a way to automatically install
+over the web.
+<p>
+The ActiveX version is also available in a ZIP file that can be
+downloaded and installed manually. To install, download the
+alternatiff-ax-wXX-2.x.x.zip file; then create a folder 
+(for example, "C:\Program Files\AlternaTIFF") and unzip the
+contents of the ZIP file into it. Run the "install.bat" script
+to register the ActiveX control with Windows.
+You should see the message "DllRegisterServer in alttiff.ocx succeeded."
+Note that the alttiff.ocx file must remain at that location in
+order for it to work.
+
+<p>
+You will be instructed to register the first time you attempt to
+view a TIFF file, if you have not previously registered either the
+plug-in or the ActiveX control.
+<p>
+
+<h3><a name="installpl">Installation of the Netscape plug-in version</a></h3>
+Download and open the alternatiff-pl-w32-2.x.x.exe file.
+<p>
+AlternaTIFF must be registered before it can be used to view images.
+If you have never registered it before, you will be shown a form to fill out
+for automatic registration over the internet. This feature requires an
+active internet connection. (It will attempt to use Internet Explorer's proxy
+settings, if available.) If your computer does not have a direct internet
+connection, press the "Manual registration" button to allow you to enter an
+activation key that can be generated at any time at a web site.
+<p>
+If you are not able to complete the registration at this time,
+you can still continue with the installation by pressing Cancel.
+However, the plug-in will not display images until it is registered.
+Registration can be completed later when the plug-in is in use, or by
+re-running the install program.
+<p>
+After the registration step (if necessary), you
+will see a dialog box that allows you to choose where to install AlternaTIFF.
+In most cases, an appropriate location will be suggested, and
+there's no need to change it. Press the Install button to complete
+the installation.
+<p>
+
+<h2><a name=uninstall>Uninstallation</a></h2>
+
+<h3><a name=uninstallx>Uninstallation of the ActiveX version</a></h3>
+
+<p>Try one or more of the methods below, depending on how you installed
+AlternaTIFF, and the versions of Internet Explorer and Windows you're
+using.</p>
+
+<p>If you've used AlternaTIFF since you last restarted Internet Explorer,
+it's best to first close all IE sessions, and restart IE.</p>
+
+
+<h4>Uninstallation of the ActiveX version - auto-installed, IE 8+</h4>
+<ul>
+<li>Select <b>Tools</b> from IE's menu or command bar, then <b>Manage
+Add-ons</b>. 
+<li>In the "<b>Show:</b>" list, select "Downloaded controls"</b>.
+<li>Select "AlternaTIFF ActiveX" from the main list.
+<li>To <i>disable</i> AlternaTIFF, click the <b>Disable</b> button, and
+you're done. If you want to try to completely remove AlternaTIFF, follow the
+rest of these steps instead.
+<li>Click the <b>More information</b> link near the bottom of the window.
+<li>Click the <b>Remove</b> button.
+</ul>
+
+<h4>Uninstallation of the ActiveX version - auto-installed, IE 7</h4>
+<ul>
+<li>Select <b>Tools</b> from IE's menu or command bar, then <b>Manage
+Add-ons</b> -&gt; <b>Enable or Disable Add-ons</b>.
+<li>Click the "<b>Show:</b>" list, and select "Downloaded ActiveX Controls"</b>.
+<li>Select "AlternaTIFF ActiveX" from the list, the press the <b>Delete</b>
+button at the lower right. Confirm the action, if asked. 
+</ul>
+
+<h4>Uninstallation of the ActiveX version - auto-installed, Windows XP or earlier versions of Windows</h4>
+<ul>
+<li>Open up <b>Internet Options</b>, either from Internet Explorer's
+<b>Tools</b> menu, or via the Control Panel.
+<li>In the <b>General</b> tab, <b>Temporary Internet files</b> or
+<b>Browsing history</b> section, click the <b>Settings</b> button.
+<li>Click the <b>View Objects</b> button.
+<li>This will open up a folder, which should contain an item
+named <b>AlternaTIFF ActiveX</b> or similar.
+Right-click on it, then select <b>Remove</b> from the menu.
+(<i>If there is no <b>Remove</b> item on the menu, then this method of
+uninstallation will not work for you.</i>)
+Answer <b>Yes</b> when asked if you want to continue.
+<li><b>Cancel</b> your way out of <b>Internet Options</b>.
+</ul>
+
+<h4>Uninstallation of the ActiveX version - if you manually installed from the
+ ZIP file</h4>
+<ul>
+<li>Run the "uninstall.bat" script. You should a message similar to
+"DllUnRegisterServer in alttiff.ocx succeeded."
+<li>If desired, delete the files you unzipped and the folder you created.
+</ul>
+
+<h3><a name=uninstallpl>Uninstallation of the Netscape plug-in version</a></h3>
+<p>To uninstall AlternaTIFF, re-run the setup program (alternatiff-pl-w32-2_x_x.exe).
+If it displays a registration form, press Cancel.
+Then press the Uninstall button.
+
+
+<h2><a name=features>AlternaTIFF Features</a></h2>
+<ul>
+
+<li><p><span class=h>Zoom</span> (magnify).  When in Zooming mode (the magnifying glass on the
+toolbar), left-click anywhere on the image to activate the full-screen zoom
+function.
+(If the image is a "hot-link", or you are in Panning mode, you must hold down
+Shift when you left-click.)
+After zooming, you can pan around the full-size image using the mouse.
+You do not need to hold down the mouse button.
+Left-click again to close the window. (Advanced: While zoomed, click the
+right mouse button to lock the image in place, and also allow the mouse to
+move over the whole screen, switch to other programs, whatever. To resume
+panning, click the right mouse button on the zoomed window again.)</p>
+<p>You can change the size of the zoomed image by using the
+"Zoom Image Size" option on the right-click menu, or when the zoom window
+is open by using the mouse wheel or the plus (+ or =) and minus (-) keys.
+<p>With the zoom window open, you can switch pages
+by pressing the PageUp, PageDown, Home, and End keys
+(if the TIFF file contains multiple pages).
+
+<li><p><span class=h>Pan</span> (drag). In Panning mode (the Hand button on the toolbar), you can
+click on the image and drag it to scroll other parts of it into view.
+If the image is a "hot-link", or you are in Zooming mode,
+you can must hold down the
+Ctrl key when you click the mouse. If you are in Best Fit mode, you will
+automatically go into Zooming mode, since panning would be useless.</p>
+
+</ul>
+Program features accessible from the tool bar:
+<ul>
+
+<li><span class=h>Print</span>. Attempts to print at the physical size specified in the TIFF file
+(unless Always Print Full Page is turned on),
+otherwise stretches or shrinks the image to fit as much as possible on
+one page.
+
+<li><span class=h>Save to disk</span>, as the original TIFF, or in BMP format. If the TIFF has
+multiple pages, saving as BMP will only save the current page.
+You can save as TIFF even if AlternaTIFF was not able to display that
+particular file. A filename will usually be suggested, based on the URL.
+
+<li><span class=h>Copy image to clipboard</span>.
+After pressing this button, you will be able to Paste the image
+into other graphics applications.
+(There will be no direct indication that anything has happened.)
+
+<li><span class=h>Best fit</span>. Shrinks or enlarges the image to the largest size that will
+fit entirely within the window.
+When you use your browser's Print function to print a page with embedded
+TIFFs, the image will always be treated as if it were in "Best fit" mode.
+
+<li><span class=h>Fit to window width</span>. Shrinks or enlarges the image so that it is the
+same width as the window.
+There is also a "Fit to window height" mode,
+but since it is rarely useful, it is only available on the right-click menu.
+
+<li><span class=h>Fixed size</span>. Sets the image size to some percentage of its natural size.
+The percentage used is set by the arrow controls beside this button, or
+from the right-click menu. When in this mode, you may also be able to
+change size by holding the Ctrl key and turning the mouse wheel -- this
+requires that AlternaTIFF have keyboard focus.
+
+
+<li><span class=h>Orientation</span>. There are 4 orientation buttons, which allow you to
+immediately rotate the image to any multiple of 90 degrees.
+
+<li><span class=h>Negative image</span>. Swap black with white, etc.
+
+<li><span class=h>Page controls</span>. If the current TIFF file contains multiple pages,
+you can switch to other pages by using the arrows or the drop-down list.
+If the page controls are grayed out, it means the TIFF file contains
+only a single page.
+
+<li><span class=h>Menu</span>. Displays AlternaTIFF's context menu (see below).
+
+<li><span class=h>Viewer information and image properties</span> ("About").
+Displays an "about box" window
+listing AlternaTIFF version information, and technical information about the
+image and your browser. This information can be useful if there is a
+problem displaying a particular image.
+
+<li><i>Note: It is possible to customize the toolbar, and there are other,
+generally less-useful, buttons available that can be added. Unfortunately, at
+this time there is no user-friendly interface for doing this. For more
+information, follow the "Technical documentation" link at the top of
+this document.</i>
+</ul>
+
+You can access AlternaTIFF's menu from the toolbar button, or by 
+clicking the right mouse button anywhere on the image or toolbar.
+You can use the menu to do everthing you can do from the toolbar, with
+the following additions:
+<ul>
+
+<li><span class=h>Open Local File</span>. Load a TIFF file from your computer into
+AlternaTIFF. This is not really what AlternaTIFF is intended for, but you can
+do it if you want.
+
+<li><span class=h>Copy Image Location</span>. Copies the URL of the current file to the clipboard.
+
+<li><span class=h>Send Image</span>. Attempt to send the current TIFF file as an email attachment.
+This requires that you have a MAPI-compatible email application installed and
+enabled. Be aware that this uses your system-default email application, and
+may not behave the same as your web browser would when sending a document.
+
+<li><span class=h>Smooth image</span>. This is normally turned on, and causes black and white
+images to be "resampled" as a smaller grayscale image, to make them clearer.
+This is slower than the ordinary resize
+function that will be used if this option is turned off.
+This does not work when the displayed image is larger than the original one.
+
+<li><span class=h>Zoom Image Size -&gt; X%</span>. Sets the size of zoomed images to a percentage
+of their full size.
+
+<li><span class=h>More Settings -&gt; Default Toolbar Position</span>.
+The toolbar can be turned on or off, and moved to the top or bottom
+of the image.
+
+<li><span class=h>More Settings -&gt; Zoom Window Size</span>. Choose the preferred size of the
+Zoom window: 1 is smallest, 5 is largest.
+
+<li><span class=h>More Settings -&gt; Panning Sensitivity</span>. Controls how much the image
+scrolls when you move the mouse in Panning mode. If you set it to "1", the
+image will scroll by the same amount you move the mouse.
+
+<li><span class=h>More Settings -&gt; Mouse wheel direction</span>.
+When the mouse wheel is used to resize the image, this controls which
+direction increases the size.
+
+<li><span class=h>More Settings -&gt; Toolbar button size</span>. Sets the height of the toolbar
+buttons, in pixels.
+
+<li><span class=h>More Settings -&gt; Default Background Color</span>. Select the color used for areas
+of AlternaTIFF that are not covered up by the image, and while an image is
+loading.
+
+<li><span class=h><a name=alwaysprintfullpage>More Settings -&gt; Always print full page</a></span>. Normally, AlternaTIFF tries
+to print at the physical size indicated in the TIFF file. Turn on this setting
+to force it to print as large as possible.
+
+<li><span class=h>More Settings -&gt; Center printed images</span>.
+If enabled, images will be printed centered on the paper. Otherwise, they
+will be aligned with the upper-left corner of the printable region of
+the paper.
+
+<li><span class=h>More Settings -&gt; Auto-rotate printed images</span>.
+If enabled, printed images will be rotated 90 degrees if they can be
+printed larger in that orientation.
+
+<li><span class=h>More Settings -&gt; Automatically check for new
+versions</span>. If this is
+turned on, every 10 days AlternaTIFF will attempt to check over the internet
+to see if a new version of AlternaTIFF is available. If one is, you will
+get a message asking if you would like to download it. You can find out when
+the last check was made by choosing "About..." from the menu.
+
+<li><span class=h>More Settings -&gt; Advanced -&gt; Show tool tips...</span>.
+Turn the Tool Tips for the toolbar buttons
+on or off. (Tool Tips are those little windows that appear when you hold
+your mouse over a button for a while.)
+
+<li><span class=h>More Settings -&gt; Advanced -&gt; Correct for Non-square Pixels</span>.
+If this is on, images with
+an aspect ratio other than 1.0 (that is, images whose horizontal resolution
+is different from their vertical resolution)
+will be stretched to their "correct" shape when being displayed on the screen.
+For example, if an image is 200x100 pixels per inch, it will be doubled in
+height so that it will look as its creator intended.
+
+<li><span class=h>More Settings -&gt; Advanced -&gt; Ignore reduced-size images</span>.
+ A few TIFF files contain images that are intended for use as thumbnails.
+ Turn on this option to tell AlternaTIFF to skip over those images.
+
+<li><span class=h>More Settings -&gt; Advanced -&gt; Ignore sub-IFD images</span>.
+ A few TIFF files contain auxiliary images that are not part of the main
+ sequence of images.
+ Turn on this option to tell AlternaTIFF to ignore those images.
+
+<li><span class=h>More Settings -&gt; Advanced -&gt; Stretch to Fill Print Region</span>.
+When printing using
+your web browser's Print feature, turn on this setting to print as large
+as possible in both dimensions, ignoring the image's true shape. This
+should usually be turned off, as it will often result in printed images
+that are stretched to the wrong shape. This has no effect when using
+AlternaTIFF's Print feature to print -- it only affects your browser's
+Print feature.
+
+<li><span class=h>More Settings -&gt; Advanced -&gt; Support multiple copies...</span>.
+When printing, allow AlternaTIFF to handle multiple copies and collation,
+so that these features will work even if your printer does not have native
+support for them.
+
+<li><span class=h>More Settings -&gt; Advanced -&gt; Put zoom window on...</span>.
+This setting has no effect unless you have more than one monitor.
+You can choose to display the zoomed image on the nearest monitor
+(recommended), or to force it to a specific monitor.
+
+<li><span class=h>More Settings -&gt; Advanced -&gt; Allow Scripting</span>.
+AlternaTIFF
+has a "scripting" feature that allows web pages to interact with it to a
+limited extent. For example, a web page could tell AlternaTIFF to switch
+pages or load new image files. You can disable this feature by unchecking
+"Allow Scripting". The scripting feature is not compatible with all web
+browsers. The ActiveX version is scriptable by IE 4.0 and higher, and the
+plug-in version is scriptable by Netscape 6.1 and compatible web browsers.
+For more information about scripting, follow the "Technical documentation"
+link at the top of this document.
+
+<li><span class=h><a name="allowprint">More Settings</a> -&gt; Advanced -&gt; Allow Web Pages to Print Without Confirmation</span>.
+Using scripting or special parameters, a web page can request that AlternaTIFF
+print the current document to your default printer with no confirmation at
+all from you. Normally, AlternaTIFF ignores such requests, since it would
+be a security violation for it to give web pages complete control over your
+printer. However, it is a relatively minor security violation, and it may be
+worth the risk in some circumstances, so you have the option of giving web sites
+permission to do this. Be aware that this setting applies to <em>all</em>
+web sites. We recommend that you leave this turned off, and we cannot
+be responsible for anything that your printer may happen to print if you turn
+it on.
+
+<li><span class=h>More Settings -&gt; Advanced -&gt; Allow scripts to
+open local files</span>.
+If scripting is turned on, remote web sites may be able to test for the
+existence of specific files on your local computer or network,
+by attempting to download
+a file and then asking AlternaTIFF whether the download succeeded.
+This may allow web sites to determine whether or not you have a
+particular application installed on your computer, for example.
+This setting can make it more difficult for web sites to do that.
+Note that some web browsers may block remote access to local files
+regardless of this setting.
+<br>
+&nbsp; "<b>No</b>" = Do not allow scripts to download local files.<br>
+&nbsp; "<b>TIFF files only</b>" = Only allow access to files with a ".tif" or
+".tiff" extension.<br>
+&nbsp; "<b>Yes</b>" = Allow access to all local files.
+A few intranet applications may require this.<br>
+
+
+<li><span class=h>Save All Settings</span>.
+Saves image-specific settings such as Rotate,
+Fit Width/Height, Negative, Smooth Image, Mouse Mode, etc.
+Most other settings will be automatically saved
+whenever you change them, without requiring you to select this.
+
+<li><span class=h>Tools -&gt; Show TIFF Tags</span>.
+Displays the internal structure of the TIFF file. Most people will have
+no use for this, but it may help to troubleshoot certain problems.
+Items that are colored blue appear literally in the file; everything else
+is an interpretation of the data in the file.
+
+<li><span class=h>Tools -&gt; Show Error Log</span>.
+Displays a list of potential problems found in the current TIFF file or image.
+If no problems were found, this menu item will not be available.
+
+<li><span class=h>Tools -&gt; Check for New Version</span>.
+Attempts to contact the AlternaTIFF web server to
+find out if a new version of AlternaTIFF is available.
+
+<li><span class=h>Tools -&gt; Set As Desktop Background</span>.
+Sets your Windows desktop background to the current image.
+You can request it to be Centered or Tiled or Stretched.
+This feature is not supported when using Internet Explorer in
+"protected mode" (the default mode for Windows Vista).
+Some old versions of Windows do not support Stretched background images.
+
+<li><span class=h>View Image</span>. View the image on a web page by itself.
+Usually the browser will still use AlternaTIFF to display the image, but
+it's possible that your browser could choose to use some other viewer.
+
+<li><span class=h>Open in New Window</span>. Open up a new browser window and view just the image
+in it.
+
+<li><span class=h>AlternaTIFF Home Page</span>. Go to the AlternaTIFF web site on the Internet.
+</ul>
+
+
+<h2><a name=imagetypes>Supported TIFF Images and Features</a></h2>
+Among the image types AlternaTIFF supports:
+<ul>
+<li>Multi-image files (up to 32000 pages)
+<p>
+<li>Grayscale images: 1, 2, 4, 8, 16 bits/sample
+<li>Palette color images: 1, 2, 4, 8, 16 bits/pixel
+<li>RGB, CMYK, CIELAB color images: 8, 16 bits/sample
+<li>YCbCr images: 8 bits/sample
+<li>LogLuv and LogL images: 16 bits/sample
+<p>
+<li>Uncompressed images
+<li>CCITT modified Huffman RLE compression
+<li>CCITT Group 3 fax encoding compression
+<li>CCITT Group 4 fax encoding compression
+<li>Macintosh Packbits compression
+<li>ThunderScan RLE compression
+<li>NeXT 2-bit RLE compression
+<li>Deflate (Zip) compression
+<li>LZW compression
+<li>New style JPEG compression (TIFF compression type 7)
+<li>Most varieties of Old style JPEG compression (TIFF compression type 6).
+  <i>Old style JPEG compression is obsolete, and has many problems.
+ AlternaTIFF's support for it is not intended to encourage its
+ use. Please don't create new TIFF files that use Old style
+ JPEG compression.</i>
+</ul>
+
+Among the types of images and TIFF features that AlternaTIFF does <b>not</b>
+ support:
+<ul>
+<li>Certain unusual combinations of samples, bits/sample, separated color
+planes, tiles, etc.
+<li>Sample formats other than unsigned integers (e.g. floating point)
+<li>Gamma correction and colorimetry
+<li>Annotations
+</ul>
+
+<h2><a name=troubleshooting>Troubleshooting</a></h2>
+
+<p>
+Please see the
+<a href="http://www.alternatiff.com/faq.html">AlternaTIFF FAQ</a>
+for troubleshooting tips.
+<p>
+
+
+<h2><a name=license>Terms of use</a></h2>
+The following applies only to the "free" version of AlternaTIFF, and not
+to any specially licensed versions that you may have purchased from
+Medical Informatics Engineering. Complete terms of use are available at 
+<a href="http://www.alternatiff.com/terms.html">http://www.alternatiff.com/terms.html</a>.
+<p>
+AlternaTIFF<br>
+Copyright &copy; 1998-2012 Medical Informatics Engineering, Inc.
+<p>
+AlternaTIFF is provided free of charge. You may use it however you like,
+for whatever you like (personal or commercial use), for as long as you like,
+at no cost. AlternaTIFF must be registered on each computer on which it
+is used. You are allowed to redistribute AlternaTIFF, but you may only
+distribute it in unmodified form.
+<p>
+<table width="100%" bgcolor="#ffffff"><tr><td><small>
+DISCLAIMER OF WARRANTY<p>
+
+The software is provided "AS IS" and 
+without warranty of any kind and Medical Informatics Engineering
+expressly disclaims all other warranties, express or implied,
+including, but not limited 
+to, the implied warranties of merchantability and fitness for a 
+particular purpose. Under no circumstances shall Medical Informatics
+Engineering be 
+liable for any incidental, special or consequential damages that 
+result from the use or inability to use the software or related 
+documentation, even if Medical Informatics Engineering
+has been advised of the possibility of such damages.
+</small></td></tr></table>
+
+
+<p>
+AlternaTIFF uses code from LIBTIFF, which
+carries the following license and copyright:
+
+<table width="100%" bgcolor="#ffffff"><tr><td><small>
+LIBTIFF<br>
+Copyright &copy; 1988-1997 Sam Leffler<br>
+Copyright &copy; 1991-1997 Silicon Graphics, Inc.<br>
+<p>
+Permission to use, copy, modify, distribute, and sell this software and
+its documentation for any purpose is hereby granted without fee, provided
+that (i) the above copyright notices and this permission notice appear in
+all copies of the software and related documentation, and (ii) the names of
+Sam Leffler and Silicon Graphics may not be used in any advertising or
+publicity relating to the software without the specific, prior written
+permission of Sam Leffler and Silicon Graphics.
+<p>
+THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND,
+EXPRESS, IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY
+WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+<p>
+IN NO EVENT SHALL SAM LEFFLER OR SILICON GRAPHICS BE LIABLE FOR
+ANY SPECIAL, INCIDENTAL, INDIRECT OR CONSEQUENTIAL DAMAGES OF ANY KIND,
+OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+WHETHER OR NOT ADVISED OF THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF
+LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
+OF THIS SOFTWARE.
+</small></td></tr></table>
+
+
+<h2><a name=feedback>Feedback</a></h2>
+You may send comments, questions, bug reports and other feedback to 
+<a href="mailto:alternatiff@alternatiff.com">alternatiff@alternatiff.com</a>.
+Visit the
+<a href="http://www.alternatiff.com/">AlternaTIFF web site</a> for
+current information.
+<p>
+Please read the <a href="http://www.alternatiff.com/faq.html">FAQ</a>
+before asking a question.
+
+<br>
+<br>
+<br>
+<br>
+</body>
+</html>
