@@ -1,0 +1,45 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script>               
+                window.onload = function(){
+                    //window.print();
+                };                
+        </script>
+        <style>
+            @media print {
+                .noprint { display: none; }
+                }
+            td{
+                font-family:Arial!important;font-size:10px!important;;
+            }
+        </style>
+    </head>
+    <body> 
+        <input class='noprint' type='button' value='Print' onclick='window.print()' />
+        <div style="float:left;left:20px;top:87px;position:absolute;">
+            <table><tr><td>No.  [pdsid]</td></tr></table>
+            <table border='0' cellspacing='0' cellspadding='0' width='640px'>
+                <tr>
+                    <td align="center">[lastname]</td>
+                    <td align="center">[firstname]</td>
+                    <td align="center">[middleinitial]</td>
+                    <td align="center" width="40%">[datevisited]</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td align="center">[birthdate]</td>
+                </tr>
+                <tr><td colspan="4"><div style="float:left;margin-left:[genderleft];color:red;"><b>/</b></div></td></tr>
+            </table>
+        <div>
+    </body>
+</html>

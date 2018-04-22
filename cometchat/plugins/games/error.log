@@ -1,0 +1,3 @@
+[10-Mar-2014 18:26:43] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in C:\xampp\htdocs\cometchat\plugins\games\index.php on line 211
+[10-Mar-2014 18:26:56] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in C:\xampp\htdocs\cometchat\plugins\games\index.php on line 211
+[10-Mar-2014 18:27:06] PHP Warning:  mysql_fetch_array(): supplied argument is not a valid MySQL result resource in C:\xampp\htdocs\cometchat\plugins\games\index.php on line 211

@@ -1,0 +1,69 @@
+<html>
+
+<head>
+    <style>
+        body {font-family:arial;font-size:10pt}
+        @media print {
+              .noprint { display: none; }
+            }
+        .branch{font-size:7pt;text-align: center;}
+        .underl{text-decoration: underline;font-family:arial;font-size:10pt}
+        td{font-family:calibri!important;font-size:9pt!important;height:9pt!important;}
+        .content{text-align:center;border-bottom:#000 solid 1px;width:100%!important;font-size:11pt;}
+        .ucontent{text-align:center;border-bottom:#000 solid 1px;width:100%!important;font-weight:800;font-size:10pt;}
+        .ulabel{color:blue;height:9pt!important;}
+    
+                                .lbl{width:auto;text-align: right;}
+                                .val{text-align:right;}
+    </style>
+    <script>               
+            window.onload = function(){
+                //window.print();
+            };                
+    </script>
+</head>
+<body>        
+        <input class='noprint' type='button' value='Print' onclick='window.print()' />
+        <div style="width:790px;">
+                        <div align="center">                            
+                            <table style="width:790px">
+                                <tr >
+                                    <td>
+                                        <div class="branch"> 
+                                            BACOOR BRANCH<br/>
+                                            31 - 32 LGF SM City Bacoor,<br/>
+                                            Tirona Cor. Aguinaldo Highway, Bacoor, Cavite<br/>
+                                            Tel. No. (046) 970-1850 / Fax # (046) 970-1851
+                                        </div>
+                                    </td>
+                                    <td style="text-align:center;" valign=top >
+                                        <img src="[logopath]" />
+                                        <div>Medical Clinic and Diagnostic Center, Inc.</div>
+                                    </td>
+                                
+                                    <td>
+                                          <div class="branch"> 
+                                               ROSARIO BRANCH<br/> 
+                                                Unit 207-208 2nd Floor SM City Rosario,<br/> 
+                                                Tejeros, Convention, Rosario, Cavite  <br/> 
+                                                Tel. No. (046) 971-1839 / (02) 584-4950
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>    
+                        
+                        <hr/>
+                        <div>
+                            <h1>HMO Receivable Report To-date</h1>
+                            <div>
+                                <label>Receivable to-date total:</label>&nbsp;&nbsp;<span id="">{receivable_total}</span>
+                            </div>
+                            <div>
+                            [contents]
+                            </div>
+                        </div>
+        </div>
+</body>    
+
+</html>

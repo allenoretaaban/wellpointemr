@@ -1,0 +1,2 @@
+[10-Mar-2014 18:29:27] PHP Fatal error:  Call to undefined function  curl_init() in C:\xampp\htdocs\cometchat\plugins\avchat\sdk\OpenTokSDK.php on line 121
+[10-Mar-2014 18:29:50] PHP Fatal error:  Call to undefined function  curl_init() in C:\xampp\htdocs\cometchat\plugins\avchat\sdk\OpenTokSDK.php on line 121

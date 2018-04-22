@@ -1,0 +1,9 @@
+assets
+cometchat/error.log
+images/*.JPG
+images/scanned_documents/*
+rosario
+sandbox
+temp
+.DS_Store
+protected/runtime/*

@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title>Print Billing: WellPoint Payable Services</title>
+    <style>
+        body {font-family:arial;font-size:9pt}
+        table {
+            font-family:arial;font-size:9pt;
+        }                                   
+        td.money{text-align:right;padding: 0 3px;}
+        table.sp tr td{
+            padding: 0 3px;
+        }
+        div {font-family:arial;font-size:10pt}
+        p {line-height: 13pt;}
+        @media print {
+              .noprint { display: none; }
+            }
+        @media print {
+            thead { display: table-header-group; }
+            tfoot { display: table-footer-group; }
+        }
+        @media screen {
+            thead { display: block; }
+            tfoot { display: block; }
+        }
+        .branch{font-size:7pt;text-align: center;}
+        .underl{text-decoration: underline;font-family:arial;font-size:8pt}
+        .title{color:#FF0000}
+    </style>
+</head>
+<body>
+    <table>
+           <thead><tr><td>
+                   <input class='noprint' type='button' value='Print' onclick='window.print()' />
+                   <div style="width:1100px;padding:0 10px 0 10px">
+                   
+                        <div align="center">                            
+                                <table style="width:790px">
+                                <tr >
+                                    <td>
+                                        <div class="branch"> 
+                                            BACOOR BRANCH<br/>
+                                            31 - 32 LGF SM City Bacoor,<br/>
+                                            Tirona Cor. Aguinaldo Highway, Bacoor, Cavite<br/>
+                                            Tel. No. (046) 970-1850 / Fax # (046) 970-1851
+                                        </div>
+                                    </td>
+                                    <td style="text-align:center;" valign=top >
+                                        <img src="[logopath]" />
+                                        <div>Medical Clinic and Diagnostic Center, Inc.</div>
+                                    </td>
+                                
+                                    <td>
+                                          <div class="branch"> 
+                                               ROSARIO BRANCH<br/> 
+                                                Unit 207-208 2nd Floor SM City Rosario,<br/> 
+                                                Tejeros, Convention, Rosario, Cavite  <br/> 
+                                                Tel. No. (046) 971-1839 / Fax #: 971-1838
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>    
+                        <div align="left" style="width: 100%;">
+                            <div style="float:left">
+                                <div style="font-size:18px;font-weight:bold;">Health Maintenance, Inc.</div>
+                                <div>
+                                    1152 Don Chino Roces Avenue, San Antonio Village, 1203 Makati City <br/>
+                                </div>
+                                <div style="height:15px">&nbsp;</div>
+                                <table>
+                                    <tr>
+                                        <td>Claimant:
+                                        </td>
+                                        <td>WellPoint Medical Clinic and Diagnostic Center, Inc.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address:
+                                        </td>
+                                        <td>Unit 207-208 2nd Floor SM City Rosario, Tejeros, Convention, Rosario, Cavite 
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <BR/>
+                                            <div style="font-size:18px;font-weight:bold;">
+                                                PAYABLE TO WELLPOINT MEDICAL CLINIC AND DIAGNOSTIC CENTER INC.<br/>                                                 
+                                            </div>
+                                            <div>
+                                               *Out Patients and Consultations
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="float:right">
+                                <table>
+								<tr>
+                                        <td><div style='font-size:14px;font-weight:bold;'>SOA No#: </div></td>
+                                        <td><div style='font-size:14px;font-weight:bold;'>[soa_no]</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div>Date Prepared: </div></td>
+                                        <td><div>[date_prepared]</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div>Due Date:</div></td>
+                                        <td><div>[due_date]</div></td>
+                                    </tr>
+                                </table>
+                                
+                                
+                            </div>
+                        </div> 
+                   </div>
+           
+           </td></tr></thead>
+           <tbody>
+             <tr><td>
+             
+             <div style="width:1100px;padding:0 0px 0 10px;margin-top:-10px">
+                        
+                        <div id="body" align="left" style="width: 100%;display:table;" >
+                                <br/>
+                                <table class="sp" width="1100" style="border-width: 0px;border-spacing: 0px;border-style: outset;border-color: gray;" border="1px" cellpadding="0" cellspacing="0" >
+                                    <tr>
+                                        <th>AVAIL DATE</th>
+                                        <th>AVAILER'S NAME</th>                                        
+                                        <th>DIAGNOSIS</th>
+                                        <th>MEDICAL SERVICE</th>
+                                        <th>REQUESTING<BR/>PHYSICIAN</th>
+                                        <th>CHARGES<BR/>CLINIC</th>
+                                        <th>PROCEDURE</th>
+                                        <th>PROF. FEE</th>
+                                    </tr>
+                                     [bill_items] 
+                                    <tr>
+                                        <td colspan="5" style="text-align: right;">Total</td>
+                                        <td class="money" >[cc]</td>
+                                        <td class="money" >[dp]</td>
+                                        <td class="money" >[pf]</td>
+                                    </tr>  
+                                    <tr>
+                                        <td colspan="7" style="text-align: right;">Grand Total</td>
+                                        <td class="money" >[gt]</td>
+                                        
+                                    </tr>
+                                </table>
+                        </div>
+             
+             </div> 
+             </td></tr>
+           </tbody>
+           <tfoot><tr><td>
+        
+                <div style="width:1100px;padding:0 10px 0 10px">
+                                
+                                
+                                <div id="footer" align="left" style="width: 100%;display:table;padding-top:20px;">          
+                                    <div style="float:left">
+                                        Prepared by:<br/>
+                                        <br/>
+                                        [preparedy_by]
+                                    </div>
+                                    <div style="float:right">
+                                        Date Received:<br/>
+                                        <br/>
+                                        ____________________________
+                                    </div>
+                                </div>
+                </div>   
+           
+           </td></tr></tfoot>
+    </table>
+  
+</body>
+</html>

@@ -1,0 +1,126 @@
+<html>
+    <head>
+        <style>
+            body {font-family:arial;font-size:8pt;margin:0px;}
+            table {
+                font-family:arial;font-size:9pt;
+            }
+            td.money{text-align:right;padding: 0 3px; }
+            table.sp tr td{
+                padding: 0 3px;
+            }
+            div {font-family:arial;font-size:9pt}
+            p {line-height: 13pt;}
+            @media print {
+                  .noprint { display: none;}
+                }
+            @media print {
+                thead { display: table-header-group; }
+                tfoot { display: table-footer-group; }
+            }
+            @media screen {
+                thead { display: block; }
+                tfoot { display: block; }
+            }
+            .branch{font-size:6pt;text-align: center;line-height:6pt;}
+            .underl{text-decoration: underline;font-family:arial;font-size:8pt}
+            .title{color:#FF0000}
+            td { padding:3px 0px 0px 0px; line-height:0.7em; font-size:12px!important; }
+            #charge_tbl td { padding:1px 3px;vertical-align:top; line-height:0.9em; }
+            #charge_tbl .amount { text-align:right; }
+            #item_amount, #item_svc { font-size:11px!important; }
+            #shrink-element { width:230px;height:12px;position:relative; }
+            #shrink-element span { position:absolute;bottom:2px;font-weight:700;" }
+            .shrink-element-2 { width:230px!important;height:12px;position:relative; }
+            .shrink-element-2 span { position:absolute;bottom:2px;" }
+
+        </style>
+        <script type="text/javascript" src="/themes/classic/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/themes/classic/js/jquery.textfill.min.js"></script>
+
+    <body>
+        <input class='noprint' type='button' value='Print' onclick='window.print()' style='margin:10px;position:absolute;'/>
+        <table width="100%">
+            <tr><td align="center">
+                <div style="width:330px;text-align:left;background:#fff;height:470px;margin:0px;padding:0px;">
+                    <table style="width:100%">
+                        <tr >
+                            <td colspan="2" style="text-align:center;padding:0px 0px -5px 0px;" valign=top >
+                                <img src="[logopath]" style="width:150px;margin:-5px 0px 0px 0px;"/>
+                                <div style="font-size:9px;font-weight:700;">Medical Clinic and Diagnostic Center, Inc.</div>
+                            </td>
+                        </tr>
+                        <tr >
+                            <td colspan="2"  style="padding:0px 0px 10px 0px;">
+                                <div class="branch">
+                                LGF SM City Dasmarinas, Brgy. Sampaloc 1<br/>
+                                Governor's Drive, Dasmarinas, Cavite<br/>
+                                </div>
+                                <!--div>Tel. No. (046) 970-1850 / Fax # (046) 970-1851
+                                </div-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align:left;font-size:15px;font-weight:700;" valign=top >CHARGE SLIP 
+                                <div style="text-align:right;font-size:12px;float:right;">Date: [date]</div>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2" style="padding:7px 0px 0px 0px;"><font style="color:green;">Name:</font> <b>[patient_name]</b></td></tr>
+                        <tr><td colspan="2" style="padding:5px 0px 0px 0px;"><font style="color:green;">Physician:</font> <b>[doctor_name]</b></td></tr>
+                        <tr><td colspan="2" style="padding:5px 0px 0px 0px;"><font style="color:green;">Type of Patient:</font> <b><font style="color:red;">[patient_type]</font></b></td>
+                        <!--td>
+                            <div id="shrink-element_[elementid]" align="left"><span>[patient_type]</span><div>
+                        </td-->
+                        </tr>
+
+                        <tr>
+                            <td colspan="2" style="padding:7px 0px;">
+                                <table cellspacing="0" cellspacing="0" border="1" width="100%" id="charge_tbl">
+                                    <tr><td align="center" width="70%"><b>SERVICES</b></td><td align="center" width="30%"><b>PRICE</b></td></tr>
+                                    [consultation]
+                                    <!--tr><td align="left" style="color:green;"><b >CONSULTATION:</b></td><td align="right">[consultation]</td></tr-->
+                                    <tr style="display:[procedure_box];" id="procedure_box"><td align="left" style="color:green;"><b >[procedure_or_ape]:</b></td><td align="right">&nbsp;</td></tr>
+                                    [procedure_content]
+                                    <tr style="display:[laboratory_box];" id="laboratory_box"><td align="left" style="color:green;"><b >LABORATORY:</b></td><td align="right">&nbsp;</td></tr>
+                                    [charge_content]
+                                    <!--tr id="laboratory_box"><td align="left" style="color:green;"><b >UTZ:</b></td><td align="right"></td></tr>
+                                    <tr id="laboratory_box"><td align="left" style="color:green;"><b >XRAY:</b></td><td align="right"></td></tr>
+                                    <tr id="laboratory_box"><td align="left" style="color:green;"><b >ANCILLARY:</b></td><td align="right"></td></tr-->
+                                    <tr><td align="left" style="color:green;"><b >TOTAL:</b></td><td align="right"><b>[total_amount]</b></td></tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td style="width:40%;">&nbsp;</td>
+                                        <td style="padding:20px 5px 1px 0px;text-align:center;position:relative;font-size:10px!important;">
+                                            <div style="position:absolute;margin:-18px 0px 0px 0px;width:100%;"><img style="margin-bottom:[signature_margin_bottom];height:[signature_size];[display_signature]" src="[signature]"></div>
+                                            [prepared_by]
+                                            <table cellspacing="0" cellspacing="0" border="0" width="100%" id="charge_tbl" style="border-bottom:1px solid #000;padding:0px 0px 1px 0px;">
+                                                <tr><td align="center" style="font-size:10px!important;"></td></tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td align="center" style="padding:0px 5px 0px 0px;font-size:8px!important;">HMO Billing Officer</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td></tr>
+        </table>
+            <script>
+            /*window.onload = function(){
+                $('#shrink-element_[elementid]').textfill({
+                    maxFontPixels: 12
+                });
+            }*/
+        </script>
+    </body>
+</html>

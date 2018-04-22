@@ -1,0 +1,195 @@
+<html>
+<head>
+    <style>
+        body {font-family:arial;font-size:10pt}
+        @media print {
+              .noprint { display: none; }
+            }
+        .td_normal{font-family:arial!important;font-size:11px!important;height:11px!important;}
+        .td_label{font-family:arial!important;font-size:16px!important;color:#FF0000;font-weight:800;}
+        #tbl_content{font-family:arial!important;font-size:11px!important;height:11px!important;}
+    </style>
+    <script>               
+            window.onload = function(){
+                //window.print();
+            };                
+    </script>
+</head>
+<body>        
+    <center>
+    <div style="width:790px;">
+        <div style="float:left;position:absolute;">
+            <input class='noprint' type='button' value='Print' onclick='window.print()' />
+        </div>
+        <div align="center">                            
+            <table style="width:790px" border="0" cellpadding="0" cellspacing="0">
+                <tr >
+                    <td width="100px">&nbsp;</td>
+                    <td style="text-align:center;" valign="top" class="td_normal">
+                        <img src="[logopath]" /><br>
+                        <label style="font-size:13px;font-weight:800;">Medical Clinic and Diagnostic Center, Inc.</label><br>
+                        31 & 32 LGF SM City Bacoor, Tirona Cor. Aguinaldo Hwy, Bacoor, Cavite 4102<br>
+                        Tel. No. (046) 970-1850/51<br>
+                        www.wellpointmedicalclinic.com  /  www.wellpointmedicalclinic.ph
+                    </td>
+                    <td width="105px" align="left"><img src="[filename]" width="100px" height="100px"></td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="right" style="font-size:10px;">
+                        Patient Reference No.:&nbsp;[patid]&nbsp;
+                        <br>PDS No.&nbsp;[pdsid]&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:center;" valign="top" class="td_label" colspan="3">
+                        <div style="margin:8px 0px;">PATIENT DATA SHEET - FORM 2</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <table width="100%" border="1" cellpadding="0" cellspacing="0" id="tbl_content">
+                            <tr>
+                                <td colspan="2" width="100px" align="center"><label style="font-size:13px;">[lastname]</label></td>
+                                <td colspan="2" width="200px" align="center"><label style="font-size:13px;">[firstname]</label></td>
+                                <td width="40px" align="center"><label style="font-size:13px;">[middleinitial]</label></td>
+                                <td rowspan="2" style="border-right:none;">&nbsp;Date:</td>
+                                <td width="145px" colspan="2" rowspan="2" style="border-left:none;">[datevisited]</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" align="center"><i>Last Name</i></td>
+                                <td colspan="2" align="center"><i>First Name</i></td>
+                                <td align="center"><i>M.I.</i></td>
+                            </tr>
+                            <tr>
+                                <td width="100px">
+                                    &nbsp;Sex:
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<img src='[imgurlm]'>&nbsp;M
+                                    &nbsp;&nbsp;<img src='[imgurlf]'>&nbsp;F
+                                </td>
+                                <td width="90px">&nbsp;Age: [age]</td>
+                                <td colspan="3">
+                                    &nbsp;Civil Status:<br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<img src='[imgurlsin]'>&nbsp;S
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<img src='[imgurlmar]'>&nbsp;M
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<img src='[imgurlwid]'>&nbsp;W
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<img src='[imgurlsep]'>&nbsp;Sep.
+                                </td>
+                                <td width="150px" style="border-right:none;">&nbsp;Company Name:</td>
+                                <td width="250px" colspan="2" style="border-left:none;">[company]</td>
+                            </tr>
+                            <tr>
+                                <td colspan="1" style="border-bottom:none;border-right:none;">&nbsp;Occupation:</td>
+                                <td colspan="4" style="border-left:none;border-bottom:1px outset inset;">&nbsp;[occupation]</td>
+                                <td colspan="3" style="border-bottom:none;">&nbsp;<b><u>Insurance Information:</u></b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="1" style="border-bottom:none;border-right:none;border-top:none;">&nbsp;Address:</td>
+                                <td colspan="4" style="border-left:none;border-bottom:1px outset inset;border-top:1px outset inset;">&nbsp;[patient_address]</td>
+                                <td style="border-bottom:none;border-top:none;border-right:none;">&nbsp;Primary Insurance/HMO:</td>
+                                <td colspan="2" style="border-top:none;border-bottom:1px outset inset;border-left:none;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="1" style="border-bottom:none;border-right:none;border-top:none;">&nbsp;Contact No.:</td>
+                                <td colspan="4" style="border-left:none;border-bottom:1px outset inset;border-top:1px outset inset;">&nbsp;[patient_contact]</td>
+                                <td style="border-bottom:none;border-top:none;border-right:none;">&nbsp;Primary Insured:</td>
+                                <td colspan="2" style="border-left:none;border-bottom:1px outset inset;border-top:1px outset inset;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="1" style="border-bottom:none;border-right:none;border-top:none;">&nbsp;Spouse Name:</td>
+                                <td colspan="4" style="border-left:none;border-bottom:1px outset inset;border-top:1px outset inset;">&nbsp;[spousename]</td>
+                                <td style="border-bottom:none;border-top:none;border-right:none;">&nbsp;Primary Insured Birthdate:</td>
+                                <td colspan="2" style="border-left:none;border-bottom:1px outset inset;border-top:1px outset inset;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="1" style="border-bottom:1px outset inset;border-right:none;border-top:none;">&nbsp;Occupation:</td>
+                                <td colspan="4" style="border-left:none;border-bottom:1px outset inset;border-top:1px outset inset;">&nbsp;[spouseoccupation]</td>
+                                <td style="border-top:none;border-bottom:1px outset inset;border-right:none;">&nbsp;</td>
+                                <td colspan="2" style="border-left:none;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="border-left:1px solid #000;border-bottom:none;border-right:none;border-top:1px outset inset;font-size:11px!important;">&nbsp;Person to be notified in case of emergency:</td>
+                                <td colspan="2" style="border-left:none;border-right:none;border-bottom:none;border-top:1px outset inset;text-align:left;">&nbsp;[emergencycontactname]</td>
+                                <td style="border-bottom:none;border-top:1px outset inset;border-right:none;border-left:none;">&nbsp;Relationship:</td>
+                                <td colspan="2" style="border-left:none;">&nbsp;[emergencycontactrelation]</td>
+                            </tr>
+                            <tr>
+                                <td colspan="1" style="border-left:1px solid #000;border-bottom:none;border-right:none;border-top:none;">&nbsp;Address:</td>
+                                <td colspan="1" style="border-left:none;border-right:none;border-bottom:1px outset inset;border-top:none;">&nbsp;[emergencycontactaddress]</td>
+                                <td colspan="3" style="border-left:none;border-right:none;border-bottom:1px outset inset;border-top:1px outset inset;">&nbsp;</td>
+                                <td style="border-bottom:none;border-top:none;border-right:none;border-left:none;">&nbsp;Contact No.:</td>
+                                <td colspan="2" style="border-left:none;">&nbsp;[emergencycontactnos]</td>
+                            </tr>
+                            <tr>
+                                <td colspan="1" style="border-top:none;border-right:none;">&nbsp;</td>
+                                <td colspan="4" style="border-top:1px outset inset;border-left:none;border-right:none;">&nbsp;</td>
+                                <td colspan="1" style="border-top:none;border-left:none;border-right:none;border-left:none;">&nbsp;</td>
+                                <td colspan="2" style="border-top:1px outset inset;border-left:none;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="8">&nbsp;<b>PURPOSE OF VISIT:</b><br>
+                                    <label style="margin:5px 0px 0px 30px;float:left;">>> [visitreason]</label>
+                                    <br>&nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="8">&nbsp;<b>CLINICAL HISTORY:</b><br>
+                                    <div style="margin:8px 30px 12px 30px;width:730px;border-bottom:1px outset #000;"></div>
+                                    <div style="margin:15px 30px 12px 30px;width:730px;border-bottom:1px outset #000;"></div>
+                                    <div style="margin:15px 30px 12px 30px;width:730px;border-bottom:1px outset #000;"></div>
+                                    <div style="margin:15px 30px 12px 30px;width:730px;border-bottom:1px outset #000;"></div>
+                                    <div style="margin:15px 30px 12px 30px;width:730px;border-bottom:1px outset #000;"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="8">&nbsp;<b>DIAGNOSIS:</b><br>
+                                    <div style="margin:8px 30px 12px 30px;width:730px;border-bottom:1px outset #000;"></div>
+                                    <div style="margin:15px 30px 12px 30px;width:730px;border-bottom:1px outset #000;"></div>
+                                    <div style="margin:15px 30px 12px 30px;width:730px;border-bottom:1px outset #000;"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="8">&nbsp;<b>RECOMMENDATIONS:</b><br>
+                                    <div style="margin:15px 30px 12px 30px;width:730px;border-bottom:1px outset #000;"></div>
+                                    <div style="margin:15px 30px 12px 30px;width:730px;border-bottom:1px outset #000;"></div>
+                                    <div style="margin:15px 30px 12px 30px;width:730px;border-bottom:1px outset #000;"></div>
+                                    <div style="margin:15px 30px 12px 30px;width:730px;border-bottom:1px outset #000;"></div>
+                                    <div style="margin:15px 30px 12px 30px;width:730px;border-bottom:1px outset #000;"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="8" align="left">&nbsp;<b>REQUESTING PHYSICIAN:</b><br>
+                                    <div style="margin:3px 30px 0px 30px;float:left;">
+                                        <div style="width:100px;float:left;height:12px;">Name: </div>
+                                        <div style="width:630px;float:left;border-bottom:1px solid #000;height:12px;"></div>
+                                    </div>
+                                    <div style="margin:3px 30px 0px 30px;float:left;">
+                                        <div style="width:100px;float:left;height:12px;">Specialization: </div>
+                                        <div style="width:630px;float:left;border-bottom:1px solid #000;height:12px;"></div>
+                                    </div>
+                                    <div style="margin:3px 30px 12px 30px;float:left;">
+                                        <div style="width:100px;float:left;height:12px;">Hospital/Clinic: </div>
+                                        <div style="width:630px;float:left;border-bottom:1px solid #000;height:12px;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td_normal" colspan="3"><b>For APE/PPE only (Duplicate Copy)</b><br>
+                        <div style="float:left;margin:5px 0px;">
+                            <label style="margin:0px 30px 0px 30px;"><img src='[empty_box]'> Cashier</label>
+                            <label style="margin:0px 30px 0px 30px;"><img src='[empty_box]'> Laboratory</label>
+                            <label style="margin:0px 30px 0px 30px;"><img src='[empty_box]'> X-Ray</label>
+                            <label style="margin:0px 30px 0px 30px;"><img src='[empty_box]'> ECG</label>
+                            <label style="margin:0px 30px 0px 30px;"><img src='[empty_box]'> Ultrasound</label>
+                            <label style="margin:0px 30px 0px 30px;"><img src='[empty_box]'> Nurse Station</label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div> 
+    <center> 
+</body>
+</html>

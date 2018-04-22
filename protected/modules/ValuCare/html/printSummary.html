@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title>Print Billing: WellPoint Payable Services</title>
+    <style>
+        body {font-family:arial;font-size:11pt}
+        table {
+            font-family:arial;font-size:11pt;
+        }                                   
+        td.money{text-align:right;padding: 0 3px;}
+        table.sp tr td{
+            padding: 0 3px;
+        }
+        div {font-family:arial;font-size:11pt}
+        p {line-height: 13pt;}
+        @media print {
+              .noprint { display: none; }
+            }
+        @media print {
+            thead { display: table-header-group; }
+            tfoot { display: table-footer-group; }
+        }
+        @media screen {
+            thead { display: block; }
+            tfoot { display: block; }
+        }
+        .branch{font-size:7pt;text-align: center;}
+        .underl{text-decoration: underline;font-family:arial;font-size:8pt}
+        .title{color:#FF0000}
+    </style>
+</head>
+<body>
+    <table>
+           <thead><tr><td>
+                   <input class='noprint' type='button' value='Print' onclick='window.print()' />
+                   <div style="width:1100px;padding:0 10px 0 10px">
+                   
+                        <div align="center">                            
+                                <table style="width:790px">
+                                <tr >
+                                    <td>
+                                        <div class="branch"> 
+                                            BACOOR BRANCH<br/>
+                                            31 - 32 LGF SM City Bacoor,<br/>
+                                            Tirona Cor. Aguinaldo Highway, Bacoor, Cavite<br/>
+                                            Tel. No. (046) 970-1850 / Fax # (046) 970-1851
+                                        </div>
+                                    </td>
+                                    <td style="text-align:center;" valign=top >
+                                        <img src="[logopath]" />
+                                        <div>Medical Clinic and Diagnostic Center, Inc.</div>
+                                    </td>
+                                
+                                    <td>
+                                          <div class="branch"> 
+                                               ROSARIO BRANCH<br/> 
+                                                Unit 207-208 2nd Floor SM City Rosario,<br/> 
+                                                Tejeros, Convention, Rosario, Cavite  <br/> 
+                                                Tel. No. (046) 971-1839 / Fax #: 971-1838
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>    
+                      
+                   </div>
+           
+           </td></tr></thead>
+           <tbody>
+             <tr><td>
+             
+             <div style="width:1100px;padding:0 0px 0 10px;margin-top:-10px">
+                        
+                         <div align="center" style="margin-top:20px;font-size:18px">
+                            SUMMARY OF VALUCARE STATEMENT OF ACCOUNT<BR/>
+                            [sum_date]<br/>
+                            <div style="font-size:18px;font-weight:bold">SOA No. [soa_no]</div>
+                         </div>
+                         <div align="center" style="margin-top: 20px;">
+                            <table class="sp" width="750" style="border-width: 0px;border-spacing: 0px;border-style: outset;border-color: gray;" border="0" cellpadding="5" cellspacing="10" >
+                                <tr>
+                                    <th style="text-align: left;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DOCTOR</th>
+                                    <th width="120">AMOUNT</th>
+                                </tr>
+                                   [doctors]
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>DOCTORS</td>
+                                    <td class="money">[doctor_total]</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">WELLPOINT MEDICAL CLINIC</td>                                    
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;&nbsp;&nbsp;*Out Patients Consultation & Laboratory</td>
+                                     <td class="money">[wp_cons_dx]</td>  
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;&nbsp;&nbsp;*APE</td>
+                                     <td class="money">[wp_ape]</td>  
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>   
+                                <tr>
+                                    <td style="text-align:right">GRAND TOTAL:</td>
+                                     <td class="money">[gt]</td>  
+                                </tr>                                                             
+                            </table>
+                         </div>
+             
+             </div> 
+             </td></tr>
+           </tbody>
+           
+    </table>
+  
+</body>
+</html>

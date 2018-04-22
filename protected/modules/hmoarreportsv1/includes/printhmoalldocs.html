@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title>Print HMO All Doctors</title>
+    <style>
+        body {font-family:arial;font-size:9pt}
+        table {
+            font-family:arial;font-size:9pt;
+        }                                   
+        td.money{text-align:right;padding: 0 3px;}
+        table.sp tr td{
+            padding: 0 3px;
+        }
+        div {font-family:arial;font-size:10pt}
+        p {line-height: 13pt;}
+        @media print {
+              .noprint { display: none; }
+            }
+        @media print {
+            thead { display: table-header-group; }
+            tfoot { display: table-footer-group; }
+        }
+        @media screen {
+            thead { display: block; }
+            tfoot { display: block; }
+        }
+        .branch{font-size:7pt;text-align: center;}
+        .underl{text-decoration: underline;font-family:arial;font-size:8pt}
+        .title{color:#FF0000}
+    </style>
+</head>
+<body>  
+    <table>
+           <thead><tr><td>
+                   <input class='noprint' type='button' value='Print' onclick='window.print()' />
+                   <div style="width:1100px;padding:0 10px 0 10px">
+                   
+                        <div align="center">                            
+                                <table style="width:790px">
+                                <tr >
+                                    <td>
+                                        <div class="branch"> 
+                                            BACOOR BRANCH<br/>
+                                            31 - 32 LGF SM City Bacoor,<br/>
+                                            Tirona Cor. Aguinaldo Highway, Bacoor, Cavite<br/>
+                                            Tel. No. (046) 970-1850 / Fax # (046) 970-1851
+                                        </div>
+                                    </td>
+                                    <td style="text-align:center;" valign=top >
+                                        <img src="[logopath]" />
+                                        <div>Medical Clinic and Diagnostic Center, Inc.</div>
+                                    </td>
+                                
+                                    <td>
+                                          <div class="branch"> 
+                                               ROSARIO BRANCH<br/> 
+                                                Unit 207-208 2nd Floor SM City Rosario,<br/> 
+                                                Tejeros, Convention, Rosario, Cavite  <br/> 
+                                                Tel. No. (046) 971-1839 / Fax #: 971-1838
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>    
+                        
+                   </div>
+           
+           </td></tr></thead>
+           <tbody>
+            <tr>
+                <td><h1>HMO Collection - WellPoint Checks: All Doctors </h1></td>
+            </tr>
+            <tr>
+                <td>Date Covered: <b><u>[datestart]</u></b> to <b><u>[dateend]</u></b> </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            
+            <tr>
+                 <td>   
+                     <div style="width:1100px;padding:0 0px 0 10px;margin-top:-10px">
+                                <div id="body" align="left" style="width: 100%;display:table;" >
+                                        <br/>
+                                        <table class="sp" width="1500" style="border-width: 0px;border-spacing: 0px;border-style: outset;border-color: gray;" border="1px" cellpadding="0" cellspacing="0" >
+                                            <tr>
+                                                <th>DOCTOR</th>
+                                                <th>HMO</th>       
+                                                <th>CHECK NO</th>                                 
+                                                <th>CHECK DATE</th>
+                                                <th>PATIENT</th>                                                                              
+                                                <th>SERVICE</th> 
+                                                <th>AVAIL DATE</th> 
+                                                <th>FEE</th>
+                                                <th>EXCESS</th>
+                                                <th>APPROVED</th>
+                                                <th>WTAX</th>
+                                                <th>GROSS</th>
+                                                <th>DOC TAX</th>
+                                                <th>NET</th>
+                                            </tr>
+                                             [contents] 
+                                             
+                                             <tr>
+                                                <td colspan="6">TOTAL</td>
+                                                <td class='money' >[fee_total]</td>
+                                                <td class='money' >[excess_total]</td>
+                                                <td class='money' >[approve_total]</td>
+                                                <td class='money' >[run_wtax]</td>
+                                                <td class='money' >[run_gross]</td>
+                                                <td class='money' >[run_doctax]</td>
+                                                <td class='money' >[run_net]</td>
+                                                
+                                                                                               
+                                             </tr>
+                                            
+                                        </table>
+                                </div>
+                     
+                     </div> 
+                </td>
+             </tr>
+           </tbody>
+          <tfoot><tr><td>
+        
+                <div style="width:1100px;padding:0 10px 0 10px">
+                                
+                                
+                                <div id="footer" align="left" style="width: 100%;display:table;padding-top:20px;">          
+                                    <div style="float:left">
+                                        Prepared by:<br/>
+                                        <br/>
+                                        [preparedy_by]
+                                    </div>
+                                    
+                                    <div style="float:right">
+                                    
+                                        Received By / Date:
+                                        ____________________________
+                                    </div>
+                                </div>
+                </div>   
+           
+           </td></tr></tfoot> 
+    </table>
+  
+</body>
+</html>

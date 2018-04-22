@@ -1,0 +1,194 @@
+<html>
+<head>
+    <style>
+        body {font-family:arial;font-size:8pt}
+        table {
+            font-family:arial;font-size:8pt;
+            width: 100%;
+        }                                   
+        td.money{text-align:right;padding: 0 3px;vertical-align:top}
+        td {vertical-align:top}
+        table.sp tr td{
+            padding: 0 3px;
+        }
+        div {font-family:arial;font-size:8pt}
+        p {line-height: 13pt;}
+        @media print {
+              .noprint { display: none; }
+            }
+        @media print {
+            thead { display: table-header-group; }
+            tfoot { display: table-footer-group; }
+        }
+        @media screen {
+            thead { display: block; }
+            tfoot { display: block; }
+        }
+        .branch{font-size:7pt;text-align: center;}
+        .underl{text-decoration: underline;font-family:arial;font-size:8pt}
+        .title{color:#FF0000}
+    </style>
+    <script>               
+            window.onload = function(){
+                //window.print();
+            };                
+    </script>
+</head>
+<body>        
+    <table>
+           <thead><tr><td>
+                   <input class='noprint' type='button' value='Print' onclick='window.print()' />
+                   <div style="width:1300px;padding:0 10px 0 10px">
+                   
+                        <div align="center">              
+                                <table style="width:990px">
+                                <tr >
+                                    <!--td>
+                                        <div class="branch"> 
+                                            BACOOR BRANCH<br/>
+                                            31 - 32 LGF SM City Bacoor,<br/>
+                                            Tirona Cor. Aguinaldo Highway, Bacoor, Cavite<br/>
+                                            Tel. No. (046) 970-1850 / Fax # (046) 970-1851
+                                        </div>
+                                    </td-->
+                                    <td style="text-align:center;" valign=top >
+                                        <img src="[logopath]" />
+                                        <div>Medical Clinic and Diagnostic Center, Inc.</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="branch"> 
+                                            SM CITY DASMARIÑAS BRANCH<br/> 
+                                            LGF Carpark Bldg., Unit CP052 & CP056A, Governor's Drive,<br> 
+                                            Barangay Sampaloc 1,  City of Dasmariñas, Cavite<br/>
+                                            Tel. No. (046) 435-1906 / (02) 519-4591
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr><td>&nbsp;</td></tr>
+                            </table>
+                        </div>    
+                        <div align="left" style="width: 100%;">
+                            <div style="float:left">
+                                <div style="font-size:14px">[HMO]</div>
+                                <div>[HMO_add]</div>
+                                <div style="height:15px">&nbsp;</div>
+                                <table>
+                                    <tr>
+                                        <td>Claimant:
+                                        </td>
+                                        <td>WellPoint Medical Clinic and Diagnostic Center, Inc.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address:
+                                        </td>
+                                        <td>31-32 LGF SM City Bacoor, Tirona cor. Aguinaldo Hway, Bacoor, Cavite 4102
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="float:right">
+                                <table>
+                                    <tr>
+                                        <td><div>Date Prepared: </div></td>
+                                        <td><div>[date_prepared]</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div>Due Date:</div></td>
+                                        <td><div>[due_date]</div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div style="font-size:18px;font-weight:bold">SOA No.</div></td>
+                                        <td><div style="font-size:18px;font-weight:bold">[soa_no]</div></td>
+                                    </tr>
+                                </table>
+                                
+                                
+                            </div>
+                        </div> 
+                   </div>
+           
+           </td></tr></thead>
+           <tbody>
+             <tr><td>
+             
+             <div style="width:1300px;padding:0 10px 0 10px">
+                        
+                        <div id="body" align="left" style="width: 100%;display:table;" >
+                                <br/>
+                                <table class="sp" width="1100" style="border-width: 0px;border-spacing: 0px;border-style: outset;border-color: gray;" border="1px" cellpadding="0" cellspacing="0" >
+                                    <tr>
+                                        <th rowspan="2">AVAIL DATE</th>
+                                        <th rowspan="2">AVAILER'S NAME</th>
+                                        <th rowspan="2">DOCTOR</th>
+                                        <th rowspan="2">DIAGNOSIS</th>
+                                        <th rowspan="2">MEDICAL SERVICE</th>
+                                        <th colspan="7">CLINIC CHARGES</th>
+                                        <th rowspan="2">CLINIC'S<BR/>TOTAL</th>
+                                        <th rowspan="2">DOCTOR'S<BR/>PROCEDURE</th>
+                                        <th rowspan="2">DOCTOR'S<BR/>PF</th>
+                                        <th rowspan="2">DOCTOR'S<BR/>TOTAL</th>
+                                    </tr>
+                                    <tr>
+                                        <th>APE</th>
+                                        <th>MED</th>
+                                        <th>RAD/ANCI</th>
+                                        <th>LAB</th>
+                                        <th>PT/REHAB</th>
+                                        <th>SPA</th>
+                                        <th>OTHERS</th>
+                                    </tr>
+                                    [bill_items]   
+                                    <tr>
+                                        <td colspan="5" style="text-align: right;font-weight:700;font-size:12px;">Total:</td>
+                                        <td class="money" style="font-weight:700;font-size:12px;">[Annual Physical Exam]</td>
+                                        <td class="money" style="font-weight:700;font-size:12px;">[Medical]</td>
+                                        <td class="money" style="font-weight:700;font-size:12px;">[Radiology and Ancillary]</td>
+                                        <td class="money" style="font-weight:700;font-size:12px;">[Laboratory]</td>
+                                        <td class="money" style="font-weight:700;font-size:12px;">[Rehabilitation Medicine And Physical Therapy]</td>
+                                        <td class="money" style="font-weight:700;font-size:12px;">[Aesthetics]</td>
+                                        <td class="money" style="font-weight:700;font-size:12px;">[Others]</td>
+                                        <td class="money" style="font-weight:700;font-size:12px;">[cc]</td>
+                                        <td class="money" style="font-weight:700;font-size:12px;">[dp]</td>
+                                        <td class="money" style="font-weight:700;font-size:12px;">[pf]</td>
+                                        <td class="money" style="font-weight:700;font-size:12px;">[dt]</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="15" style="text-align: right;font-weight:700;font-size:13px;">Grand Total (Clinic Total + Doctor Total):</td>
+                                        <td class="money" style="text-align: right;font-weight:700;font-size:13px;">[gt]</td>
+                                        
+                                    </tr>
+                                </table>
+                        </div>
+             
+             </div> 
+             </td></tr>
+           </tbody>
+           <tfoot><tr><td>
+        
+                <div style="width:1300px;padding:0 10px 0 10px">
+                                
+                                
+                                <div id="footer" align="left" style="width: 100%;display:table;padding-top:20px;">          
+                                    <div style="float:left">
+                                        Prepared by:<br/>
+                                        <br/>
+                                        [preparedy_by]
+                                    </div>
+                                    <div style="float:right">
+                                        Date Received:<br/>
+                                        <br/>
+                                        ____________________________
+                                    </div>
+                                </div>
+                </div>   
+           
+           </td></tr></tfoot>
+    </table>
+
+        
+        
+</body>
+</html>

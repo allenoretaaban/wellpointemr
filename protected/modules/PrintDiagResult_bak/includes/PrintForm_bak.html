@@ -1,0 +1,93 @@
+<html>
+<head>
+    <style>
+        body {font-family:arial;font-size:10pt}
+        p {line-height: 6pt;}
+        @media print {
+              .noprint { display: none; }
+            }
+        .branch{font-size:8pt;text-align: center;}
+        .underl{text-decoration: underline;font-family:arial;font-size:8pt}
+        .title{color:#FF0000}
+        td{font-size:10pt}
+    </style>
+    <script>               
+            window.onload = function(){
+                //window.print();
+            };                
+    </script>
+</head>
+<body>        
+        <input class='noprint' type='button' value='Print' onclick='window.print()' />
+        <div style="width:790px;padding:0 10px 0 10px">
+                        <div align="center">                            
+                                <table style="width:790px">
+                                <tr >
+                                    <td>
+                                        <div class="branch"> 
+                                            BACOOR BRANCH<br/>
+                                            31 - 32 LGF SM City Bacoor,<br/>
+                                            Tirona Cor. Aguinaldo Highway, Bacoor, Cavite<br/>
+                                            Tel. No. (046) 970-1850 / Fax # (046) 970-1851
+                                        </div>
+                                    </td>
+                                    <td style="text-align:center;" valign=top >
+                                        <img src="[logopath]" />
+                                        <div>Medical Clinic and Diagnostic Center, Inc.</div>
+                                    </td>
+                                
+                                    <td>
+                                          <div class="branch"> 
+                                               ROSARIO BRANCH<br/> 
+                                                Unit 207-208 2nd Floor SM City Rosario,<br/> 
+                                                Tejeros, Convention, Rosario, Cavite  <br/> 
+                                                Tel. No. (046) 971-1839 / Fax #: 971-1838
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>                        
+                        <hr/>
+                        <div style="width: 100%;height:auto;overflow-y:hidden ;">
+                            <center>
+                                <h2 class="title">[diagtemptitle]</h2>
+                             </center>
+                            <table>
+	<tr>
+		<td width="600px">
+			Patient Name: <span class="">[patientname]</span>
+         </td>
+		<td>
+			Patient Id <span class="">[patientid]</span>
+         </td>
+	</tr>
+<tr>
+		<td>
+			Age: <span class="">[age]</span>&nbsp;
+			Sex: <span class="">[gender]</span>
+         </td>
+		<td>
+			Result No. <span class="">[resultno]</span>
+         </td>
+	</tr>
+
+                            </table> 
+                            <div align="left">
+                                
+                            </div>
+                            
+                            <br/> 
+                             
+                            
+                             <div id="content">
+                                [result_content]
+                             </div>
+                             
+                             
+                        </div>
+                        <hr/>
+        </div>
+        
+</body>
+</html>
+

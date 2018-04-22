@@ -1,0 +1,275 @@
+<html>
+<head>
+    <style>
+        body {font-family:arial;font-size:7.5pt}
+        @media print {
+              .noprint { display: none; }
+            }
+        .tblres tr th{text-align: center;}
+        .tdres{text-align: center;}
+        .branch{font-size:7.5pt;text-align: center;}
+        .underl{text-decoration: underline;font-family:arial;font-size:7.5pt}
+        td{font-family:calibri!important;font-size:9pt!important;height:7pt!important;}
+        .content{text-align:center;border-bottom:#000 solid 1px;width:100%!important;font-size:11pt;}
+        .ucontent{text-align:center;border-bottom:#000 solid 1px;width:100%!important;font-weight:800;font-size:7.5pt;color:red;}
+        .ulabel{color:red;} 
+	    #medcont{font-weight:800;font-size:14px!important;}
+    </style>
+    <script>               
+            window.onload = function(){
+                //window.print();
+            };                
+    </script>
+</head>
+<body>        
+        <input class='noprint' type='button' value='Print' onclick='window.print()' style="position:absolute;margin:5px 0px 0px 0px;"/>
+        <div style="width:790px;margin:-5px 0px 0px 0px;">
+                        <div align="center">                            
+                            <table style="width:790px">
+                                <tr >
+                                    <td>
+                                        <div class="branch"> 
+                                            BACOOR BRANCH<br/>
+                                            31 - 32 LGF SM City Bacoor,<br/>
+                                            Tirona Cor. Aguinaldo Highway, Bacoor, Cavite<br/>
+                                            Tel. No. (046) 970-1850 / Fax # (046) 970-1851
+                                        </div>
+                                    </td>
+                                    <td style="text-align:center;" valign=top >
+                                        <img src="[logopath]" />
+                                        <div>Medical Clinic and Diagnostic Center, Inc.</div>
+                                        <!--div class="branch" style="color:green;">31 - 32 LGF SM City Bacoor, Tirona Cor. Aguinaldo Highway, Bacoor, Cavite 4102<br/>
+                                            Telephone No. (046) 970-1850 to 51</div-->
+                                    </td>                                
+                                    <td>
+                                          <div class="branch"> 
+                                               ROSARIO BRANCH<br/> 
+                                                Unit 207-208 2nd Floor SM City Rosario,<br/> 
+                                                Tejeros, Convention, Rosario, Cavite  <br/> 
+                                                Tel. No. (046) 971-1839 / (02) 584-4950
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>    
+                        <div style="margin:15px 0px 0px 0px;">
+                            <table>
+                                <tr>
+                                    <td width='50'>NAME: </td><td width='400'><div class='content'><b>[name]&nbsp;</b></div></td>
+                                    <td width='20'></td>
+                                    <td width='40'>Age: </td><td width='100'><div class='content'>[age]&nbsp;</div></td>
+                                    <td width='20'></td>
+                                    <td width='40'>Sex: </td><td width='95'><div class='content'>[sex]&nbsp;</div></td>
+                                </tr>
+                                <tr>
+                                    <td width='140'>Requesting Physician: </td><td width='250'><div class='content'>[requesting_physician]&nbsp;</div></td>
+                                    <td width='20'></td>
+                                    <td width='50'>Sp No. </td>
+                                    <td width='105' colspan="4"><div class='content'>[spno]&nbsp;</div></td>
+                                    <!--td width='70'>Result No. </td>                                    
+                                    <td width='105'><div class='content'>[id]&nbsp;</div></td-->
+                                </tr>
+                            </table>    
+                            <table width="100%" style="margin:5px 0px 0px 0px;">
+                                <tr>
+                                    <td style="color:red;text-align:center;width:100%;font-size:18pt!important;font-family:arial;font-weight:800;height:0pt!important;">BLOOD CHEMISTRY</td>
+                                </tr>
+                            </table>
+                            
+                                                        
+                            <table width="100%">
+                                <tr>
+                                    <td width='' valign="top">
+                                            <table class="tblres" style="border-width: 0px;border-spacing: 0px;border-style: outset;border-color: gray; width: 100%;" border="1px" cellpadding="3" cellspacing="1" >
+                                                <tr>
+                                                    <th width="100px" >Tests</th>
+                                                    <th width="100px">Results</th>
+                                                    <th width="150px" style="border-right:1px solid #000;">Reference Range</th>
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">Glucose</td>
+                                                    <td width="100px" class="tdres" id="medcont">[glucose]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;">4.11 - 6.39 mmol/L</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">BUN</td>
+                                                    <td width="100px" class="tdres" id="medcont">[bun]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;"> 2.8 - 8.2 mmol/L</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">Creatinine</td>
+                                                    <td width="100px" class="tdres" id="medcont">[creatinine]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;line-height:10px;"><small>M:61.88-150.28 umol/L</small><br><small>F:61.88-123.76 umol/L</small></td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">Uric Acid</td>
+                                                    <td width="100px" class="tdres" id="medcont">[uric_acid]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;line-height:10px;"><small>M: 202.23 - 416.36 umol/L</small><br><small>F: 142.75 - 339.03 umol/L</small></td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">Cholesterol</td>
+                                                    <td width="100px" class="tdres" id="medcont">[cholesterol]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;line-height:10px;">
+                                                        <small>Desirable: < 5.2 mmol/L</small><br/>
+                                                        <small>Borderline: 5.2 - 6.2 mmol/L</small><br/>
+                                                        <small>High Risk: > 6.24 mmol/L</small><br/>
+                                                    </td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">Triglycerides</td>
+                                                    <td width="100px" class="tdres" id="medcont">[triglycerides]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;">0.396 - 1.815 mmol/L</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">HDL-C</td>
+                                                    <td width="100px" class="tdres" id="medcont">[hdl_c]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;line-height:10px;"><small>M: 0.594 - 1.629 mmol/L</small><br><small>F: 1.629 - 1.939 mmol/L</small></td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">LDL-C</td>
+                                                    <td width="100px" class="tdres" id="medcont">[ldl_c]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;">0-3.362 mmol/L</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">VLDL-C</td>
+                                                    <td width="100px" class="tdres" id="medcont">[vldl_c]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;">0.113 - 0.452 mmol/L</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">SGOT/AST</td>
+                                                    <td width="100px" class="tdres" id="medcont">[sgot_ast]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;">0 - 40 IU/L</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="border-bottom:1px solid #000;color:blue;">SGPT/ALT</td>
+                                                    <td width="100px" class="tdres" style="border-bottom:1px solid #000;" id="medcont">[sgpt_alt]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;border-bottom:1px solid #000;">0 - 49 IU/L</td>    
+                                                </tr>
+                                            </table>
+                                    </td>
+                                    <td width='10px' valign="top">&nbsp;</td>
+                                    <td width='' valign="top">
+                                        <table class="tblres" style="border-width: 0px;border-spacing: 0px;border-style: outset;border-color: gray; width: 100%;" border="1px" cellpadding="3" cellspacing="1" >
+                                                <tr>
+                                                   <th width="100px" >Tests</th>
+                                                    <th width="100px">Results</th>
+                                                    <th width="150px" style="border-right:1px solid #000;">Reference Range</th>
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">HbA1C</td>
+                                                    <td width="100px" class="tdres" id="medcont">[hba1c]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;">4.2 - 6.2%</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">Total Bilirubin</td>
+                                                    <td width="100px" class="tdres" id="medcont">[total_bilirubin]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;">0 - 17.1 umol/L</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">Direct Bilirubin</td>
+                                                    <td width="100px" class="tdres" id="medcont">[direct_bilirubin]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;">0 - 5.10 umol/L&nbsp;</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">Indirect Bilirubin</td>
+                                                    <td width="100px" class="tdres" id="medcont">[indirect_bilirubin]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;">0 - 12.0 umol/L</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">Sodium</td>
+                                                    <td width="100px" class="tdres" id="medcont">[sodium]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;">135 - 148 meq/L</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">Potassium&nbsp;</td>
+                                                    <td width="100px" class="tdres" id="medcont">[potassium]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;">3.4 - 5.3 meq/L</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">Chloride</td>
+                                                    <td width="100px" class="tdres" id="medcont">[chloride]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;">96 - 108 meq/L</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">Calcium</td>
+                                                    <td width="100px" class="tdres" id="medcont">[calcium]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;">2.2 - 3.1 meq/L</td>    
+                                                </tr>
+                                                <!--tr>
+                                                    <td width="100px" style="color:blue;">Total Protein</td>
+                                                    <td width="100px" class="tdres" id="medcont">[total_protein]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;">1.3 - 2.1 meq/L</td>    
+                                                </tr-->
+                                                <tr>
+                                                    <td width="100px" style="color:blue;">Alkaline Phosphatase</td>
+                                                    <td width="100px" class="tdres" id="medcont">[alkaline_phosphatase]&nbsp;</td>
+                                                    <td width="130px" class="tdres" style="border-right:1px solid #000;">Adult (34 - 114 u/L)</td>    
+                                                </tr>
+                                                <tr>
+                                                    <td style="border-bottom:1px solid #000;color:blue;">Other</td>
+                                                    <td colspan="2" rowspan="3" style="border-right:1px solid #000;border-bottom:1px solid #000;" id="medcont">[other]&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border:none;">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border:none;">&nbsp;</td>
+                                                </tr>
+                                            </table>
+                                        <!--div style="margin-top:5px">
+                                                NOTE: PLEASE CORRELATE CLINICALLY.
+                                                  &nbsp;&nbsp;** Test Repeated And Verified
+                                                </div-->
+                                    </td>
+                                </tr>
+                            </table>    
+                            
+                            <table width="100%" style="margin-top:0px" >
+                            <tr>
+                                <td width='50%' valign="top">
+                                    <table width='100%'>          
+                                        <tr>
+                                            <td width='14%' class='ulabel' colspan='2' style="font-size:13px!important;height:35px!important;">Date Received:</td>
+                                            <td width='35%'><div class='ucontent' style="font-size:14px!important;">[datereceived]&nbsp;</div></td>
+                                            <td width='5px'>&nbsp;</td>
+                                            <td width='12%' class='ulabel' colspan='2' style="font-size:13px!important;height:35px!important;">Date Released:</td>
+                                            <td width='35%'><div class='ucontent' style="font-size:14px!important;">[datereleased]&nbsp;</div></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan='3' style='line-height:14px!important;font-size:12px!important;'>
+                                                <div style='font-weight:800;'>
+                                                    [medtech]
+                                                </div>
+                                                Medical Technologist - License No. [licenseno]                                                    
+                                            </td>
+                                            <td></td>
+                                            <td colspan='3' style='line-height:14px;font-size:12px!important;'>  
+                                                <div style='font-weight:800;'>
+                                                    [pathologist]
+                                                </div>
+                                                Pathologist - License No. [patlicenseno]
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <!--td width='50%' valign="top">    
+                                    <table  width='100%'> 
+                                        <tr><td width='28%' class='ulabel' colspan='2' style="font-size:14px!important;height:35px!important;">Date Released</td>
+                                            <td width='57%'><div class='ucontent' style="font-size:14px!important;">[datereleased]&nbsp;</div></td></tr>
+                                        <tr>
+                                            <td colspan='3' style='line-height:14px;font-size:12px!important;'>
+                                                <br/>
+                                                <div style='font-size:;font-weight:800;'>
+                                                    [pathologist]
+                                                </div>
+                                                Pathologist
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td-->
+                            </tr></table>
+                        </div>
+        </div>
+        
+</body>
+</html>

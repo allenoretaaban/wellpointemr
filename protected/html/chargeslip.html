@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <style>
+            body {font-family:arial;font-size:9pt}
+            table {
+                font-family:arial;font-size:9pt;
+            }
+            td.money{text-align:right;padding: 0 3px;}
+            table.sp tr td{
+                padding: 0 3px;
+            }
+            div {font-family:arial;font-size:9pt}
+            p {line-height: 13pt;}
+            @media print {
+                  .noprint { display: none; }
+                }
+            @media print {
+                thead { display: table-header-group; }
+                tfoot { display: table-footer-group; }
+            }
+            @media screen {
+                thead { display: block; }
+                tfoot { display: block; }
+            }
+            .branch{font-size:7pt;text-align: center;}
+            .underl{text-decoration: underline;font-family:arial;font-size:8pt}
+            .title{color:#FF0000}
+            td { padding:3px 0px 0px 0px }
+            #charge_tbl td { padding:1px 3px;vertical-align:top; }
+            #charge_tbl .amount { text-align:right; }
+        </style>
+        <script>
+                window.onload = function(){
+                    //window.print();
+                };
+        </script>
+    </head>
+    <body>
+        <table>
+            <tr><td>
+                <input class='noprint' type='button' value='Print' onclick='window.print()' />
+                <div style="width:680px;text-align:left">
+                    [charge_slips]
+                </div>
+            </td></tr>
+        </table>
+    </body>
+</html>
