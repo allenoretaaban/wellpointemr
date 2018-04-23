@@ -5,6 +5,9 @@
  *
  * The followings are the available columns in table 'announce':
  * @property integer $id
+ * @property string $address_html
+ * @property string $address
+ * @property string $dasma_address_html
  * @property string $dasma_address
  * @property strings $bacoor_address
  *
@@ -39,12 +42,15 @@ class Settings extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
+			array('address_html', 'required'),
+			array('address', 'required'),
+			array('dasma_address_html', 'required'),
 			array('dasma_address', 'required'),
 			array('bacoor_address', 'required'),
 			//array('id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, dasma_address, bacoor_address', 'safe', 'on'=>'search'),
+			array('id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -67,6 +73,9 @@ class Settings extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'address_html' => 'Address HTML',
+			'address' => 'Address',
+			'dasma_address_html' => 'Dasma Address HTML',
 			'dasma_address' => 'Dasma Address',
 			'bacoor_address' => 'Bacoor Address',
 			//'byuserid' => 'Byuserid',
@@ -85,6 +94,9 @@ class Settings extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
+		$criteria->compare('address_html',$this->address_html,true);
+		$criteria->compare('address',$this->address,true);
+		$criteria->compare('dasma_address_html',$this->dasma_address,true);
 		$criteria->compare('dasma_address',$this->dasma_address,true);
 		$criteria->compare('bacoor_address',$this->bacoor_address,true);
 

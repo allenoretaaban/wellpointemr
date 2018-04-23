@@ -1054,7 +1054,17 @@ class ApeController extends RController
         $print = implode("", file(Yii::app()->getBasePath().'/views/ape/include/ape_form_frontpage.html'));
         $imgurl = Yii::app()->request->baseUrl.'/images/ape_folder';
         $print = str_replace("[imgurl]",$imgurl,$print);    
-        $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
+        //$logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
+        $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+
+        $settings = Settings::model()->findByPk(1);   
+        $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+        $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+        $address = str_replace("<br>", " ", $settings->dasma_address_html);
+        $address = str_replace("BRANCH LGF", "BRANCH<br>LGF", $address);
+        $address = str_replace("City", "<br>City", $address);
+        $print = str_replace("[address]",$address,$print);
+
         $print = str_replace("[logopath]",$logo,$print);
         $visit = date('F d, Y', strtotime($ape->datevisited));
         $print = str_replace("[datevisited]",$visit,$print);            
@@ -1116,8 +1126,10 @@ class ApeController extends RController
             $patient->id == "" ? $patid = '______' : $patid = $patient->id;
             $print = str_replace("[patid]",$patid,$print);
             //company name
-            $client = Clients::model()->find(array("condition"=>"client_id = $ape->client_id"));
-            $print = str_replace("[company]",$client->client_name,$print);
+            if(isset($ape->client_id)) {
+                $client = Clients::model()->find(array("condition"=>"client_id = $ape->client_id"));
+                $print = str_replace("[company]",$client->client_name,$print);
+            }
             //patient image
             $picture = Yii::app()->request->baseUrl.'/'.$patient->filename;
             $print = str_replace("[filename]",$picture,$print);   

@@ -213,697 +213,751 @@ class PdsController extends RController
                 ));
     }
         
-        public function actionCensusReport()
-        {
-                $data=CensusReport::model()->findAllBySql(
-                                'SELECT UPPER(department) AS department,' .
-                                    'SUM(OW) AS ow,' .
-                                    'SUM(NW) AS nw,' .
-                                    'SUM(OH) AS oh,' .
-                                    'SUM(NH) AS nh,' .
-                                    'SUM(OW) + SUM(NW) + SUM(OH) + SUM(NH) AS total ' .
-                                'FROM (' .
-                                    'SELECT department,' .
-                                        'IF (' .
-                                            'LENGTH(hmo) = 0 AND ' .     
-                                            'EXISTS(' .
-                                                'SELECT id ' .
-                                                'FROM pds ' .
-                                                'WHERE patient_id = A.patient_id AND id != A.id' .
-                                            '),' .
-                                            '1,0' .
-                                        ') AS OW,' .
-                                        'IF (' .
-                                            'LENGTH(hmo) = 0 AND ' .    
-                                            'NOT EXISTS(' .
-                                                'SELECT id ' .
-                                                'FROM pds ' .
-                                                'WHERE patient_id = A.patient_id AND id != A.id' .
-                                            '),' .
-                                            '1,0' .
-                                        ') AS NW,' .
-                                        'IF (' .
-                                            'LENGTH(hmo) > 0 AND ' .     
-                                            'EXISTS(' .
-                                                'SELECT id ' .
-                                                'FROM pds ' .
-                                                'WHERE patient_id = A.patient_id AND id != A.id' .
-                                            '),' .
-                                            '1,0' .
-                                        ') AS OH,' .
-                                        'IF (' .
-                                            'LENGTH(hmo) > 0 AND ' .      
-                                            'NOT EXISTS(' .
-                                                'SELECT id ' .
-                                                'FROM pds ' .
-                                                'WHERE patient_id = A.patient_id AND id != A.id' .
-                                            '),' .
-                                            '1,0' .
-                                        ') AS NH ' .
-                                    'FROM pds A ' .
-                                    'WHERE datevisited >= \'' . $_GET['fd'] . ' 00:00:00.000\' AND ' .
-                                        'datevisited < \'' . $_GET['td'] . ' 23:59.59.999\' AND ' .
-                                        '(LENGTH(doctor) > 0 OR LENGTH(department) > 0)' .
-                                ') B ' .
-                                'GROUP BY department'
-                        );
-                
-                $data_value='';
-                $totalOW=0;
-                $totalNW=0;
-                $totalOH=0;
-                $totalNH=0;
-                $total=0;
-                foreach ($data as $census_report)
-                {
-                    $data_value=$data_value . '<tr>';
-                    $data_value=$data_value . '<td>' . $census_report->department . '</td>';
-                    $data_value=$data_value . '<td align="center">' . $census_report->nw . '</td>';
-                    $data_value=$data_value . '<td align="center">' . $census_report->ow . '</td>';
-                    $data_value=$data_value . '<td align="center">' . $census_report->nh . '</td>';
-                    $data_value=$data_value . '<td align="center">' . $census_report->oh . '</td>';
-                    $data_value=$data_value . '<td align="center">' . $census_report->total . '</td>';
-                    $data_value=$data_value . '</tr>';
-                    $totalOW=$totalOW + $census_report->ow;
-                    $totalNW=$totalNW + $census_report->nw;
-                    $totalOH=$totalOH + $census_report->oh;
-                    $totalNH=$totalNH + $census_report->nh;
-                    $total=$total + $census_report->total;
-                }
-                
-                $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/censusReport.html'));
-                $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
-                $print = str_replace("[logopath]",$logo,$print);   
-                $print = str_replace("[datefrom]",date('M d, Y', strtotime($_GET['fd'])),$print);
-                $print = str_replace("[dateto]",date('M d, Y', strtotime($_GET['td']) ),$print);
-                $print = str_replace("[data]",$data_value,$print);
-                $print = str_replace("[TotalNW]",$totalNW,$print);
-                $print = str_replace("[TotalOW]",$totalOW,$print);
-                $print = str_replace("[TotalNH]",$totalNH,$print);
-                $print = str_replace("[TotalOH]",$totalOH,$print);
-                $print = str_replace("[Total]",$total,$print);
-                $print = str_replace("[preparedby]",$_GET['pb'],$print);
-                $print = str_replace("[preparedbytitle]",$_GET['pt'],$print);
-                $print = str_replace("[checkedby]",$_GET['cb'],$print);
-                $print = str_replace("[checkedbytitle]",$_GET['ct'],$print);
-                echo $print;
-                exit;
-        }
-        
-        public function actionSelect()
-        {
-                $this->render('select',array());
-        }
-        
-        public function actionSelectWithDoctor()
-        {
-                $this->render('selectWithDoctor',array());
-        }
-        
-        public function actionPrint()
-        {
-            $pds = Pds::model()->findByPk($_GET['id']);
-            $patient = $pds->patient;        
-            $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/Revised.FINALFORMS.per.sheet.htm'));
-            //$print = implode("", file(Yii::app()->getBasePath().'\views\pds\include\PDS_front.html'));
-            //$print = implode("", file(Yii::app()->getBasePath().'\views\pds\include\pds.html'));
-            $imgurl = Yii::app()->request->baseUrl.'/images/pds_folder';
-            $print = str_replace("[imgurl]",$imgurl,$print);
-            $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
-            $print = str_replace("[logopath]",$logo,$print);
-            $visit = date('F d, Y', strtotime($pds->datevisited));
-            $print = str_replace("[datevisited]",$visit,$print);
-            $print = str_replace("[visitreason]",$pds->visitreason,$print);
-            $print = str_replace("[lastname]",$patient->lastname,$print);
-            $print = str_replace("[firstname]",$patient->firstname,$print);
-            $print = str_replace("[middleinitial]",$patient->middleinitial,$print);
-            $bday = date('F d, Y', strtotime($patient->birthdate));
-            $print = str_replace("[birthdate]",$bday,$print);
-            //get age
-            $birthDate = date('m/d/Y', strtotime($patient->birthdate));
-            $birthDate = explode("/", $birthDate);
-            $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
-            $print = str_replace("[age]",$age,$print);
-            //sex
-            if($patient->gender == 'M'){
-                $boxm = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                $boxf = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            }else{ 
-                $boxf = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                $boxm = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            }
-            $print = str_replace("[imgurlm]",$boxm,$print);
-            $print = str_replace("[imgurlf]",$boxf,$print);
-            //civil status
-            $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            $boxmar = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            $boxwid = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            $boxsep = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            switch(trim($patient->civilstatus)){
-                case 'Married':
-                    $boxmar = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                break;
-                case 'Single':
-                    $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                break;
-                case 'Widowed':
-                    $boxwid= Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                break;
-                case 'Separated':
-                    $boxsep = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                break;
-                default:
-                    $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                break;
-            }
-            $print = str_replace("[imgurlmar]",$boxmar,$print);
-            $print = str_replace("[imgurlsin]",$boxsin,$print);
-            $print = str_replace("[imgurlwid]",$boxwid,$print);
-            $print = str_replace("[imgurlsep]",$boxsep,$print);
-            //pds number
-            $pds->id == "" ? $pdsid = '______' : $pdsid = $pds->id;
-            $print = str_replace("[pdsid]",$pdsid,$print);
-            //pds id            
-            $patient->id == "" ? $patid = '______' : $patid = $patient->id;
-            $print = str_replace("[patid]",$patid,$print);
-            $print = str_replace("[company]",$patient->company,$print);
-            //patient image
-            $picture = Yii::app()->request->baseUrl.'/'.$patient->filename;
-            $print = str_replace("[filename]",$picture,$print); 
-			
-			$contact_no='';$mob='';$tel='';
-			$contact_no_arr="";
-            /*(trim($patient->mobile_no) != '') ? $contact_no .= trim($patient->mobile_no) : $contact_no.='' ;
-            (trim($patient->tel_no) != '') ? $tel = trim($patient->tel_no) : $tel = '' ;
-            (trim($patient->email) != '') ? $email = ' / '.trim($patient->email) : $email = '' ;
-            (trim($patient->mobile_no) != '') ? $contact_no .= ' / '.$tel : $contact_no .= $tel ;	
-			$contact_no = $contact_no . $email;*/	
-			if(trim($patient->mobile_no) != '') { $contact_no_arr[] = $patient->mobile_no; }
-			if(trim($patient->tel_no) != '') { $contact_no_arr[] = $patient->tel_no; }
-			if(trim($patient->email) != '') { $contact_no_arr[] = $patient->email; }
-			if(empty($contact_no_arr)){
-			}else{			
-				$contact_no = implode($contact_no_arr,' / ');
-			}
-            $print = str_replace("[patient_contact]",$contact_no,$print);			
-            /*      
-            //other informations
-            $print = str_replace("[company]",$patient->company,$print);
-            $print = str_replace("[occupation]",$patient->occupation,$print);
-            $print = str_replace("[spousename]",$patient->spousename,$print);
-            $print = str_replace("[spouseoccupation]",$patient->spouseoccupation,$print);
-            $print = str_replace("[emergencycontactname]",$patient->emergencycontactname,$print);
-            $print = str_replace("[emergencycontactrelation]",$patient->emergencycontactrelation,$print);
-            $print = str_replace("[emergencycontactaddress]",$patient->emergencycontactaddress,$print);
-            $print = str_replace("[emergencycontactnos]",$patient->emergencycontactnos,$print);
-            */
-            echo $print;
-            exit;
-        }
-        
-        public function actionPrintBack()
-        {
-            $pds = Pds::model()->findByPk($_GET['id']);
-            $patient = $pds->patient;        
-            $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/pds_back.html'));
-            //$print = implode("", file(Yii::app()->getBasePath().'\views\pds\include\pds.html'));
-            $imgurl = Yii::app()->request->baseUrl.'/images/pds_folder';
-            $print = str_replace("[imgurl]",$imgurl,$print);
-            $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
-            $print = str_replace("[logopath]",$logo,$print);
-            $visit = date('F d, Y', strtotime($pds->datevisited));
-            $print = str_replace("[datevisited]",$visit,$print);
-            $print = str_replace("[visitreason]",$pds->visitreason,$print);
-            $print = str_replace("[lastname]",$patient->lastname,$print);
-            $print = str_replace("[firstname]",$patient->firstname,$print);
-            $print = str_replace("[middleinitial]",$patient->middleinitial,$print);
-            $bday = date('F d, Y', strtotime($patient->birthdate));
-            $print = str_replace("[birthdate]",$bday,$print);
-            //get age
-            $birthDate = date('m/d/Y', strtotime($patient->birthdate));
-            $birthDate = explode("/", $birthDate);
-            $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
-            $print = str_replace("[age]",$age,$print);
-            //sex
-            if($patient->gender == 'M'){
-                $boxm = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                $boxf = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            }else{ 
-                $boxf = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                $boxm = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            }
-            $print = str_replace("[imgurlm]",$boxm,$print);
-            $print = str_replace("[imgurlf]",$boxf,$print);
-            //civil status
-            $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            $boxmar = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            $boxwid = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            $boxsep = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            switch(trim($patient->civilstatus)){
-                case 'Married':
-                    $boxmar = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                break;
-                case 'Single':
-                    $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                break;
-                case 'Widowed':
-                    $boxwid= Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                break;
-                case 'Separated':
-                    $boxsep = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                break;
-                default:
-                    $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                break;
-            }
-            $print = str_replace("[imgurlmar]",$boxmar,$print);
-            $print = str_replace("[imgurlsin]",$boxsin,$print);
-            $print = str_replace("[imgurlwid]",$boxwid,$print);
-            $print = str_replace("[imgurlsep]",$boxsep,$print);
-            //pds number
-            $pds->id == "" ? $pdsid = '______' : $pdsid = $pds->id;
-            $print = str_replace("[pdsid]",$pdsid,$print);
-            //pds id            
-            $patient->id == "" ? $patid = '______' : $patid = $patient->id;
-            $print = str_replace("[patid]",$patid,$print);
-            $print = str_replace("[company]",$patient->company,$print);
-            //patient image
-            $picture = Yii::app()->request->baseUrl.'/'.$patient->filename;
-            $print = str_replace("[filename]",$picture,$print);  
-            /*      
-            //other informations
-            $print = str_replace("[company]",$patient->company,$print);
-            $print = str_replace("[occupation]",$patient->occupation,$print);
-            $print = str_replace("[spousename]",$patient->spousename,$print);
-            $print = str_replace("[spouseoccupation]",$patient->spouseoccupation,$print);
-            $print = str_replace("[emergencycontactname]",$patient->emergencycontactname,$print);
-            $print = str_replace("[emergencycontactrelation]",$patient->emergencycontactrelation,$print);
-            $print = str_replace("[emergencycontactaddress]",$patient->emergencycontactaddress,$print);
-            $print = str_replace("[emergencycontactnos]",$patient->emergencycontactnos,$print);
-            */
-            echo $print;
-            exit;
-        }
-        
-        public function actionPrintForm2()
-        {
-            $pds = Pds::model()->findByPk($_GET['id']);
-            $patient = $pds->patient;        
-            $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/pds_form2.html'));
-            //$print = implode("", file(Yii::app()->getBasePath().'\views\pds\include\pds.html'));
-            $imgurl = Yii::app()->request->baseUrl.'/images/pds_folder';
-            $print = str_replace("[imgurl]",$imgurl,$print);
-            $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
-            $print = str_replace("[logopath]",$logo,$print);
-            $visit = date('F d, Y', strtotime($pds->datevisited));
-            $print = str_replace("[datevisited]",$visit,$print);
-            $print = str_replace("[visitreason]",$pds->visitreason,$print);
-            $print = str_replace("[lastname]",$patient->lastname,$print);
-            $print = str_replace("[firstname]",$patient->firstname,$print);
-            $print = str_replace("[middleinitial]",$patient->middleinitial,$print);
-            $bday = date('F d, Y', strtotime($patient->birthdate));
-            $print = str_replace("[birthdate]",$bday,$print);
-            //age
-            $birthDate = date('m/d/Y', strtotime($patient->birthdate));
-            //explode the date to get month, day and year
-            $birthDate = explode("/", $birthDate);
-            //get age from date or birthdate
-            //$age = date("Y") - $birthDate[2];
-            $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
-            $print = str_replace("[age]",$age,$print);
-            //normal empty box
-            $empty_box = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            $print = str_replace("[empty_box]",$empty_box,$print);
-            //sex
-            if($patient->gender == 'M'){
-                $boxm = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                $boxf = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            }else{ 
-                $boxf = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                $boxm = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            }
-            $print = str_replace("[imgurlm]",$boxm,$print);
-            $print = str_replace("[imgurlf]",$boxf,$print);
-            //civil status
-            $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            $boxmar = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            $boxwid = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            $boxsep = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
-            switch(trim($patient->civilstatus)){
-                case 'Married':
-                    $boxmar = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                break;
-                case 'Single':
-                    $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                break;
-                case 'Widowed':
-                    $boxwid= Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                break;
-                case 'Separated':
-                    $boxsep = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                break;
-                default:
-                    $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
-                break;
-            }
-            $print = str_replace("[imgurlmar]",$boxmar,$print);
-            $print = str_replace("[imgurlsin]",$boxsin,$print);
-            $print = str_replace("[imgurlwid]",$boxwid,$print);
-            $print = str_replace("[imgurlsep]",$boxsep,$print);
-            //pds number
-            $pds->id == "" ? $pdsid = '______' : $pdsid = $pds->id;
-            $print = str_replace("[pdsid]",$pdsid,$print);
-            //pds id            
-            $patient->id == "" ? $patid = '______' : $patid = $patient->id;
-            $print = str_replace("[patid]",$patid,$print);
-            //patient image
-            $picture = Yii::app()->request->baseUrl.'/'.$patient->filename;
-            $print = str_replace("[filename]",$picture,$print);
-            //address
-            $add = '';
-            (trim($patient->street1) != '') ? $add .= trim($patient->street1).', ' : $add.='' ;
-            (trim($patient->street2) != '') ? $add .= trim($patient->street2).', ' : $add.='' ;
-            (trim($patient->barangay) != '') ? $add .= trim($patient->barangay).', ' : $add.='' ;
-            (trim($patient->city) != '') ? $add .= trim($patient->city).', ' : $add.='' ;
-            (trim($patient->province) != '') ? $add .= trim($patient->province) : $add.='' ;
-            $print = str_replace("[patient_address]",$add,$print);
-			
+    public function actionCensusReport()
+    {
+            $data=CensusReport::model()->findAllBySql(
+                            'SELECT UPPER(department) AS department,' .
+                                'SUM(OW) AS ow,' .
+                                'SUM(NW) AS nw,' .
+                                'SUM(OH) AS oh,' .
+                                'SUM(NH) AS nh,' .
+                                'SUM(OW) + SUM(NW) + SUM(OH) + SUM(NH) AS total ' .
+                            'FROM (' .
+                                'SELECT department,' .
+                                    'IF (' .
+                                        'LENGTH(hmo) = 0 AND ' .     
+                                        'EXISTS(' .
+                                            'SELECT id ' .
+                                            'FROM pds ' .
+                                            'WHERE patient_id = A.patient_id AND id != A.id' .
+                                        '),' .
+                                        '1,0' .
+                                    ') AS OW,' .
+                                    'IF (' .
+                                        'LENGTH(hmo) = 0 AND ' .    
+                                        'NOT EXISTS(' .
+                                            'SELECT id ' .
+                                            'FROM pds ' .
+                                            'WHERE patient_id = A.patient_id AND id != A.id' .
+                                        '),' .
+                                        '1,0' .
+                                    ') AS NW,' .
+                                    'IF (' .
+                                        'LENGTH(hmo) > 0 AND ' .     
+                                        'EXISTS(' .
+                                            'SELECT id ' .
+                                            'FROM pds ' .
+                                            'WHERE patient_id = A.patient_id AND id != A.id' .
+                                        '),' .
+                                        '1,0' .
+                                    ') AS OH,' .
+                                    'IF (' .
+                                        'LENGTH(hmo) > 0 AND ' .      
+                                        'NOT EXISTS(' .
+                                            'SELECT id ' .
+                                            'FROM pds ' .
+                                            'WHERE patient_id = A.patient_id AND id != A.id' .
+                                        '),' .
+                                        '1,0' .
+                                    ') AS NH ' .
+                                'FROM pds A ' .
+                                'WHERE datevisited >= \'' . $_GET['fd'] . ' 00:00:00.000\' AND ' .
+                                    'datevisited < \'' . $_GET['td'] . ' 23:59.59.999\' AND ' .
+                                    '(LENGTH(doctor) > 0 OR LENGTH(department) > 0)' .
+                            ') B ' .
+                            'GROUP BY department'
+                    );
             
-            //other informations
-            $print = str_replace("[company]",$patient->company,$print);
-            $print = str_replace("[occupation]",$patient->occupation,$print);
-            $print = str_replace("[spousename]",$patient->spousename,$print);
-            $print = str_replace("[spouseoccupation]",$patient->spouseoccupation,$print);
-            $print = str_replace("[emergencycontactname]",$patient->emergencycontactname,$print);
-            $print = str_replace("[emergencycontactrelation]",$patient->emergencycontactrelation,$print);
-            $print = str_replace("[emergencycontactaddress]",$patient->emergencycontactaddress,$print);
-            $print = str_replace("[emergencycontactnos]",$patient->emergencycontactnos,$print);
+            $data_value='';
+            $totalOW=0;
+            $totalNW=0;
+            $totalOH=0;
+            $totalNH=0;
+            $total=0;
+            foreach ($data as $census_report)
+            {
+                $data_value=$data_value . '<tr>';
+                $data_value=$data_value . '<td>' . $census_report->department . '</td>';
+                $data_value=$data_value . '<td align="center">' . $census_report->nw . '</td>';
+                $data_value=$data_value . '<td align="center">' . $census_report->ow . '</td>';
+                $data_value=$data_value . '<td align="center">' . $census_report->nh . '</td>';
+                $data_value=$data_value . '<td align="center">' . $census_report->oh . '</td>';
+                $data_value=$data_value . '<td align="center">' . $census_report->total . '</td>';
+                $data_value=$data_value . '</tr>';
+                $totalOW=$totalOW + $census_report->ow;
+                $totalNW=$totalNW + $census_report->nw;
+                $totalOH=$totalOH + $census_report->oh;
+                $totalNH=$totalNH + $census_report->nh;
+                $total=$total + $census_report->total;
+            }
             
+            $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/censusReport.html'));
+            $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
+            $print = str_replace("[logopath]",$logo,$print);   
+            $print = str_replace("[datefrom]",date('M d, Y', strtotime($_GET['fd'])),$print);
+            $print = str_replace("[dateto]",date('M d, Y', strtotime($_GET['td']) ),$print);
+            $print = str_replace("[data]",$data_value,$print);
+            $print = str_replace("[TotalNW]",$totalNW,$print);
+            $print = str_replace("[TotalOW]",$totalOW,$print);
+            $print = str_replace("[TotalNH]",$totalNH,$print);
+            $print = str_replace("[TotalOH]",$totalOH,$print);
+            $print = str_replace("[Total]",$total,$print);
+            $print = str_replace("[preparedby]",$_GET['pb'],$print);
+            $print = str_replace("[preparedbytitle]",$_GET['pt'],$print);
+            $print = str_replace("[checkedby]",$_GET['cb'],$print);
+            $print = str_replace("[checkedbytitle]",$_GET['ct'],$print);
             echo $print;
             exit;
+    }
+    
+    public function actionSelect()
+    {
+            $this->render('select',array());
+    }
+    
+    public function actionSelectWithDoctor()
+    {
+            $this->render('selectWithDoctor',array());
+    }
+        
+    public function actionPrint()
+    {
+        $pds = Pds::model()->findByPk($_GET['id']);
+        $patient = $pds->patient;        
+        $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/Revised.FINALFORMS.per.sheet.htm'));
+        //$print = implode("", file(Yii::app()->getBasePath().'\views\pds\include\PDS_front.html'));
+        //$print = implode("", file(Yii::app()->getBasePath().'\views\pds\include\pds.html'));
+        $imgurl = Yii::app()->request->baseUrl.'/images/pds_folder';
+        $print = str_replace("[imgurl]",$imgurl,$print);
+        $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
+
+        $settings = Settings::model()->findByPk(1);   
+        $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+        $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+        $address = str_replace("<br>", " ", $settings->dasma_address_html);
+        $address = str_replace("BRANCH LGF", "BRANCH<br>LGF", $address);
+        $address = str_replace("City", "<br>City", $address);
+        $print = str_replace("[address]",$address,$print);
+
+        $print = str_replace("[logopath]",$logo,$print);
+        $visit = date('F d, Y', strtotime($pds->datevisited));
+        $print = str_replace("[datevisited]",$visit,$print);
+        $print = str_replace("[visitreason]",$pds->visitreason,$print);
+        $print = str_replace("[lastname]",$patient->lastname,$print);
+        $print = str_replace("[firstname]",$patient->firstname,$print);
+        $print = str_replace("[middleinitial]",$patient->middleinitial,$print);
+        $bday = date('F d, Y', strtotime($patient->birthdate));
+        $print = str_replace("[birthdate]",$bday,$print);
+        //get age
+        $birthDate = date('m/d/Y', strtotime($patient->birthdate));
+        $birthDate = explode("/", $birthDate);
+        $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
+        $print = str_replace("[age]",$age,$print);
+        //sex
+        if($patient->gender == 'M'){
+            $boxm = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            $boxf = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        }else{ 
+            $boxf = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            $boxm = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
         }
+        $print = str_replace("[imgurlm]",$boxm,$print);
+        $print = str_replace("[imgurlf]",$boxf,$print);
+        //civil status
+        $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        $boxmar = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        $boxwid = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        $boxsep = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        switch(trim($patient->civilstatus)){
+            case 'Married':
+                $boxmar = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            break;
+            case 'Single':
+                $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            break;
+            case 'Widowed':
+                $boxwid= Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            break;
+            case 'Separated':
+                $boxsep = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            break;
+            default:
+                $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            break;
+        }
+        $print = str_replace("[imgurlmar]",$boxmar,$print);
+        $print = str_replace("[imgurlsin]",$boxsin,$print);
+        $print = str_replace("[imgurlwid]",$boxwid,$print);
+        $print = str_replace("[imgurlsep]",$boxsep,$print);
+        //pds number
+        $pds->id == "" ? $pdsid = '______' : $pdsid = $pds->id;
+        $print = str_replace("[pdsid]",$pdsid,$print);
+        //pds id            
+        $patient->id == "" ? $patid = '______' : $patid = $patient->id;
+        $print = str_replace("[patid]",$patid,$print);
+        $print = str_replace("[company]",$patient->company,$print);
+        //patient image
+        $picture = Yii::app()->request->baseUrl.'/'.$patient->filename;
+        $print = str_replace("[filename]",$picture,$print); 
 		
-		public function actionPrintFollowUp()
-        {
-            $pds = Pds::model()->findByPk($_GET['id']);
-            $patient = $pds->patient;        
-            $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/pds_followup.html'));
-            //$print = implode("", file(Yii::app()->getBasePath().'\views\pds\include\pds.html'));
-            $imgurl = Yii::app()->request->baseUrl.'/images/pds_followup';
-            $print = str_replace("[imgurl]",$imgurl,$print);
-            $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
-            $print = str_replace("[logopath]",$logo,$print);
-            $visit = date('F d, Y', strtotime($pds->datevisited));
-            $print = str_replace("[datevisited]",$visit,$print);
-            $print = str_replace("[visitreason]",$pds->visitreason,$print);
-            $print = str_replace("[lastname]",$patient->lastname,$print);
-            $print = str_replace("[firstname]",$patient->firstname,$print);
-            $print = str_replace("[middleinitial]",$patient->middleinitial,$print);
-            $bday = date('F d, Y', strtotime($patient->birthdate));
-            $print = str_replace("[birthdate]",$bday,$print);
-            //age
-            $birthDate = date('m/d/Y', strtotime($patient->birthdate));
-            //explode the date to get month, day and year
-            $birthDate = explode("/", $birthDate);
-            //get age from date or birthdate
-            //$age = date("Y") - $birthDate[2];
-            $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
-            $print = str_replace("[age]",$age,$print);
-            //normal empty box
-            $empty_box = Yii::app()->request->baseUrl.'/images/pds_followup/box.jpg';
-            $print = str_replace("[empty_box]",$empty_box,$print);
-            //sex
-            if($patient->gender == 'M'){
-                $boxm = Yii::app()->request->baseUrl.'/images/pds_followup/box_x.jpg';
-                $boxf = Yii::app()->request->baseUrl.'/images/pds_followup/box.jpg';
-            }else{ 
-                $boxf = Yii::app()->request->baseUrl.'/images/pds_followup/box_x.jpg';
-                $boxm = Yii::app()->request->baseUrl.'/images/pds_followup/box.jpg';
-            }
-            $print = str_replace("[imgurlm]",$boxm,$print);
-            $print = str_replace("[imgurlf]",$boxf,$print);
-            //civil status
-            $boxsin = Yii::app()->request->baseUrl.'/images/pds_followup/box.jpg';
-            $boxmar = Yii::app()->request->baseUrl.'/images/pds_followup/box.jpg';
-            $boxwid = Yii::app()->request->baseUrl.'/images/pds_followup/box.jpg';
-            $boxsep = Yii::app()->request->baseUrl.'/images/pds_followup/box.jpg';
-            switch(trim($patient->civilstatus)){
-                case 'Married':
-                    $boxmar = Yii::app()->request->baseUrl.'/images/pds_followup/box_x.jpg';
-                break;
-                case 'Single':
-                    $boxsin = Yii::app()->request->baseUrl.'/images/pds_followup/box_x.jpg';
-                break;
-                case 'Widowed':
-                    $boxwid= Yii::app()->request->baseUrl.'/images/pds_followup/box_x.jpg';
-                break;
-                case 'Separated':
-                    $boxsep = Yii::app()->request->baseUrl.'/images/pds_followup/box_x.jpg';
-                break;
-                default:
-                    $boxsin = Yii::app()->request->baseUrl.'/images/pds_followup/box_x.jpg';
-                break;
-            }
-            $print = str_replace("[imgurlmar]",$boxmar,$print);
-            $print = str_replace("[imgurlsin]",$boxsin,$print);
-            $print = str_replace("[imgurlwid]",$boxwid,$print);
-            $print = str_replace("[imgurlsep]",$boxsep,$print);
-            //pds number
-            $pds->id == "" ? $pdsid = '______' : $pdsid = $pds->id;
-            $print = str_replace("[pdsid]",$pdsid,$print);
-            //pds id            
-            $patient->id == "" ? $patid = '______' : $patid = $patient->id;
-            $print = str_replace("[patid]",$patid,$print);
-            //patient image
-            $picture = Yii::app()->request->baseUrl.'/'.$patient->filename;
-            $print = str_replace("[filename]",$picture,$print);
-			
-			$contact_no='';$mob='';$tel='';
-            (trim($patient->mobile_no) != '') ? $contact_no .= trim($patient->mobile_no) : $contact_no.='' ;
-            (trim($patient->tel_no) != '') ? $tel = trim($patient->tel_no) : $tel = '' ;
-            (trim($patient->mobile_no) != '') ? $contact_no .= ' / '.$tel : $contact_no .= $tel ;
-            $print = str_replace("[patient_contact]",$contact_no,$print);
-			
-            //address
-            $add1 = '';
-            $add2 = '';
-            (trim($patient->street1) != '') ? $add1 .= trim($patient->street1).', ' : $add1.='' ;
-            (trim($patient->street2) != '') ? $add1 .= trim($patient->street2).', ' : $add1.='' ;
-            (trim($patient->barangay) != '') ? $add1 .= trim($patient->barangay).', ' : $add1.='' ;
-            (trim($patient->city) != '') ? $add2 .= trim($patient->city).', ' : $add2.='' ;
-            (trim($patient->province) != '') ? $add2 .= trim($patient->province) : $add2.='' ;
-            $print = str_replace("[patient_address1]",$add1,$print);
-            $print = str_replace("[patient_address2]",$add2,$print);
-            
-            //other informations
-            $print = str_replace("[company]",$patient->company,$print);
-            $print = str_replace("[occupation]",$patient->occupation,$print);
-            $print = str_replace("[spousename]",$patient->spousename,$print);
-            $print = str_replace("[spouseoccupation]",$patient->spouseoccupation,$print);
-            $print = str_replace("[emergencycontactname]",$patient->emergencycontactname,$print);
-            $print = str_replace("[emergencycontactrelation]",$patient->emergencycontactrelation,$print);
-            $print = str_replace("[emergencycontactaddress]",$patient->emergencycontactaddress,$print);
-            $print = str_replace("[emergencycontactnos]",$patient->emergencycontactnos,$print);
-            
-            echo $print;
-            exit;
-        }
+		$contact_no='';$mob='';$tel='';
+		$contact_no_arr="";
+        /*(trim($patient->mobile_no) != '') ? $contact_no .= trim($patient->mobile_no) : $contact_no.='' ;
+        (trim($patient->tel_no) != '') ? $tel = trim($patient->tel_no) : $tel = '' ;
+        (trim($patient->email) != '') ? $email = ' / '.trim($patient->email) : $email = '' ;
+        (trim($patient->mobile_no) != '') ? $contact_no .= ' / '.$tel : $contact_no .= $tel ;	
+		$contact_no = $contact_no . $email;*/	
+		if(trim($patient->mobile_no) != '') { $contact_no_arr[] = $patient->mobile_no; }
+		if(trim($patient->tel_no) != '') { $contact_no_arr[] = $patient->tel_no; }
+		if(trim($patient->email) != '') { $contact_no_arr[] = $patient->email; }
+		if(empty($contact_no_arr)){
+		}else{			
+			$contact_no = implode($contact_no_arr,' / ');
+		}
+        $print = str_replace("[patient_contact]",$contact_no,$print);			
+        /*      
+        //other informations
+        $print = str_replace("[company]",$patient->company,$print);
+        $print = str_replace("[occupation]",$patient->occupation,$print);
+        $print = str_replace("[spousename]",$patient->spousename,$print);
+        $print = str_replace("[spouseoccupation]",$patient->spouseoccupation,$print);
+        $print = str_replace("[emergencycontactname]",$patient->emergencycontactname,$print);
+        $print = str_replace("[emergencycontactrelation]",$patient->emergencycontactrelation,$print);
+        $print = str_replace("[emergencycontactaddress]",$patient->emergencycontactaddress,$print);
+        $print = str_replace("[emergencycontactnos]",$patient->emergencycontactnos,$print);
+        */
+        echo $print;
+        exit;
+    }
         
-        public function actionPrintPdsAesthetic()
-        {
-            $pds = Pds::model()->findByPk($_GET['id']);
-            $patient = $pds->patient;        
-            $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/PDS_aesthetic.html'));
-            $imgurl = Yii::app()->request->baseUrl.'/images/pds_aesthetic';
-            $print = str_replace("[imgurl]",$imgurl,$print);
-            $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
-            $print = str_replace("[logopath]",$logo,$print);
-            $visit = date('F d, Y', strtotime($pds->datevisited));
-            $print = str_replace("[datevisited]",$visit,$print);
-            $print = str_replace("[visitreason]",$pds->visitreason,$print);
-            $print = str_replace("[patientid]",$patient->id,$print);
-            $print = str_replace("[lastname]",$patient->lastname,$print);
-            $print = str_replace("[firstname]",$patient->firstname,$print);
-            $print = str_replace("[middleinitial]",$patient->middleinitial,$print);
-            $bday = date('F d, Y', strtotime($patient->birthdate));
-            $print = str_replace("[birthdate]",$bday,$print);
-            //get age
-            $birthDate = date('m/d/Y', strtotime($patient->birthdate));
-            $birthDate = explode("/", $birthDate);
-            $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
-            $print = str_replace("[age]",$age,$print);
-            //sex
-            if($patient->gender == 'M'){
-                $boxm = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box_x.jpg';
-                $boxf = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box.jpg';
-            }else{ 
-                $boxf = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box_x.jpg';
-                $boxm = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box.jpg';
-            }
-            $print = str_replace("[imgurlm]",$boxm,$print);
-            $print = str_replace("[imgurlf]",$boxf,$print);
-            //civil status
-            $boxsin = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box.jpg';
-            $boxmar = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box.jpg';
-            $boxwid = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box.jpg';
-            $boxsep = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box.jpg';
-            switch(trim($patient->civilstatus)){
-                case 'Married':
-                    $boxmar = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box_x.jpg';
-                break;
-                case 'Single':
-                    $boxsin = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box_x.jpg';
-                break;
-                case 'Widowed':
-                    $boxwid= Yii::app()->request->baseUrl.'/images/pds_aesthetic/box_x.jpg';
-                break;
-                case 'Separated':
-                    $boxsep = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box_x.jpg';
-                break;
-                default:
-                    $boxsin = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box_x.jpg';
-                break;
-            }
-            $print = str_replace("[imgurlmar]",$boxmar,$print);
-            $print = str_replace("[imgurlsin]",$boxsin,$print);
-            $print = str_replace("[imgurlwid]",$boxwid,$print);
-            $print = str_replace("[imgurlsep]",$boxsep,$print);
-            //pds number
-            $pds->id == "" ? $pdsid = '______' : $pdsid = $pds->id;
-            $print = str_replace("[pdsid]",$pdsid,$print);
-            //pds id            
-            $patient->id == "" ? $patid = '______' : $patid = $patient->id;
-            $print = str_replace("[patid]",$patid,$print);
-            $print = str_replace("[company]",$patient->company,$print);
-            //patient image
-            $picture = Yii::app()->request->baseUrl.'/'.$patient->filename;
-            $print = str_replace("[filename]",$picture,$print);  
-            //address
-            $add = '';
-            (trim($patient->street1) != '') ? $add .= trim($patient->street1).', ' : $add.='' ;
-            (trim($patient->street2) != '') ? $add .= trim($patient->street2).', ' : $add.='' ;
-            (trim($patient->barangay) != '') ? $add .= trim($patient->barangay).', ' : $add.='' ;
-            (trim($patient->city) != '') ? $add .= trim($patient->city).', ' : $add.='' ;
-            (trim($patient->province) != '') ? $add .= trim($patient->province) : $add.='' ;
-            $print = str_replace("[patient_address]",$add,$print);
-            
-            //other informations
-            $print = str_replace("[company]",$patient->company,$print);
-            $print = str_replace("[occupation]",$patient->occupation,$print);
-            $print = str_replace("[spousename]",$patient->spousename,$print);
-            $print = str_replace("[spouseoccupation]",$patient->spouseoccupation,$print);
-            $print = str_replace("[emergencycontactname]",$patient->emergencycontactname,$print);
-            $print = str_replace("[emergencycontactrelation]",$patient->emergencycontactrelation,$print);
-            $print = str_replace("[emergencycontactaddress]",$patient->emergencycontactaddress,$print);
-            $print = str_replace("[emergencycontactnos]",$patient->emergencycontactnos,$print);
-            
-            $contact_no='';$mob='';$tel='';
-            (trim($patient->mobile_no) != '') ? $contact_no .= trim($patient->mobile_no) : $contact_no.='' ;
-            (trim($patient->tel_no) != '') ? $tel = trim($patient->tel_no) : $tel = '' ;
-            (trim($patient->mobile_no) != '') ? $contact_no .= ' / '.$tel : $contact_no .= $tel ;
-            $print = str_replace("[patient_contact]",$contact_no,$print);
-            
-            echo $print;
-            exit;
-        }
+    public function actionPrintBack()
+    {
+        $pds = Pds::model()->findByPk($_GET['id']);
+        $patient = $pds->patient;        
+        $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/pds_back.html'));
+        //$print = implode("", file(Yii::app()->getBasePath().'\views\pds\include\pds.html'));
+        $imgurl = Yii::app()->request->baseUrl.'/images/pds_folder';
+        $print = str_replace("[imgurl]",$imgurl,$print);
+        $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
+
+        $settings = Settings::model()->findByPk(1);   
+        $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+        $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+        $address = str_replace("<br>", " ", $settings->dasma_address_html);
+        $address = str_replace("BRANCH LGF", "BRANCH<br>LGF", $address);
+        $address = str_replace("City", "<br>City", $address);
+        $print = str_replace("[address]",$address,$print);
         
-        public function actionPrintTreatment()
-        {
-            $pds = Pds::model()->findByPk($_GET['id']);
-            $patient = $pds->patient;        
-            $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/PDS_treatment.html'));
-            $imgurl = Yii::app()->request->baseUrl.'/images/pds_treatment';
-            $print = str_replace("[imgurl]",$imgurl,$print);
-            $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
-            $print = str_replace("[logopath]",$logo,$print);
-            $visit = date('F d, Y', strtotime($pds->datevisited));
-            $print = str_replace("[datevisited]",$visit,$print);
-            $print = str_replace("[visitreason]",$pds->visitreason,$print);
-            $print = str_replace("[patientid]",$patient->id,$print);
-            $print = str_replace("[lastname]",$patient->lastname,$print);
-            $print = str_replace("[firstname]",$patient->firstname,$print);
-            $print = str_replace("[middleinitial]",$patient->middleinitial,$print);
-            $bday = date('F d, Y', strtotime($patient->birthdate));
-            $print = str_replace("[birthdate]",$bday,$print);
-            //get age
-            $birthDate = date('m/d/Y', strtotime($patient->birthdate));
-            $birthDate = explode("/", $birthDate);
-            $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
-            $print = str_replace("[age]",$age,$print);
-            //sex
-            if($patient->gender == 'M'){
-                $boxm = Yii::app()->request->baseUrl.'/images/pds_treatment/box_x.jpg';
-                $boxf = Yii::app()->request->baseUrl.'/images/pds_treatment/box.jpg';
-            }else{ 
-                $boxf = Yii::app()->request->baseUrl.'/images/pds_treatment/box_x.jpg';
-                $boxm = Yii::app()->request->baseUrl.'/images/pds_treatment/box.jpg';
-            }
-            $print = str_replace("[imgurlm]",$boxm,$print);
-            $print = str_replace("[imgurlf]",$boxf,$print);
-            //civil status
-            $boxsin = Yii::app()->request->baseUrl.'/images/pds_treatment/box.jpg';
-            $boxmar = Yii::app()->request->baseUrl.'/images/pds_treatment/box.jpg';
-            $boxwid = Yii::app()->request->baseUrl.'/images/pds_treatment/box.jpg';
-            $boxsep = Yii::app()->request->baseUrl.'/images/pds_treatment/box.jpg';
-            switch(trim($patient->civilstatus)){
-                case 'Married':
-                    $boxmar = Yii::app()->request->baseUrl.'/images/pds_treatment/box_x.jpg';
-                break;
-                case 'Single':
-                    $boxsin = Yii::app()->request->baseUrl.'/images/pds_treatment/box_x.jpg';
-                break;
-                case 'Widowed':
-                    $boxwid= Yii::app()->request->baseUrl.'/images/pds_treatment/box_x.jpg';
-                break;
-                case 'Separated':
-                    $boxsep = Yii::app()->request->baseUrl.'/images/pds_treatment/box_x.jpg';
-                break;
-                default:
-                    $boxsin = Yii::app()->request->baseUrl.'/images/pds_treatment/box_x.jpg';
-                break;
-            }
-            $print = str_replace("[imgurlmar]",$boxmar,$print);
-            $print = str_replace("[imgurlsin]",$boxsin,$print);
-            $print = str_replace("[imgurlwid]",$boxwid,$print);
-            $print = str_replace("[imgurlsep]",$boxsep,$print);
-            //pds number
-            $pds->id == "" ? $pdsid = '______' : $pdsid = $pds->id;
-            $print = str_replace("[pdsid]",$pdsid,$print);
-            //pds id            
-            $patient->id == "" ? $patid = '______' : $patid = $patient->id;
-            $print = str_replace("[patid]",$patid,$print);
-            $print = str_replace("[company]",$patient->company,$print);
-            //patient image
-            $picture = Yii::app()->request->baseUrl.'/'.$patient->filename;
-            $print = str_replace("[filename]",$picture,$print);  
-            //address
-            $add = '';
-            (trim($patient->street1) != '') ? $add .= trim($patient->street1).', ' : $add.='' ;
-            (trim($patient->street2) != '') ? $add .= trim($patient->street2).', ' : $add.='' ;
-            (trim($patient->barangay) != '') ? $add .= trim($patient->barangay).', ' : $add.='' ;
-            (trim($patient->city) != '') ? $add .= trim($patient->city).', ' : $add.='' ;
-            (trim($patient->province) != '') ? $add .= trim($patient->province) : $add.='' ;
-            $print = str_replace("[patient_address]",$add,$print);
-            
-            //other informations
-            $print = str_replace("[company]",$patient->company,$print);
-            $print = str_replace("[occupation]",$patient->occupation,$print);
-            $print = str_replace("[spousename]",$patient->spousename,$print);
-            $print = str_replace("[spouseoccupation]",$patient->spouseoccupation,$print);
-            $print = str_replace("[emergencycontactname]",$patient->emergencycontactname,$print);
-            $print = str_replace("[emergencycontactrelation]",$patient->emergencycontactrelation,$print);
-            $print = str_replace("[emergencycontactaddress]",$patient->emergencycontactaddress,$print);
-            $print = str_replace("[emergencycontactnos]",$patient->emergencycontactnos,$print);
-            
-            $contact_no='';$mob='';$tel='';
-            (trim($patient->mobile_no) != '') ? $contact_no .= trim($patient->mobile_no) : $contact_no.='' ;
-            (trim($patient->tel_no) != '') ? $tel = trim($patient->tel_no) : $tel = '' ;
-            (trim($patient->mobile_no) != '') ? $contact_no .= ' / '.$tel : $contact_no .= $tel ;
-            $print = str_replace("[patient_contact]",$contact_no,$print);
-            
-            echo $print;
-            exit;
+        $print = str_replace("[logopath]",$logo,$print);
+        $visit = date('F d, Y', strtotime($pds->datevisited));
+        $print = str_replace("[datevisited]",$visit,$print);
+        $print = str_replace("[visitreason]",$pds->visitreason,$print);
+        $print = str_replace("[lastname]",$patient->lastname,$print);
+        $print = str_replace("[firstname]",$patient->firstname,$print);
+        $print = str_replace("[middleinitial]",$patient->middleinitial,$print);
+        $bday = date('F d, Y', strtotime($patient->birthdate));
+        $print = str_replace("[birthdate]",$bday,$print);
+        //get age
+        $birthDate = date('m/d/Y', strtotime($patient->birthdate));
+        $birthDate = explode("/", $birthDate);
+        $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
+        $print = str_replace("[age]",$age,$print);
+        //sex
+        if($patient->gender == 'M'){
+            $boxm = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            $boxf = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        }else{ 
+            $boxf = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            $boxm = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
         }
+        $print = str_replace("[imgurlm]",$boxm,$print);
+        $print = str_replace("[imgurlf]",$boxf,$print);
+        //civil status
+        $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        $boxmar = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        $boxwid = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        $boxsep = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        switch(trim($patient->civilstatus)){
+            case 'Married':
+                $boxmar = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            break;
+            case 'Single':
+                $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            break;
+            case 'Widowed':
+                $boxwid= Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            break;
+            case 'Separated':
+                $boxsep = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            break;
+            default:
+                $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            break;
+        }
+        $print = str_replace("[imgurlmar]",$boxmar,$print);
+        $print = str_replace("[imgurlsin]",$boxsin,$print);
+        $print = str_replace("[imgurlwid]",$boxwid,$print);
+        $print = str_replace("[imgurlsep]",$boxsep,$print);
+        //pds number
+        $pds->id == "" ? $pdsid = '______' : $pdsid = $pds->id;
+        $print = str_replace("[pdsid]",$pdsid,$print);
+        //pds id            
+        $patient->id == "" ? $patid = '______' : $patid = $patient->id;
+        $print = str_replace("[patid]",$patid,$print);
+        $print = str_replace("[company]",$patient->company,$print);
+        //patient image
+        $picture = Yii::app()->request->baseUrl.'/'.$patient->filename;
+        $print = str_replace("[filename]",$picture,$print);  
+        /*      
+        //other informations
+        $print = str_replace("[company]",$patient->company,$print);
+        $print = str_replace("[occupation]",$patient->occupation,$print);
+        $print = str_replace("[spousename]",$patient->spousename,$print);
+        $print = str_replace("[spouseoccupation]",$patient->spouseoccupation,$print);
+        $print = str_replace("[emergencycontactname]",$patient->emergencycontactname,$print);
+        $print = str_replace("[emergencycontactrelation]",$patient->emergencycontactrelation,$print);
+        $print = str_replace("[emergencycontactaddress]",$patient->emergencycontactaddress,$print);
+        $print = str_replace("[emergencycontactnos]",$patient->emergencycontactnos,$print);
+        */
+        echo $print;
+        exit;
+    }
+        
+    public function actionPrintForm2()
+    {
+        $pds = Pds::model()->findByPk($_GET['id']);
+        $patient = $pds->patient;        
+        $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/pds_form2.html'));
+        //$print = implode("", file(Yii::app()->getBasePath().'\views\pds\include\pds.html'));
+        $imgurl = Yii::app()->request->baseUrl.'/images/pds_folder';
+        $print = str_replace("[imgurl]",$imgurl,$print);
+        $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
+
+        $settings = Settings::model()->findByPk(1);   
+        $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+        $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+        $address = str_replace("<br>", " ", $settings->dasma_address_html);
+        $address = str_replace("BRANCH LGF", "BRANCH<br>LGF", $address);
+        $address = str_replace("City", "<br>City", $address);
+        $print = str_replace("[address]",$address,$print);
+
+        $print = str_replace("[logopath]",$logo,$print);
+        $visit = date('F d, Y', strtotime($pds->datevisited));
+        $print = str_replace("[datevisited]",$visit,$print);
+        $print = str_replace("[visitreason]",$pds->visitreason,$print);
+        $print = str_replace("[lastname]",$patient->lastname,$print);
+        $print = str_replace("[firstname]",$patient->firstname,$print);
+        $print = str_replace("[middleinitial]",$patient->middleinitial,$print);
+        $bday = date('F d, Y', strtotime($patient->birthdate));
+        $print = str_replace("[birthdate]",$bday,$print);
+        //age
+        $birthDate = date('m/d/Y', strtotime($patient->birthdate));
+        //explode the date to get month, day and year
+        $birthDate = explode("/", $birthDate);
+        //get age from date or birthdate
+        //$age = date("Y") - $birthDate[2];
+        $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
+        $print = str_replace("[age]",$age,$print);
+        //normal empty box
+        $empty_box = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        $print = str_replace("[empty_box]",$empty_box,$print);
+        //sex
+        if($patient->gender == 'M'){
+            $boxm = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            $boxf = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        }else{ 
+            $boxf = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            $boxm = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        }
+        $print = str_replace("[imgurlm]",$boxm,$print);
+        $print = str_replace("[imgurlf]",$boxf,$print);
+        //civil status
+        $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        $boxmar = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        $boxwid = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        $boxsep = Yii::app()->request->baseUrl.'/images/pds_folder/box.jpg';
+        switch(trim($patient->civilstatus)){
+            case 'Married':
+                $boxmar = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            break;
+            case 'Single':
+                $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            break;
+            case 'Widowed':
+                $boxwid= Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            break;
+            case 'Separated':
+                $boxsep = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            break;
+            default:
+                $boxsin = Yii::app()->request->baseUrl.'/images/pds_folder/box_x.jpg';
+            break;
+        }
+        $print = str_replace("[imgurlmar]",$boxmar,$print);
+        $print = str_replace("[imgurlsin]",$boxsin,$print);
+        $print = str_replace("[imgurlwid]",$boxwid,$print);
+        $print = str_replace("[imgurlsep]",$boxsep,$print);
+        //pds number
+        $pds->id == "" ? $pdsid = '______' : $pdsid = $pds->id;
+        $print = str_replace("[pdsid]",$pdsid,$print);
+        //pds id            
+        $patient->id == "" ? $patid = '______' : $patid = $patient->id;
+        $print = str_replace("[patid]",$patid,$print);
+        //patient image
+        $picture = Yii::app()->request->baseUrl.'/'.$patient->filename;
+        $print = str_replace("[filename]",$picture,$print);
+        //address
+        $add = '';
+        (trim($patient->street1) != '') ? $add .= trim($patient->street1).', ' : $add.='' ;
+        (trim($patient->street2) != '') ? $add .= trim($patient->street2).', ' : $add.='' ;
+        (trim($patient->barangay) != '') ? $add .= trim($patient->barangay).', ' : $add.='' ;
+        (trim($patient->city) != '') ? $add .= trim($patient->city).', ' : $add.='' ;
+        (trim($patient->province) != '') ? $add .= trim($patient->province) : $add.='' ;
+        $print = str_replace("[patient_address]",$add,$print);
+		
+        
+        //other informations
+        $print = str_replace("[company]",$patient->company,$print);
+        $print = str_replace("[occupation]",$patient->occupation,$print);
+        $print = str_replace("[spousename]",$patient->spousename,$print);
+        $print = str_replace("[spouseoccupation]",$patient->spouseoccupation,$print);
+        $print = str_replace("[emergencycontactname]",$patient->emergencycontactname,$print);
+        $print = str_replace("[emergencycontactrelation]",$patient->emergencycontactrelation,$print);
+        $print = str_replace("[emergencycontactaddress]",$patient->emergencycontactaddress,$print);
+        $print = str_replace("[emergencycontactnos]",$patient->emergencycontactnos,$print);
+        
+        echo $print;
+        exit;
+    }
+		
+	public function actionPrintFollowUp()
+    {
+        $pds = Pds::model()->findByPk($_GET['id']);
+        $patient = $pds->patient;        
+        $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/pds_followup.html'));
+        //$print = implode("", file(Yii::app()->getBasePath().'\views\pds\include\pds.html'));
+        $imgurl = Yii::app()->request->baseUrl.'/images/pds_followup';
+        $print = str_replace("[imgurl]",$imgurl,$print);
+        $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
+
+        $settings = Settings::model()->findByPk(1);   
+        $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+        $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+        $address = str_replace("<br>", " ", $settings->dasma_address_html);
+        $address = str_replace("BRANCH LGF", "BRANCH<br>LGF", $address);
+        $address = str_replace("City", "<br>City", $address);
+        $print = str_replace("[address]",$address,$print);
+        
+        $print = str_replace("[logopath]",$logo,$print);
+        $visit = date('F d, Y', strtotime($pds->datevisited));
+        $print = str_replace("[datevisited]",$visit,$print);
+        $print = str_replace("[visitreason]",$pds->visitreason,$print);
+        $print = str_replace("[lastname]",$patient->lastname,$print);
+        $print = str_replace("[firstname]",$patient->firstname,$print);
+        $print = str_replace("[middleinitial]",$patient->middleinitial,$print);
+        $bday = date('F d, Y', strtotime($patient->birthdate));
+        $print = str_replace("[birthdate]",$bday,$print);
+        //age
+        $birthDate = date('m/d/Y', strtotime($patient->birthdate));
+        //explode the date to get month, day and year
+        $birthDate = explode("/", $birthDate);
+        //get age from date or birthdate
+        //$age = date("Y") - $birthDate[2];
+        $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
+        $print = str_replace("[age]",$age,$print);
+        //normal empty box
+        $empty_box = Yii::app()->request->baseUrl.'/images/pds_followup/box.jpg';
+        $print = str_replace("[empty_box]",$empty_box,$print);
+        //sex
+        if($patient->gender == 'M'){
+            $boxm = Yii::app()->request->baseUrl.'/images/pds_followup/box_x.jpg';
+            $boxf = Yii::app()->request->baseUrl.'/images/pds_followup/box.jpg';
+        }else{ 
+            $boxf = Yii::app()->request->baseUrl.'/images/pds_followup/box_x.jpg';
+            $boxm = Yii::app()->request->baseUrl.'/images/pds_followup/box.jpg';
+        }
+        $print = str_replace("[imgurlm]",$boxm,$print);
+        $print = str_replace("[imgurlf]",$boxf,$print);
+        //civil status
+        $boxsin = Yii::app()->request->baseUrl.'/images/pds_followup/box.jpg';
+        $boxmar = Yii::app()->request->baseUrl.'/images/pds_followup/box.jpg';
+        $boxwid = Yii::app()->request->baseUrl.'/images/pds_followup/box.jpg';
+        $boxsep = Yii::app()->request->baseUrl.'/images/pds_followup/box.jpg';
+        switch(trim($patient->civilstatus)){
+            case 'Married':
+                $boxmar = Yii::app()->request->baseUrl.'/images/pds_followup/box_x.jpg';
+            break;
+            case 'Single':
+                $boxsin = Yii::app()->request->baseUrl.'/images/pds_followup/box_x.jpg';
+            break;
+            case 'Widowed':
+                $boxwid= Yii::app()->request->baseUrl.'/images/pds_followup/box_x.jpg';
+            break;
+            case 'Separated':
+                $boxsep = Yii::app()->request->baseUrl.'/images/pds_followup/box_x.jpg';
+            break;
+            default:
+                $boxsin = Yii::app()->request->baseUrl.'/images/pds_followup/box_x.jpg';
+            break;
+        }
+        $print = str_replace("[imgurlmar]",$boxmar,$print);
+        $print = str_replace("[imgurlsin]",$boxsin,$print);
+        $print = str_replace("[imgurlwid]",$boxwid,$print);
+        $print = str_replace("[imgurlsep]",$boxsep,$print);
+        //pds number
+        $pds->id == "" ? $pdsid = '______' : $pdsid = $pds->id;
+        $print = str_replace("[pdsid]",$pdsid,$print);
+        //pds id            
+        $patient->id == "" ? $patid = '______' : $patid = $patient->id;
+        $print = str_replace("[patid]",$patid,$print);
+        //patient image
+        $picture = Yii::app()->request->baseUrl.'/'.$patient->filename;
+        $print = str_replace("[filename]",$picture,$print);
+		
+		$contact_no='';$mob='';$tel='';
+        (trim($patient->mobile_no) != '') ? $contact_no .= trim($patient->mobile_no) : $contact_no.='' ;
+        (trim($patient->tel_no) != '') ? $tel = trim($patient->tel_no) : $tel = '' ;
+        (trim($patient->mobile_no) != '') ? $contact_no .= ' / '.$tel : $contact_no .= $tel ;
+        $print = str_replace("[patient_contact]",$contact_no,$print);
+		
+        //address
+        $add1 = '';
+        $add2 = '';
+        (trim($patient->street1) != '') ? $add1 .= trim($patient->street1).', ' : $add1.='' ;
+        (trim($patient->street2) != '') ? $add1 .= trim($patient->street2).', ' : $add1.='' ;
+        (trim($patient->barangay) != '') ? $add1 .= trim($patient->barangay).', ' : $add1.='' ;
+        (trim($patient->city) != '') ? $add2 .= trim($patient->city).', ' : $add2.='' ;
+        (trim($patient->province) != '') ? $add2 .= trim($patient->province) : $add2.='' ;
+        $print = str_replace("[patient_address1]",$add1,$print);
+        $print = str_replace("[patient_address2]",$add2,$print);
+        
+        //other informations
+        $print = str_replace("[company]",$patient->company,$print);
+        $print = str_replace("[occupation]",$patient->occupation,$print);
+        $print = str_replace("[spousename]",$patient->spousename,$print);
+        $print = str_replace("[spouseoccupation]",$patient->spouseoccupation,$print);
+        $print = str_replace("[emergencycontactname]",$patient->emergencycontactname,$print);
+        $print = str_replace("[emergencycontactrelation]",$patient->emergencycontactrelation,$print);
+        $print = str_replace("[emergencycontactaddress]",$patient->emergencycontactaddress,$print);
+        $print = str_replace("[emergencycontactnos]",$patient->emergencycontactnos,$print);
+        
+        echo $print;
+        exit;
+    }
+        
+    public function actionPrintPdsAesthetic()
+    {
+        $pds = Pds::model()->findByPk($_GET['id']);
+        $patient = $pds->patient;        
+        $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/PDS_aesthetic.html'));
+        $imgurl = Yii::app()->request->baseUrl.'/images/pds_aesthetic';
+        $print = str_replace("[imgurl]",$imgurl,$print);
+        $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
+
+        $settings = Settings::model()->findByPk(1);   
+        $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+        $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+        $address = str_replace("<br>", " ", $settings->dasma_address_html);
+        $address = str_replace("BRANCH LGF", "BRANCH<br>LGF", $address);
+        $address = str_replace("City", "<br>City", $address);
+        $print = str_replace("[address]",$address,$print);
+        
+        $print = str_replace("[logopath]",$logo,$print);
+        $visit = date('F d, Y', strtotime($pds->datevisited));
+        $print = str_replace("[datevisited]",$visit,$print);
+        $print = str_replace("[visitreason]",$pds->visitreason,$print);
+        $print = str_replace("[patientid]",$patient->id,$print);
+        $print = str_replace("[lastname]",$patient->lastname,$print);
+        $print = str_replace("[firstname]",$patient->firstname,$print);
+        $print = str_replace("[middleinitial]",$patient->middleinitial,$print);
+        $bday = date('F d, Y', strtotime($patient->birthdate));
+        $print = str_replace("[birthdate]",$bday,$print);
+        //get age
+        $birthDate = date('m/d/Y', strtotime($patient->birthdate));
+        $birthDate = explode("/", $birthDate);
+        $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
+        $print = str_replace("[age]",$age,$print);
+        //sex
+        if($patient->gender == 'M'){
+            $boxm = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box_x.jpg';
+            $boxf = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box.jpg';
+        }else{ 
+            $boxf = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box_x.jpg';
+            $boxm = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box.jpg';
+        }
+        $print = str_replace("[imgurlm]",$boxm,$print);
+        $print = str_replace("[imgurlf]",$boxf,$print);
+        //civil status
+        $boxsin = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box.jpg';
+        $boxmar = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box.jpg';
+        $boxwid = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box.jpg';
+        $boxsep = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box.jpg';
+        switch(trim($patient->civilstatus)){
+            case 'Married':
+                $boxmar = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box_x.jpg';
+            break;
+            case 'Single':
+                $boxsin = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box_x.jpg';
+            break;
+            case 'Widowed':
+                $boxwid= Yii::app()->request->baseUrl.'/images/pds_aesthetic/box_x.jpg';
+            break;
+            case 'Separated':
+                $boxsep = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box_x.jpg';
+            break;
+            default:
+                $boxsin = Yii::app()->request->baseUrl.'/images/pds_aesthetic/box_x.jpg';
+            break;
+        }
+        $print = str_replace("[imgurlmar]",$boxmar,$print);
+        $print = str_replace("[imgurlsin]",$boxsin,$print);
+        $print = str_replace("[imgurlwid]",$boxwid,$print);
+        $print = str_replace("[imgurlsep]",$boxsep,$print);
+        //pds number
+        $pds->id == "" ? $pdsid = '______' : $pdsid = $pds->id;
+        $print = str_replace("[pdsid]",$pdsid,$print);
+        //pds id            
+        $patient->id == "" ? $patid = '______' : $patid = $patient->id;
+        $print = str_replace("[patid]",$patid,$print);
+        $print = str_replace("[company]",$patient->company,$print);
+        //patient image
+        $picture = Yii::app()->request->baseUrl.'/'.$patient->filename;
+        $print = str_replace("[filename]",$picture,$print);  
+        //address
+        $add = '';
+        (trim($patient->street1) != '') ? $add .= trim($patient->street1).', ' : $add.='' ;
+        (trim($patient->street2) != '') ? $add .= trim($patient->street2).', ' : $add.='' ;
+        (trim($patient->barangay) != '') ? $add .= trim($patient->barangay).', ' : $add.='' ;
+        (trim($patient->city) != '') ? $add .= trim($patient->city).', ' : $add.='' ;
+        (trim($patient->province) != '') ? $add .= trim($patient->province) : $add.='' ;
+        $print = str_replace("[patient_address]",$add,$print);
+        
+        //other informations
+        $print = str_replace("[company]",$patient->company,$print);
+        $print = str_replace("[occupation]",$patient->occupation,$print);
+        $print = str_replace("[spousename]",$patient->spousename,$print);
+        $print = str_replace("[spouseoccupation]",$patient->spouseoccupation,$print);
+        $print = str_replace("[emergencycontactname]",$patient->emergencycontactname,$print);
+        $print = str_replace("[emergencycontactrelation]",$patient->emergencycontactrelation,$print);
+        $print = str_replace("[emergencycontactaddress]",$patient->emergencycontactaddress,$print);
+        $print = str_replace("[emergencycontactnos]",$patient->emergencycontactnos,$print);
+        
+        $contact_no='';$mob='';$tel='';
+        (trim($patient->mobile_no) != '') ? $contact_no .= trim($patient->mobile_no) : $contact_no.='' ;
+        (trim($patient->tel_no) != '') ? $tel = trim($patient->tel_no) : $tel = '' ;
+        (trim($patient->mobile_no) != '') ? $contact_no .= ' / '.$tel : $contact_no .= $tel ;
+        $print = str_replace("[patient_contact]",$contact_no,$print);
+        
+        echo $print;
+        exit;
+    }
+        
+    public function actionPrintTreatment()
+    {
+        $pds = Pds::model()->findByPk($_GET['id']);
+        $patient = $pds->patient;        
+        $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/PDS_treatment.html'));
+        $imgurl = Yii::app()->request->baseUrl.'/images/pds_treatment';
+        $print = str_replace("[imgurl]",$imgurl,$print);
+        $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
+
+        $settings = Settings::model()->findByPk(1);   
+        $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+        $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+        $address = str_replace("<br>", " ", $settings->dasma_address_html);
+        $address = str_replace("BRANCH LGF", "BRANCH<br>LGF", $address);
+        $address = str_replace("City", "<br>City", $address);
+        $print = str_replace("[address]",$address,$print);
+        
+        $print = str_replace("[logopath]",$logo,$print);
+        $visit = date('F d, Y', strtotime($pds->datevisited));
+        $print = str_replace("[datevisited]",$visit,$print);
+        $print = str_replace("[visitreason]",$pds->visitreason,$print);
+        $print = str_replace("[patientid]",$patient->id,$print);
+        $print = str_replace("[lastname]",$patient->lastname,$print);
+        $print = str_replace("[firstname]",$patient->firstname,$print);
+        $print = str_replace("[middleinitial]",$patient->middleinitial,$print);
+        $bday = date('F d, Y', strtotime($patient->birthdate));
+        $print = str_replace("[birthdate]",$bday,$print);
+        //get age
+        $birthDate = date('m/d/Y', strtotime($patient->birthdate));
+        $birthDate = explode("/", $birthDate);
+        $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y")-$birthDate[2])-1):(date("Y")-$birthDate[2]));
+        $print = str_replace("[age]",$age,$print);
+        //sex
+        if($patient->gender == 'M'){
+            $boxm = Yii::app()->request->baseUrl.'/images/pds_treatment/box_x.jpg';
+            $boxf = Yii::app()->request->baseUrl.'/images/pds_treatment/box.jpg';
+        }else{ 
+            $boxf = Yii::app()->request->baseUrl.'/images/pds_treatment/box_x.jpg';
+            $boxm = Yii::app()->request->baseUrl.'/images/pds_treatment/box.jpg';
+        }
+        $print = str_replace("[imgurlm]",$boxm,$print);
+        $print = str_replace("[imgurlf]",$boxf,$print);
+        //civil status
+        $boxsin = Yii::app()->request->baseUrl.'/images/pds_treatment/box.jpg';
+        $boxmar = Yii::app()->request->baseUrl.'/images/pds_treatment/box.jpg';
+        $boxwid = Yii::app()->request->baseUrl.'/images/pds_treatment/box.jpg';
+        $boxsep = Yii::app()->request->baseUrl.'/images/pds_treatment/box.jpg';
+        switch(trim($patient->civilstatus)){
+            case 'Married':
+                $boxmar = Yii::app()->request->baseUrl.'/images/pds_treatment/box_x.jpg';
+            break;
+            case 'Single':
+                $boxsin = Yii::app()->request->baseUrl.'/images/pds_treatment/box_x.jpg';
+            break;
+            case 'Widowed':
+                $boxwid= Yii::app()->request->baseUrl.'/images/pds_treatment/box_x.jpg';
+            break;
+            case 'Separated':
+                $boxsep = Yii::app()->request->baseUrl.'/images/pds_treatment/box_x.jpg';
+            break;
+            default:
+                $boxsin = Yii::app()->request->baseUrl.'/images/pds_treatment/box_x.jpg';
+            break;
+        }
+        $print = str_replace("[imgurlmar]",$boxmar,$print);
+        $print = str_replace("[imgurlsin]",$boxsin,$print);
+        $print = str_replace("[imgurlwid]",$boxwid,$print);
+        $print = str_replace("[imgurlsep]",$boxsep,$print);
+        //pds number
+        $pds->id == "" ? $pdsid = '______' : $pdsid = $pds->id;
+        $print = str_replace("[pdsid]",$pdsid,$print);
+        //pds id            
+        $patient->id == "" ? $patid = '______' : $patid = $patient->id;
+        $print = str_replace("[patid]",$patid,$print);
+        $print = str_replace("[company]",$patient->company,$print);
+        //patient image
+        $picture = Yii::app()->request->baseUrl.'/'.$patient->filename;
+        $print = str_replace("[filename]",$picture,$print);  
+        //address
+        $add = '';
+        (trim($patient->street1) != '') ? $add .= trim($patient->street1).', ' : $add.='' ;
+        (trim($patient->street2) != '') ? $add .= trim($patient->street2).', ' : $add.='' ;
+        (trim($patient->barangay) != '') ? $add .= trim($patient->barangay).', ' : $add.='' ;
+        (trim($patient->city) != '') ? $add .= trim($patient->city).', ' : $add.='' ;
+        (trim($patient->province) != '') ? $add .= trim($patient->province) : $add.='' ;
+        $print = str_replace("[patient_address]",$add,$print);
+        
+        //other informations
+        $print = str_replace("[company]",$patient->company,$print);
+        $print = str_replace("[occupation]",$patient->occupation,$print);
+        $print = str_replace("[spousename]",$patient->spousename,$print);
+        $print = str_replace("[spouseoccupation]",$patient->spouseoccupation,$print);
+        $print = str_replace("[emergencycontactname]",$patient->emergencycontactname,$print);
+        $print = str_replace("[emergencycontactrelation]",$patient->emergencycontactrelation,$print);
+        $print = str_replace("[emergencycontactaddress]",$patient->emergencycontactaddress,$print);
+        $print = str_replace("[emergencycontactnos]",$patient->emergencycontactnos,$print);
+        
+        $contact_no='';$mob='';$tel='';
+        (trim($patient->mobile_no) != '') ? $contact_no .= trim($patient->mobile_no) : $contact_no.='' ;
+        (trim($patient->tel_no) != '') ? $tel = trim($patient->tel_no) : $tel = '' ;
+        (trim($patient->mobile_no) != '') ? $contact_no .= ' / '.$tel : $contact_no .= $tel ;
+        $print = str_replace("[patient_contact]",$contact_no,$print);
+        
+        echo $print;
+        exit;
+    }
 
 
     /**
