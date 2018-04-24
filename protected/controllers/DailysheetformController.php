@@ -184,7 +184,7 @@ class DailysheetformController extends RController
         $settings = Settings::model()->findByPk(1);   
         $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
         $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
-        $print = str_replace("[address]",$settings->address,$print);
+        $print = str_replace("[address_html]",$settings->address_html,$print);
             
         $date = date('F d, Y', strtotime($dailysheetform->date));
         $print =str_replace("{date}",$date,$print);
