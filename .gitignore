@@ -7,3 +7,4 @@ sandbox
 temp
 .DS_Store
 protected/runtime/*
+protected/config/main.php
