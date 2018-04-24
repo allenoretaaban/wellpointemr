@@ -443,7 +443,7 @@ class PdsController extends RController
     {
         $pds = Pds::model()->findByPk($_GET['id']);
         $patient = $pds->patient;        
-        $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/pds_back.html'));
+        $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/PDS_back.html'));
         //$print = implode("", file(Yii::app()->getBasePath().'\views\pds\include\pds.html'));
         $imgurl = Yii::app()->request->baseUrl.'/images/pds_folder';
         $print = str_replace("[imgurl]",$imgurl,$print);
@@ -643,7 +643,7 @@ class PdsController extends RController
     {
         $pds = Pds::model()->findByPk($_GET['id']);
         $patient = $pds->patient;        
-        $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/pds_followup.html'));
+        $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/PDS_followup.html'));
         //$print = implode("", file(Yii::app()->getBasePath().'\views\pds\include\pds.html'));
         $imgurl = Yii::app()->request->baseUrl.'/images/pds_followup';
         $print = str_replace("[imgurl]",$imgurl,$print);
