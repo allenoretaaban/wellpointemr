@@ -293,6 +293,15 @@ class PdsController extends RController
             
             $print = implode("", file(Yii::app()->getBasePath().'/views/pds/include/censusReport.html'));
             $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
+
+            $settings = Settings::model()->findByPk(1);   
+            $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+            $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+            $address = str_replace("<br>", " ", $settings->address_html);
+            $address = str_replace("BRANCH LGF", "BRANCH<br>LGF", $address);
+            $address = str_replace("City", "<br>City", $address);
+            $print = str_replace("[address]",$address,$print);
+        
             $print = str_replace("[logopath]",$logo,$print);   
             $print = str_replace("[datefrom]",date('M d, Y', strtotime($_GET['fd'])),$print);
             $print = str_replace("[dateto]",date('M d, Y', strtotime($_GET['td']) ),$print);
@@ -334,7 +343,7 @@ class PdsController extends RController
         $settings = Settings::model()->findByPk(1);   
         $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
         $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
-        $address = str_replace("<br>", " ", $settings->dasma_address_html);
+        $address = str_replace("<br>", " ", $settings->address_html);
         $address = str_replace("BRANCH LGF", "BRANCH<br>LGF", $address);
         $address = str_replace("City", "<br>City", $address);
         $print = str_replace("[address]",$address,$print);
@@ -443,7 +452,7 @@ class PdsController extends RController
         $settings = Settings::model()->findByPk(1);   
         $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
         $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
-        $address = str_replace("<br>", " ", $settings->dasma_address_html);
+        $address = str_replace("<br>", " ", $settings->address_html);
         $address = str_replace("BRANCH LGF", "BRANCH<br>LGF", $address);
         $address = str_replace("City", "<br>City", $address);
         $print = str_replace("[address]",$address,$print);
@@ -536,7 +545,7 @@ class PdsController extends RController
         $settings = Settings::model()->findByPk(1);   
         $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
         $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
-        $address = str_replace("<br>", " ", $settings->dasma_address_html);
+        $address = str_replace("<br>", " ", $settings->address_html);
         $address = str_replace("BRANCH LGF", "BRANCH<br>LGF", $address);
         $address = str_replace("City", "<br>City", $address);
         $print = str_replace("[address]",$address,$print);
@@ -643,7 +652,7 @@ class PdsController extends RController
         $settings = Settings::model()->findByPk(1);   
         $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
         $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
-        $address = str_replace("<br>", " ", $settings->dasma_address_html);
+        $address = str_replace("<br>", " ", $settings->address_html);
         $address = str_replace("BRANCH LGF", "BRANCH<br>LGF", $address);
         $address = str_replace("City", "<br>City", $address);
         $print = str_replace("[address]",$address,$print);
@@ -757,7 +766,7 @@ class PdsController extends RController
         $settings = Settings::model()->findByPk(1);   
         $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
         $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
-        $address = str_replace("<br>", " ", $settings->dasma_address_html);
+        $address = str_replace("<br>", " ", $settings->address_html);
         $address = str_replace("BRANCH LGF", "BRANCH<br>LGF", $address);
         $address = str_replace("City", "<br>City", $address);
         $print = str_replace("[address]",$address,$print);
@@ -864,7 +873,7 @@ class PdsController extends RController
         $settings = Settings::model()->findByPk(1);   
         $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
         $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
-        $address = str_replace("<br>", " ", $settings->dasma_address_html);
+        $address = str_replace("<br>", " ", $settings->address_html);
         $address = str_replace("BRANCH LGF", "BRANCH<br>LGF", $address);
         $address = str_replace("City", "<br>City", $address);
         $print = str_replace("[address]",$address,$print);
