@@ -71,7 +71,7 @@ $this->widget('zii.widgets.grid.CGridView', array( 'template'=>"{summary}\n{page
                         'view' => array
                         (
                             'label'=>'View Billing Items',
-                            'url'=>'Yii::app()->createUrl("hmobilling/view", array("id"=>$data->id))',
+                            'url'=>'Yii::app()->createUrl("hmoBilling/view", array("id"=>$data->id))',
                         ),
                     ),
         ),

@@ -64,10 +64,16 @@ class MaxiCareController extends Controller
     
     private function printSoaSummary($hmo_bill_id)
     {
-           $connection=Yii::app()->db;    
-           $print = implode("", file(Yii::app()->getBasePath().'/modules/MaxiCare/html/printSummary.html')); 
-           
-           $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+            $connection=Yii::app()->db;    
+            $print = implode("", file(Yii::app()->getBasePath().'/modules/MaxiCare/html/printSummary.html')); 
+
+            $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+
+            $settings = Settings::model()->findByPk(1);   
+            $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+            $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+            $print = str_replace("[address]",$settings->address,$print);
+        
             $print = str_replace("[logopath]",$logo,$print);  
               
             $billing_id =  $hmo_bill_id;
@@ -336,6 +342,12 @@ class MaxiCareController extends Controller
             
            
             $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+
+            $settings = Settings::model()->findByPk(1);   
+            $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+            $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+            $print = str_replace("[address]",$settings->address,$print);
+            
             $print = str_replace("[logopath]",$logo,$print);
              echo $print;       
         
@@ -692,6 +704,12 @@ class MaxiCareController extends Controller
             ////////////////////////// with category summary //////////////////////////
            
             $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+
+            $settings = Settings::model()->findByPk(1);   
+            $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+            $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+            $print = str_replace("[address]",$settings->address,$print);
+
             $print = str_replace("[logopath]",$logo,$print);
             
             if ($excel == true){
@@ -964,6 +982,12 @@ class MaxiCareController extends Controller
             ////////////////////////// with category summary //////////////////////////
             
             $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+
+            $settings = Settings::model()->findByPk(1);   
+            $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+            $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+            $print = str_replace("[address]",$settings->address,$print);
+
             $print = str_replace("[logopath]",$logo,$print);
             
             if ($excel == true){
@@ -989,6 +1013,12 @@ class MaxiCareController extends Controller
             $url = Yii::app()->getBasePath() ;         
             $print = implode("", file(Yii::app()->getBasePath().'/modules/MaxiCare/html/printWpPayableCategories.html'));
             $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+
+            $settings = Settings::model()->findByPk(1);   
+            $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+            $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+            $print = str_replace("[address]",$settings->address,$print);
+            
             $print = str_replace("[logopath]",$logo,$print);
             $print = str_replace("[HMO]",$hmo->name,$print);
             

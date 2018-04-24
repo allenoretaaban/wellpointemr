@@ -65,6 +65,11 @@ class ValuCareController extends Controller
            $print = implode("", file(Yii::app()->getBasePath().'/modules/ValuCare/html/printSummary.html')); 
            
            $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+
+            $settings = Settings::model()->findByPk(1);   
+            $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+            $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+            $print = str_replace("[address]",$settings->address,$print);
             $print = str_replace("[logopath]",$logo,$print);  
               
             $billing_id =  $hmo_bill_id;
@@ -358,6 +363,12 @@ class ValuCareController extends Controller
             $print = str_replace("[soa_no]","WPB-".$billing_id,$print);
                                                
             $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+
+            $settings = Settings::model()->findByPk(1);   
+            $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+            $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+            $print = str_replace("[address]",$settings->address,$print);
+            
             $print = str_replace("[logopath]",$logo,$print);
             
             if ($excel == true){
@@ -724,6 +735,12 @@ class ValuCareController extends Controller
 
 
             $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+
+            $settings = Settings::model()->findByPk(1);   
+            $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+            $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+            $print = str_replace("[address]",$settings->address,$print);
+
             $print = str_replace("[logopath]",$logo,$print);
             
             if ($excel == true){
@@ -1004,6 +1021,12 @@ class ValuCareController extends Controller
         ////////////////////////// with category summary //////////////////////////
        
         $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+
+        $settings = Settings::model()->findByPk(1);   
+        $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+        $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+        $print = str_replace("[address]",$settings->address,$print);
+
         $print = str_replace("[logopath]",$logo,$print);
         if ($excel == true){
             $filename = "ValuCare_PayToWp_$hmo_bill_id";
@@ -1029,6 +1052,12 @@ class ValuCareController extends Controller
             $url = Yii::app()->getBasePath() ;         
             $print = implode("", file(Yii::app()->getBasePath().'/modules/ValuCare/html/printWpPayableCategories.html'));
             $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+
+            $settings = Settings::model()->findByPk(1);   
+            $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+            $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+            $print = str_replace("[address]",$settings->address,$print);
+
             $print = str_replace("[logopath]",$logo,$print);
             $print = str_replace("[HMO]",$hmo->name,$print);
             

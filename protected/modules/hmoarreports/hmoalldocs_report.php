@@ -109,6 +109,12 @@
             $print = implode("", file(Yii::app()->getBasePath().'/modules/hmoarreports/includes/printhmoalldocs.html'));
             //$print = implode("", file(Yii::app()->getBasePath().'\modules\hmoarreports\includes\printhmoalldocs.html'));
              $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+             
+            $settings = Settings::model()->findByPk(1);   
+            $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+            $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+            $print = str_replace("[address]",$settings->address,$print);
+
              $print = str_replace("[logopath]",$logo,$print);
              $print = str_replace("[datestart]",$dstart,$print);
              $print = str_replace("[dateend]",$dend,$print);

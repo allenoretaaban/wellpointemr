@@ -58,12 +58,12 @@
     </style>
 	
 	<?php
-		if(!empty($_SESSION['userid'])){
+		/*if(!empty($_SESSION['userid'])){
 	?>
 		<link type="text/css" href=" /cometchat/cometchatcss.php" rel="stylesheet" charset="utf-8">
 		<script type="text/javascript" src=" /cometchat/cometchatjs.php" charset="utf-8"></script>
 	<?php
-		}
+		}*/
 	?>
     
 </head>
@@ -227,7 +227,7 @@
                                     Weekly Billing                            
                                     <ul>
                                         <li><a href="<?php echo Yii::app()->controller->createUrl('/HmoWeekBill/generate',array()); ?>">Generate Weekly Billing</a></li>
-                                        <li><a href="<?php echo Yii::app()->controller->createUrl('/hmobilling/admin',array()); ?>">Weekly Billings</a>
+                                        <li><a href="<?php echo Yii::app()->controller->createUrl('/hmoBilling/admin',array()); ?>">Weekly Billings</a>
                                         </li>
                                                                                
                                     </ul>

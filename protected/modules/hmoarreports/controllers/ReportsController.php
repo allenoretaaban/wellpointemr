@@ -615,13 +615,19 @@ class ReportsController extends Controller
         
         $url = Yii::app()->getBasePath() ;
          
-         $print = implode("", file(Yii::app()->getBasePath().'/modules/hmoarreports/includes/hmoar_summary.html'));
-         $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
-         $print = str_replace("[logopath]",$logo,$print);
-         $print = str_replace("{receivable_total}",$total_bal,$print); 
-         $print = str_replace("[contents]",$contents,$print);
-         echo $print;
-         exit;
+        $print = implode("", file(Yii::app()->getBasePath().'/modules/hmoarreports/includes/hmoar_summary.html'));
+        $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+
+        $settings = Settings::model()->findByPk(1);   
+        $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+        $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+        $print = str_replace("[address]",$settings->address,$print);
+
+        $print = str_replace("[logopath]",$logo,$print);
+        $print = str_replace("{receivable_total}",$total_bal,$print); 
+        $print = str_replace("[contents]",$contents,$print);
+        echo $print;
+        exit;
     }
     
     function generateHMOAllDocs(){

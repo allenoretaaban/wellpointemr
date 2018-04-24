@@ -5,11 +5,18 @@ $dend  = $_GET["end"];
 $toexcel = $_GET["toexcel"];
 
 $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+             
+$settings = Settings::model()->findByPk(1);   
+
 $profile=Yii::app()->getModule('user')->user()->profile;                
 $prepared_by = $profile->first_name.' '.$profile->last_name; 
 
 
 $connection=Yii::app()->db; 
+
+$query = "select * from settings where id = 1";
+$command = $connection->createCommand($query);
+$settings = $command->queryRow();
 
 if ($toexcel == "1"){
     $filename = "HmoIndividualChecks";
@@ -63,29 +70,18 @@ $grantot_net = '&nbsp;';
                    <input class='noprint' type='button' value='Print' onclick='window.print()' />
                    <div style="width:1100px;padding:0 10px 0 10px">
                    
-                        <div align="center">                            
-                                <table style="width:790px">
-                                <tr >
+                        <div align="center">                         
+                            <table style="width:790px">
+                                <tr>
                                     <td>
-                                        <div class="branch"> 
-                                            BACOOR BRANCH<br/>
-                                            31 - 32 LGF SM City Bacoor,<br/>
-                                            Tirona Cor. Aguinaldo Highway, Bacoor, Cavite<br/>
-                                            Tel. No. (046) 970-1850 / Fax # (046) 970-1851
-                                        </div>
+                                        <div class="branch"><?=$settings["bacoor_address_html"] ?></div>
                                     </td>
                                     <td style="text-align:center;" valign=top >
-                                        <img src="<?php echo $logo; ?>" />
+                                        <img src="<?=$logo ?>" style="height:50px;"/>
                                         <div>Medical Clinic and Diagnostic Center, Inc.</div>
                                     </td>
-                                
                                     <td>
-                                          <div class="branch"> 
-                                               ROSARIO BRANCH<br/> 
-                                                Unit 207-208 2nd Floor SM City Rosario,<br/> 
-                                                Tejeros, Convention, Rosario, Cavite  <br/> 
-                                                Tel. No. (046) 971-1839 / Fax #: 971-1838
-                                        </div>
+                                        <div class="branch"><?=$settings["dasma_address_html"] ?></div>
                                     </td>
                                 </tr>
                             </table>
