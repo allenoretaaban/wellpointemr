@@ -15,6 +15,12 @@ class FromTemplateController extends Controller
          
         $print = implode("", file(Yii::app()->getBasePath().'/modules/PrintDiagResult/includes/PrintForm.html'));
         $logo = 'http://'.$_SERVER["HTTP_HOST"].'/images/printdiagresult/wpprintlogo.png';
+
+        $settings = Settings::model()->findByPk(1);   
+        $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+        $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+        $print = str_replace("[address]",$settings->address,$print);
+        
         $print = str_replace("[logopath]",$logo,$print);
         $print = str_replace("[patientid]",$model->patient_id,$print);  
         $print = str_replace("[patientname]",strtoupper($model->patient_name),$print);  
