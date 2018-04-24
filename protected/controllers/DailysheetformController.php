@@ -240,6 +240,7 @@ class DailysheetformController extends RController
             'Gold Card' => 0.0,
             'Silver Card' => 0.0,
             'Bronze Card' => 0.0,
+            'Marketing' => 0.0,
             'Basic Priviledge' => 0.0,
             'Premium Package' => 0.0,
             'Pre-Natal' => 0.0,
@@ -294,6 +295,8 @@ class DailysheetformController extends RController
                                 $incsummary['Silver Card']=$incsummary['Silver Card']+$invoiceItem->total;
                             else if($productservice->provider=="Bronze Card")
                                 $incsummary['Bronze Card']=$incsummary['Bronze Card']+$invoiceItem->total;
+                            else if($productservice->provider=="Marketing")
+                                $incsummary['Marketing']=$incsummary['Marketing']+$invoiceItem->total;
                             else if($productservice->provider=="Premium Package")
                                 $incsummary['Premium Package']=$incsummary['Premium Package']+$invoiceItem->total;
                             else if($productservice->provider=="Basic Priviledge")
