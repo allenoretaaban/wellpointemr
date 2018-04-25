@@ -1,5 +1,7 @@
 <?php
 
+ini_set(’session.gc_maxlifetime’, 120*60); //30 min
+
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
@@ -7,7 +9,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Wellpoint EMR System',
+	'name'=>'Wellpoint Dasmarinas EMR System',
         'theme'=>'classic',
 
 	// preloading 'log' component
@@ -24,10 +26,14 @@ return array(
 	),
 
 	'modules'=>array(
+				'hmoarreports',
                 'ProgrammedResults',
                 'BloodChemResult',   
                 'PrintDiagResult',
                 'AddDiagResult',
+			    'HmoWeekBill',  
+                'ValuCare',  
+                'MaxiCare', 
 		// uncomment the following to enable the Gii tool
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
@@ -110,8 +116,11 @@ return array(
 		*/
 		// uncomment the following to use a MySQL database
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=wellpoint',
+			//'connectionString' => 'mysql:host=localhost;dbname=wpemrdb',
+			//'connectionString' => 'mysql:host=10.10.0.2;dbname=wpemrdb',
+			'connectionString' => 'mysql:host=localhost;dbname=wpemrdlivedb',
 			'emulatePrepare' => true,
+			//'username' => 'root',
 			'username' => 'root',
 			'password' => '',
 			'charset' => 'utf8',
