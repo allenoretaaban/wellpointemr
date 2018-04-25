@@ -243,6 +243,12 @@ class InvoiceController extends RController
         $print = implode("", file(Yii::app()->getBasePath().'/views/invoice/include/invoice.htm'));
         $logo = Yii::app()->request->baseUrl.'/images/printdiagresult/wpprintlogo.png';
         $print = str_replace("[logo]",$logo,$print);
+
+        $settings = Settings::model()->findByPk(1);   
+        $print = str_replace("[bacoor_address_html]",$settings->bacoor_address_html,$print);
+        $print = str_replace("[dasma_address_html]",$settings->dasma_address_html,$print);
+        $print = str_replace("[address_html]",$settings->address_html,$print);
+            
         $print = str_replace("[id]",$invoice->id,$print);
         $date = date('F d, Y', strtotime($invoice->date));
         $print = str_replace("[date]",$date,$print);
