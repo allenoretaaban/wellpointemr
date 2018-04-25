@@ -9,7 +9,7 @@ ini_set(’session.gc_maxlifetime’, 120*60); //30 min
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Wellpoint Dasmarinas EMR System',
+	'name'=>'Wellpoint Bacoor EMR System',
         'theme'=>'classic',
 
 	// preloading 'log' component
@@ -118,11 +118,11 @@ return array(
 		'db'=>array(
 			//'connectionString' => 'mysql:host=localhost;dbname=wpemrdb',
 			//'connectionString' => 'mysql:host=10.10.0.2;dbname=wpemrdb',
-			'connectionString' => 'mysql:host=localhost;dbname=wpemrdlivedb',
+			'connectionString' => 'mysql:host=localhost;dbname=wpemrlivedb',
 			'emulatePrepare' => true,
 			//'username' => 'root',
 			'username' => 'root',
-			'password' => '',
+			'password' => 'qwASzx2010',
 			'charset' => 'utf8',
                         'tablePrefix' => 'auth_',
 		),
