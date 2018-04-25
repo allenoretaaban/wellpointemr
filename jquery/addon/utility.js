@@ -7,11 +7,6 @@ function getCurrentDate()
     return month + "/" + day + "/" + year;
 }
 
-function initCourierAutocomplete(inputElement, courierList)
-{
-    $(inputElement).autocomplete({source:courierList});
-}
-
 // add dependency of a grid to another grid
 function addGridDependency(grid, dependentGrid)
 {
@@ -24,547 +19,283 @@ function addGridDependency(grid, dependentGrid)
     }
 }
 
-function initGrid(title, gridElement, pagerElement, dataUrl, courierList)
-{
-    $(gridElement).jqGrid({
-        url:dataUrl,
-        datatype:'json',
-        colNames:['BookingNo','Ref','Account','Remarks','Courier',
-            'ReferenceNo','DateCreated','CancelledFlag','AccountNo','AccountName',
-            'FirstName','LastName','Address1','Address2','City','Province','PostalCodeOnly',
-            'Landmark','ContactNo','Courier','Remarks','ClientNotes','Status','PrintedFlag',
-            'RelayedFlag','LastCallFlag','CancelRelayedFlag','CancelNotedFlag',
-            'RemarksRelayedFlag', 'RemarksNotedFlag',
-            'DatePrintedString','DateRelayedString', 'DateLastCallString',
-            'DateCancelRelayedString','DateCancelNotedString', 'DateRemarksRelayedString',
-            'DateRemarksNotedString', 'DateCancelledString', 'DateLastRemarksChangedString',
-            'DatePrintedNullFlag'],
-        colModel:[
-            {name:'BookingNo', index:'BookingNo', width:80, hidden:true},
-            {name:'BookingString', index:'ReferenceNo', width:70, sortable:true,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'Account', index:'AccountString', width:250, sortable:false,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'RemarksString', index:'RemarksString', width:100, sortable:false,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'Courier', index:'Courier', width:50, sortable:true,
-                editable: true, edittype:'select', editoptions:{value: courierList},
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'ReferenceNo', index:'ReferenceNo', hidden:true},
-            {name:'DateCreated', index:'DateCreated', hidden:true},
-            {name:'CancelledFlag', index:'CancelledFlag', hidden:true},
-            {name:'AccountNo', index:'AccountNo', hidden:true},
-            {name:'AccountName', index:'AccountName', hidden:true},
-            {name:'FirstName', index:'FirstName', hidden:true},
-            {name:'LastName', index:'LastName', hidden:true},
-            {name:'Address1', index:'Address1', hidden:true},
-            {name:'Address2', index:'Address2', hidden:true},
-            {name:'City', index:'City', hidden:true},
-            {name:'Province', index:'Province', hidden:true},
-            {name:'PostalCodeOnly', index:'PostalCodeOnly', hidden:true},
-            {name:'Landmark', index:'Landmark', hidden:true},
-            {name:'ContactNo', index:'ContactNo', hidden:true},
-            {name:'Courier', index:'Courier', hidden:true},
-            {name:'Remarks', index:'Remarks', hidden:true},
-            {name:'ClientNotes', index:'ClientNotes', hidden:true},
-            {name:'Status', index:'Status',width:100,sortable:false,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'PrintedFlag', index:'PrintedFlag',width:100, hidden:true},
-            {name:'RelayedFlag', index:'RelayedFlag',width:100, hidden:true},
-            {name:'LastCallFlag', index:'LastCallFlag',width:100, hidden:true},
-            {name:'CancelRelayedFlag', index:'CancelRelayedFlag',width:100, hidden:true},
-            {name:'CancelNotedFlag', index:'CancelNotedFlag',width:100, hidden:true},
-            {name:'RemarksRelayedFlag', index:'RemarksRelayedFlag',width:100, hidden:true},
-            {name:'RemarksNotedFlag', index:'RemarksNotedFlag',width:100, hidden:true},
-            {name:'DatePrintedString', index:'DatePrintedString',width:100, hidden:true},
-            {name:'DateRelayedString', index:'DateRelayedString',width:100, hidden:true},
-            {name:'DateLastCallString', index:'DateLastCallString',width:100, hidden:true},
-            {name:'DateCancelRelayedString', index:'DateCancelRelayedString',width:100, hidden:true},
-            {name:'DateCancelNotedString', index:'DateCancelNotedString',width:100, hidden:true},
-            {name:'DateRemarksRelayedString', index:'DateRemarksRelayedString',width:100, hidden:true},
-            {name:'DateRemarksNotedString', index:'DateRemarksNotedString',width:100, hidden:true},
-            {name:'DateCancelledString', index:'DateCancelledString',width:100, hidden:true},
-            {name:'DateLastRemarksChangedString', index:'DateLastRemarksChangedString',width:100, hidden:true},
-            {name:'DatePrintedNullFlag', index:'DatePrintedNullFlag',width:100, hidden:true}
-        ],
-        multiselect: true,
-        multiboxonly: true,
-        height:500,
-        rowNum:30,
-        rowList:[30,60,90],
-        pager:pagerElement,
-        sortname:'ReferenceNo',
-        viewrecords:true,
-        sortorder:"desc",
-        caption:title,
-        loadComplete: function(data) {
-            var count = $(this).getGridParam("records");
-            $(this).setCaption(title + ' (' + count + ')');
-            
-            // reload dependent grids
-            if ($(this).data('Dependency') != null)
-            {
-                var i;
-                var dependency = $(this).data('Dependency');
-                for (i = 0; i < dependency.length; i++)
-                {
-                    $(dependency[i]).trigger("reloadGrid");
-                }
-            }
-        },
-        ondblClickRow:function(rowid, iRow, iCol, e){
-            var gridRow = $(this).jqGrid('getRowData',rowid);
-            document.getElementById("spanReferenceNo").innerHTML = gridRow.ReferenceNo;
-            document.getElementById("spanDateCreated").innerHTML = gridRow.DateCreated;
-            document.getElementById("spanCancelledFlag").innerHTML = (gridRow.CancelledFlag ? "Cancelled" : "Active");
-            document.getElementById("spanAccount").innerHTML = gridRow.AccountName + " (" + gridRow.AccountNo + ")";
-            document.getElementById("spanFirstName").innerHTML = gridRow.FirstName;
-            document.getElementById("spanLastName").innerHTML = gridRow.LastName;
-            document.getElementById("spanAddress1").innerHTML = gridRow.Address1;
-            document.getElementById("spanAddress2").innerHTML = gridRow.Address2;
-            document.getElementById("spanCity").innerHTML = gridRow.City;
-            document.getElementById("spanPostalCode").innerHTML = gridRow.PostalCodeOnly;
-            document.getElementById("spanLandmark").innerHTML = gridRow.Landmark;
-            document.getElementById("spanContactNo").innerHTML = gridRow.ContactNo;
-            document.getElementById("spanCourier").innerHTML = gridRow.Courier;
-            document.getElementById("spanRemarks").innerHTML = gridRow.Remarks;
-            document.getElementById("spanClientNotes").innerHTML = gridRow.ClientNotes;
-            document.getElementById("textCopyPaste").innerHTML = "[" + gridRow.ReferenceNo + "] " + gridRow.FirstName + " " +
-                gridRow.LastName + " (" + gridRow.AccountNo + ") " + gridRow.Address1 + " " + (gridRow.Address2 == "" ? "" : gridRow.Address2 + " ") +
-                gridRow.City + (gridRow.Landmark == "" ? "" : " (" + gridRow.Landmark + ")") +
-                (gridRow.ContactNo == "" ? "" : " " + gridRow.ContactNo) + (gridRow.ClientNotes == "" ? "" : " (" + gridRow.ClientNotes + ")");
-            document.getElementById("spanPrinted").innerHTML = (gridRow.DatePrintedNullFlag == "True" ? "For Printing" : (gridRow.PrintedFlag == "True" ? "Yes (" + gridRow.DatePrintedString + ")" : "No"));
-            document.getElementById("spanRelayed").innerHTML = (gridRow.RelayedFlag == "True" ? "Yes (" + gridRow.DateRelayedString + ")" : "No");
-            document.getElementById("spanLastCall").innerHTML = (gridRow.LastCallFlag == "True" ? "Yes (" + gridRow.DateLastCallString + ")" : "No");
-            document.getElementById("spanCancelRelayed").innerHTML = (gridRow.CancelRelayedFlag == "True" ? "Yes (" + gridRow.DateCancelRelayedString + ")" : "No");
-            document.getElementById("spanCancelNoted").innerHTML = (gridRow.CancelNotedFlag == "True" ? "Yes (" + gridRow.DateCancelNotedString + ")" : "No");
-            document.getElementById("spanRemarksRelayed").innerHTML = (gridRow.RemarksRelayedFlag == "True" ? "Yes (" + gridRow.DateRemarksRelayedString + ")" : "No");
-            document.getElementById("spanRemarksNoted").innerHTML = (gridRow.RemarksNotedFlag == "True" ? "Yes (" + gridRow.DateRemarksNotedString + ")" : "No");
-            $("#divBookingDetails").dialog("open");
-        }
-    });
-    $(gridElement).jqGrid('navGrid',pagerElement,{edit:false,add:false,del:false},{},{},{},{multipleSearch:true});
-}
 
-function initCancelledGrid(title, gridElement, pagerElement, dataUrl, courierList)
+function initPaidTrnxsGrid(title, gridElement, pagerElement, dataUrl)
 {
     $(gridElement).jqGrid({
         url:dataUrl,
         datatype:'json',
-        colNames:['BookingNo','Ref','Account','Remarks','Courier',
-            'ReferenceNo','DateCreated','CancelledFlag','AccountNo','AccountName',
-            'FirstName','LastName','Address1','Address2','City','Province','PostalCodeOnly',
-            'Landmark','ContactNo','Courier','Remarks','ClientNotes','Status','PrintedFlag',
-            'RelayedFlag','LastCallFlag','CancelRelayedFlag','CancelNotedFlag',
-            'RemarksRelayedFlag', 'RemarksNotedFlag',
-            'DatePrintedString','DateRelayedString', 'DateLastCallString',
-            'DateCancelRelayedString','DateCancelNotedString','DateRemarksRelayedString',
-            'DateRemarksNotedString', 'DateCancelledString', 'DateLastRemarksChangedString',
-            'DatePrintedNullFlag'],
+        colNames:['itemid','Pay To', "HMO", "Patient", "Doctor", "Med Svc", "Charge Type", "Charge Fee", "Avail Date", "Encode Date","Patient-Service","Charged","Applied", "Action"],
         colModel:[
-            {name:'BookingNo', index:'BookingNo', width:80, hidden:true},
-            {name:'CancelledBookingString', index:'ReferenceNo', width:70, sortable:true,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'Account', index:'AccountString', width:250, sortable:false,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'RemarksString', index:'RemarksString', width:100, sortable:false,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'Courier', index:'Courier', width:50, sortable:true,
-                editable: true, edittype:'select', editoptions:{value: courierList},
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'ReferenceNo', index:'ReferenceNo', hidden:true},
-            {name:'DateCreated', index:'DateCreated', hidden:true},
-            {name:'CancelledFlag', index:'CancelledFlag', hidden:true},
-            {name:'AccountNo', index:'AccountNo', hidden:true},
-            {name:'AccountName', index:'AccountName', hidden:true},
-            {name:'FirstName', index:'FirstName', hidden:true},
-            {name:'LastName', index:'LastName', hidden:true},
-            {name:'Address1', index:'Address1', hidden:true},
-            {name:'Address2', index:'Address2', hidden:true},
-            {name:'City', index:'City', hidden:true},
-            {name:'Province', index:'Province', hidden:true},
-            {name:'PostalCodeOnly', index:'PostalCodeOnly', hidden:true},
-            {name:'Landmark', index:'Landmark', hidden:true},
-            {name:'ContactNo', index:'ContactNo', hidden:true},
-            {name:'Courier', index:'Courier', hidden:true},
-            {name:'Remarks', index:'Remarks', hidden:true},
-            {name:'ClientNotes', index:'ClientNotes', hidden:true},
-            {name:'Status', index:'Status',width:100,sortable:false,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'PrintedFlag', index:'PrintedFlag',width:100, hidden:true},
-            {name:'RelayedFlag', index:'RelayedFlag',width:100, hidden:true},
-            {name:'LastCallFlag', index:'LastCallFlag',width:100, hidden:true},
-            {name:'CancelRelayedFlag', index:'CancelRelayedFlag',width:100, hidden:true},
-            {name:'CancelNotedFlag', index:'CancelNotedFlag',width:100, hidden:true},
-            {name:'RemarksRelayedFlag', index:'RemarksRelayedFlag',width:100, hidden:true},
-            {name:'RemarksNotedFlag', index:'RemarksNotedFlag',width:100, hidden:true},
-            {name:'DatePrintedString', index:'DatePrintedString',width:100, hidden:true},
-            {name:'DateRelayedString', index:'DateRelayedString',width:100, hidden:true},
-            {name:'DateLastCallString', index:'DateLastCallString',width:100, hidden:true},
-            {name:'DateCancelRelayedString', index:'DateCancelRelayedString',width:100, hidden:true},
-            {name:'DateCancelNotedString', index:'DateCancelNotedString',width:100, hidden:true},
-            {name:'DateRemarksRelayedString', index:'DateRemarksRelayedString',width:100, hidden:true},
-            {name:'DateRemarksNotedString', index:'DateRemarksNotedString',width:100, hidden:true},
-            {name:'DateCancelledString', index:'DateCancelledString',width:100, hidden:true},
-            {name:'DateLastRemarksChangedString', index:'DateLastRemarksChangedString',width:100, hidden:true},
-            {name:'DatePrintedNullFlag', index:'DatePrintedNullFlag',width:100, hidden:true}
+            {name:'itemid',index:'itemid',width:80,hidden:true},
+            {name:'payto',index:'payto', width:120,sortable:false,hidden:true},            
+            {name:'hmo_name',index:'hmo_name', width:120,sortable:false,hidden:true},            
+            {name:'patient_name',index:'patient_name', width:120,sortable:false,hidden:true}, 
+            {name:'claim_doctor_name',index:'claim_doctor_name', width:120,sortable:false,hidden:true},            
+            {name:'med_service',index:'med_service', width:120,sortable:false,hidden:true},            
+            {name:'charge_type',index:'charge_type', width:120,sortable:false,hidden:true},            
+            {name:'charge_fee',index:'charge_fee', width:120,sortable:false,hidden:true},            
+            {name:'avail_date',index:'avail_date', width:120,sortable:false,hidden:true},            
+            {name:'entry_date',index:'entry_date', width:120,sortable:false,hidden:true},  
+            {name:'paid_details',index:'paid_details', width:200,sortable:false,hidden:false},            
+            {name:'paid_charge',index:'paid_charge', width:120,sortable:false,hidden:false},            
+            {name:'paid_applied',index:'paid_applied', width:120,sortable:false,hidden:false},  
+            {name:'Action',index:'Action',width:80,sortable:false}          
+            
         ],
-        multiselect: true,
-        multiboxonly: true,
-        height:500,
+        multiselect: false,
+        multiboxonly: false,
+        height:450,
         rowNum:30,
         rowList:[30,60,90],
         pager:pagerElement,
-        sortname:'ReferenceNo',
+        sortname:'itemid',
         viewrecords:true,
         sortorder:"desc",
         caption:title,
         loadComplete: function(data) {
             var count = $(this).getGridParam("records");
-            $(this).setCaption(title + ' (' + count + ')');
-            
-            // reload dependent grids
-            if ($(this).data('Dependency') != null)
-            {
-                var i;
-                var dependency = $(this).data('Dependency');
-                for (i = 0; i < dependency.length; i++)
-                {
-                    $(dependency[i]).trigger("reloadGrid");
-                }
-            }
-        },
-        ondblClickRow:function(rowid, iRow, iCol, e){
-            var gridRow = $(this).jqGrid('getRowData',rowid);
-            document.getElementById("spanReferenceNo").innerHTML = gridRow.ReferenceNo;
-            document.getElementById("spanDateCreated").innerHTML = gridRow.DateCreated;
-            document.getElementById("spanCancelledFlag").innerHTML = (gridRow.CancelledFlag ? "Cancelled" : "Active");
-            document.getElementById("spanAccount").innerHTML = gridRow.AccountName + " (" + gridRow.AccountNo + ")";
-            document.getElementById("spanFirstName").innerHTML = gridRow.FirstName;
-            document.getElementById("spanLastName").innerHTML = gridRow.LastName;
-            document.getElementById("spanAddress1").innerHTML = gridRow.Address1;
-            document.getElementById("spanAddress2").innerHTML = gridRow.Address2;
-            document.getElementById("spanCity").innerHTML = gridRow.City;
-            document.getElementById("spanPostalCode").innerHTML = gridRow.PostalCodeOnly;
-            document.getElementById("spanLandmark").innerHTML = gridRow.Landmark;
-            document.getElementById("spanContactNo").innerHTML = gridRow.ContactNo;
-            document.getElementById("spanCourier").innerHTML = gridRow.Courier;
-            document.getElementById("spanRemarks").innerHTML = gridRow.Remarks;
-            document.getElementById("spanClientNotes").innerHTML = gridRow.ClientNotes;
-            document.getElementById("textCopyPaste").innerHTML = "[" + gridRow.ReferenceNo + "] " + gridRow.FirstName + " " +
-                gridRow.LastName + " (" + gridRow.AccountNo + ") " + gridRow.Address1 + " " + (gridRow.Address2 == "" ? "" : gridRow.Address2 + " ") +
-                gridRow.City + (gridRow.Landmark == "" ? "" : " (" + gridRow.Landmark + ")") +
-                (gridRow.ContactNo == "" ? "" : " " + gridRow.ContactNo) + (gridRow.ClientNotes == "" ? "" : " (" + gridRow.ClientNotes + ")");
-            document.getElementById("spanPrinted").innerHTML = (gridRow.DatePrintedNullFlag == "True" ? "For Printing" : (gridRow.PrintedFlag == "True" ? "Yes (" + gridRow.DatePrintedString + ")" : "No"));
-            document.getElementById("spanRelayed").innerHTML = (gridRow.RelayedFlag == "True" ? "Yes (" + gridRow.DateRelayedString + ")" : "No");
-            document.getElementById("spanLastCall").innerHTML = (gridRow.LastCallFlag == "True" ? "Yes (" + gridRow.DateLastCallString + ")" : "No");
-            document.getElementById("spanCancelRelayed").innerHTML = (gridRow.CancelRelayedFlag == "True" ? "Yes (" + gridRow.DateCancelRelayedString + ")" : "No");
-            document.getElementById("spanCancelNoted").innerHTML = (gridRow.CancelNotedFlag == "True" ? "Yes (" + gridRow.DateCancelNotedString + ")" : "No");
-            document.getElementById("spanRemarksRelayed").innerHTML = (gridRow.RemarksRelayedFlag == "True" ? "Yes (" + gridRow.DateRemarksRelayedString + ")" : "No");
-            document.getElementById("spanRemarksNoted").innerHTML = (gridRow.RemarksNotedFlag == "True" ? "Yes (" + gridRow.DateRemarksNotedString + ")" : "No");
-            $("#divBookingDetails").dialog("open");
-        }
-    });
-    $(gridElement).jqGrid('navGrid',pagerElement,{edit:false,add:false,del:false},{},{},{},{multipleSearch:true});
-}
-
-function initRemarksChangedGrid(title, gridElement, pagerElement, dataUrl, courierList)
-{
-    $(gridElement).jqGrid({
-        url:dataUrl,
-        datatype:'json',
-        colNames:['BookingNo','Ref','Account','Remarks','Courier',
-            'ReferenceNo','DateCreated','CancelledFlag','AccountNo','AccountName',
-            'FirstName','LastName','Address1','Address2','City','Province','PostalCodeOnly',
-            'Landmark','ContactNo','Courier','Remarks','ClientNotes','Status','PrintedFlag',
-            'RelayedFlag','LastCallFlag','CancelRelayedFlag','CancelNotedFlag',
-            'RemarksRelayedFlag', 'RemarksNotedFlag',
-            'DatePrintedString','DateRelayedString', 'DateLastCallString',
-            'DateCancelRelayedString','DateCancelNotedString','DateRemarksRelayedString',
-            'DateRemarksNotedString', 'DateCancelledString', 'DateLastRemarksChangedString',
-            'DatePrintedNullFlag'],
-        colModel:[
-            {name:'BookingNo', index:'BookingNo', width:80, hidden:true},
-            {name:'RemarksChangedBookingString', index:'ReferenceNo', width:70, sortable:true,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'Account', index:'AccountString', width:250, sortable:false,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'RemarksString', index:'RemarksString', width:100, sortable:false,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'Courier', index:'Courier', width:50, sortable:true,
-                editable: true, edittype:'select', editoptions:{value: courierList},
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'ReferenceNo', index:'ReferenceNo', hidden:true},
-            {name:'DateCreated', index:'DateCreated', hidden:true},
-            {name:'CancelledFlag', index:'CancelledFlag', hidden:true},
-            {name:'AccountNo', index:'AccountNo', hidden:true},
-            {name:'AccountName', index:'AccountName', hidden:true},
-            {name:'FirstName', index:'FirstName', hidden:true},
-            {name:'LastName', index:'LastName', hidden:true},
-            {name:'Address1', index:'Address1', hidden:true},
-            {name:'Address2', index:'Address2', hidden:true},
-            {name:'City', index:'City', hidden:true},
-            {name:'Province', index:'Province', hidden:true},
-            {name:'PostalCodeOnly', index:'PostalCodeOnly', hidden:true},
-            {name:'Landmark', index:'Landmark', hidden:true},
-            {name:'ContactNo', index:'ContactNo', hidden:true},
-            {name:'Courier', index:'Courier', hidden:true},
-            {name:'Remarks', index:'Remarks', hidden:true},
-            {name:'ClientNotes', index:'ClientNotes', hidden:true},
-            {name:'Status', index:'Status',width:100,sortable:false,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'PrintedFlag', index:'PrintedFlag',width:100, hidden:true},
-            {name:'RelayedFlag', index:'RelayedFlag',width:100, hidden:true},
-            {name:'LastCallFlag', index:'LastCallFlag',width:100, hidden:true},
-            {name:'CancelRelayedFlag', index:'CancelRelayedFlag',width:100, hidden:true},
-            {name:'CancelNotedFlag', index:'CancelNotedFlag',width:100, hidden:true},
-            {name:'RemarksRelayedFlag', index:'RemarksRelayedFlag',width:100, hidden:true},
-            {name:'RemarksNotedFlag', index:'RemarksNotedFlag',width:100, hidden:true},
-            {name:'DatePrintedString', index:'DatePrintedString',width:100, hidden:true},
-            {name:'DateRelayedString', index:'DateRelayedString',width:100, hidden:true},
-            {name:'DateLastCallString', index:'DateLastCallString',width:100, hidden:true},
-            {name:'DateCancelRelayedString', index:'DateCancelRelayedString',width:100, hidden:true},
-            {name:'DateCancelNotedString', index:'DateCancelNotedString',width:100, hidden:true},
-            {name:'DateRemarksRelayedString', index:'DateRemarksRelayedString',width:100, hidden:true},
-            {name:'DateRemarksNotedString', index:'DateRemarksNotedString',width:100, hidden:true},
-            {name:'DateCancelledString', index:'DateCancelledString',width:100, hidden:true},
-            {name:'DateLastRemarksChangedString', index:'DateLastRemarksChangedString',width:100, hidden:true},
-            {name:'DatePrintedNullFlag', index:'DatePrintedNullFlag',width:100, hidden:true}
-        ],
-        multiselect: true,
-        multiboxonly: true,
-        height:500,
-        rowNum:30,
-        rowList:[30,60,90],
-        pager:pagerElement,
-        sortname:'ReferenceNo',
-        viewrecords:true,
-        sortorder:"desc",
-        caption:title,
-        loadComplete: function(data) {
-            var count = $(this).getGridParam("records");
-            $(this).setCaption(title + ' (' + count + ')');
-            
-            // reload dependent grids
-            if ($(this).data('Dependency') != null)
-            {
-                var i;
-                var dependency = $(this).data('Dependency');
-                for (i = 0; i < dependency.length; i++)
-                {
-                    $(dependency[i]).trigger("reloadGrid");
-                }
-            }
-        },
-        ondblClickRow:function(rowid, iRow, iCol, e){
-            var gridRow = $(this).jqGrid('getRowData',rowid);
-            document.getElementById("spanReferenceNo").innerHTML = gridRow.ReferenceNo;
-            document.getElementById("spanDateCreated").innerHTML = gridRow.DateCreated;
-            document.getElementById("spanCancelledFlag").innerHTML = (gridRow.CancelledFlag ? "Cancelled" : "Active");
-            document.getElementById("spanAccount").innerHTML = gridRow.AccountName + " (" + gridRow.AccountNo + ")";
-            document.getElementById("spanFirstName").innerHTML = gridRow.FirstName;
-            document.getElementById("spanLastName").innerHTML = gridRow.LastName;
-            document.getElementById("spanAddress1").innerHTML = gridRow.Address1;
-            document.getElementById("spanAddress2").innerHTML = gridRow.Address2;
-            document.getElementById("spanCity").innerHTML = gridRow.City;
-            document.getElementById("spanPostalCode").innerHTML = gridRow.PostalCodeOnly;
-            document.getElementById("spanLandmark").innerHTML = gridRow.Landmark;
-            document.getElementById("spanContactNo").innerHTML = gridRow.ContactNo;
-            document.getElementById("spanCourier").innerHTML = gridRow.Courier;
-            document.getElementById("spanRemarks").innerHTML = gridRow.Remarks;
-            document.getElementById("spanClientNotes").innerHTML = gridRow.ClientNotes;
-            document.getElementById("textCopyPaste").innerHTML = "[" + gridRow.ReferenceNo + "] " + gridRow.FirstName + " " +
-                gridRow.LastName + " (" + gridRow.AccountNo + ") " + gridRow.Address1 + " " + (gridRow.Address2 == "" ? "" : gridRow.Address2 + " ") +
-                gridRow.City + (gridRow.Landmark == "" ? "" : " (" + gridRow.Landmark + ")") +
-                (gridRow.ContactNo == "" ? "" : " " + gridRow.ContactNo) + (gridRow.ClientNotes == "" ? "" : " (" + gridRow.ClientNotes + ")");
-            document.getElementById("spanPrinted").innerHTML = (gridRow.DatePrintedNullFlag == "True" ? "For Printing" : (gridRow.PrintedFlag == "True" ? "Yes (" + gridRow.DatePrintedString + ")" : "No"));
-            document.getElementById("spanRelayed").innerHTML = (gridRow.RelayedFlag == "True" ? "Yes (" + gridRow.DateRelayedString + ")" : "No");
-            document.getElementById("spanLastCall").innerHTML = (gridRow.LastCallFlag == "True" ? "Yes (" + gridRow.DateLastCallString + ")" : "No");
-            document.getElementById("spanCancelRelayed").innerHTML = (gridRow.CancelRelayedFlag == "True" ? "Yes (" + gridRow.DateCancelRelayedString + ")" : "No");
-            document.getElementById("spanCancelNoted").innerHTML = (gridRow.CancelNotedFlag == "True" ? "Yes (" + gridRow.DateCancelNotedString + ")" : "No");
-            document.getElementById("spanRemarksRelayed").innerHTML = (gridRow.RemarksRelayedFlag == "True" ? "Yes (" + gridRow.DateRemarksRelayedString + ")" : "No");
-            document.getElementById("spanRemarksNoted").innerHTML = (gridRow.RemarksNotedFlag == "True" ? "Yes (" + gridRow.DateRemarksNotedString + ")" : "No");
-            $("#divBookingDetails").dialog("open");
-        }
-    });
-    $(gridElement).jqGrid('navGrid',pagerElement,{edit:false,add:false,del:false},{},{},{},{multipleSearch:true});
-}
-
-function initDispatchGrid(title, gridElement, pagerElement, dataUrl, courierList)
-{
-    $(gridElement).jqGrid({
-        url:dataUrl,
-        datatype:'json',
-        colNames:['BookingNo','Ref','Account','Remarks','Courier',
-            'ReferenceNo','DateCreated','CancelledFlag','AccountNo','AccountName',
-            'FirstName','LastName','Address1','Address2','City','Province','PostalCodeOnly',
-            'Landmark','ContactNo','Courier','Remarks','ClientNotes','Status','PrintedFlag',
-            'RelayedFlag','LastCallFlag','CancelRelayedFlag','CancelNotedFlag',
-            'RemarksRelayedFlag', 'RemarksNotedFlag',
-            'DatePrintedString','DateRelayedString', 'DateLastCallString',
-            'DateCancelRelayedString','DateCancelNotedString','DateRemarksRelayedString',
-            'DateRemarksNotedString', 'DateCancelledString', 'DateLastRemarksChangedString',
-            'DatePrintedNullFlag'],
-        colModel:[
-            {name:'BookingNo', index:'BookingNo', width:80, hidden:true},
-            {name:'BookingString', index:'ReferenceNo', width:70, sortable:true,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'Account', index:'AccountString', width:250, sortable:false,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'RemarksString', index:'RemarksString', width:100, sortable:false,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'Courier', index:'Courier', width:50, sortable:true,
-                editable: true, edittype:'select', editoptions:{value: courierList},
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'ReferenceNo', index:'ReferenceNo', hidden:true},
-            {name:'DateCreated', index:'DateCreated', hidden:true},
-            {name:'CancelledFlag', index:'CancelledFlag', hidden:true},
-            {name:'AccountNo', index:'AccountNo', hidden:true},
-            {name:'AccountName', index:'AccountName', hidden:true},
-            {name:'FirstName', index:'FirstName', hidden:true},
-            {name:'LastName', index:'LastName', hidden:true},
-            {name:'Address1', index:'Address1', hidden:true},
-            {name:'Address2', index:'Address2', hidden:true},
-            {name:'City', index:'City', hidden:true},
-            {name:'Province', index:'Province', hidden:true},
-            {name:'PostalCodeOnly', index:'PostalCodeOnly', hidden:true},
-            {name:'Landmark', index:'Landmark', hidden:true},
-            {name:'ContactNo', index:'ContactNo', hidden:true},
-            {name:'Courier', index:'Courier', hidden:true},
-            {name:'Remarks', index:'Remarks', hidden:true},
-            {name:'ClientNotes', index:'ClientNotes', hidden:true},
-            {name:'Status', index:'Status',width:100,sortable:false,
-                searchoptions:{sopt:['eq','cn','nc']}},
-            {name:'PrintedFlag', index:'PrintedFlag',width:100, hidden:true},
-            {name:'RelayedFlag', index:'RelayedFlag',width:100, hidden:true},
-            {name:'LastCallFlag', index:'LastCallFlag',width:100, hidden:true},
-            {name:'CancelRelayedFlag', index:'CancelRelayedFlag',width:100, hidden:true},
-            {name:'CancelNotedFlag', index:'CancelNotedFlag',width:100, hidden:true},
-            {name:'RemarksRelayedFlag', index:'RemarksRelayedFlag',width:100, hidden:true},
-            {name:'RemarksNotedFlag', index:'RemarksNotedFlag',width:100, hidden:true},
-            {name:'DatePrintedString', index:'DatePrintedString',width:100, hidden:true},
-            {name:'DateRelayedString', index:'DateRelayedString',width:100, hidden:true},
-            {name:'DateLastCallString', index:'DateLastCallString',width:100, hidden:true},
-            {name:'DateCancelRelayedString', index:'DateCancelRelayedString',width:100, hidden:true},
-            {name:'DateCancelNotedString', index:'DateCancelNotedString',width:100, hidden:true},
-            {name:'DateRemarksRelayedString', index:'DateRemarksRelayedString',width:100, hidden:true},
-            {name:'DateRemarksNotedString', index:'DateRemarksNotedString',width:100, hidden:true},
-            {name:'DateCancelledString', index:'DateCancelledString',width:100, hidden:true},
-            {name:'DateLastRemarksChangedString', index:'DateLastRemarksChangedString',width:100, hidden:true},
-            {name:'DatePrintedNullFlag', index:'DatePrintedNullFlag',width:100, hidden:true}
-        ],
-        multiselect: true,
-        multiboxonly: true,
-        height:500,
-        rowNum:30,
-        rowList:[30,60,90],
-        pager:pagerElement,
-        sortname:'ReferenceNo',
-        viewrecords:true,
-        sortorder:"desc",
-        caption:title,
-        loadComplete: function(data) {
-            var count = $(this).getGridParam("records");
-            $(this).setCaption(title + ' (' + count + ')');
-            
-            // reload dependent grids
-            if ($(this).data('Dependency') != null)
-            {
-                var i;
-                var dependency = $(this).data('Dependency');
-                for (i = 0; i < dependency.length; i++)
-                {
-                    $(dependency[i]).trigger("reloadGrid");
-                }
-            }
-        },
-        ondblClickRow:function(rowid, iRow, iCol, e){
-            var gridRow = $(this).jqGrid('getRowData',rowid);
-            document.getElementById("spanReferenceNo").innerHTML = gridRow.ReferenceNo;
-            document.getElementById("spanDateCreated").innerHTML = gridRow.DateCreated;
-            document.getElementById("spanCancelledFlag").innerHTML = (gridRow.CancelledFlag ? "Cancelled" : "Active");
-            document.getElementById("spanAccount").innerHTML = gridRow.AccountName + " (" + gridRow.AccountNo + ")";
-            document.getElementById("spanFirstName").innerHTML = gridRow.FirstName;
-            document.getElementById("spanLastName").innerHTML = gridRow.LastName;
-            document.getElementById("spanAddress1").innerHTML = gridRow.Address1;
-            document.getElementById("spanAddress2").innerHTML = gridRow.Address2;
-            document.getElementById("spanCity").innerHTML = gridRow.City;
-            document.getElementById("spanPostalCode").innerHTML = gridRow.PostalCodeOnly;
-            document.getElementById("spanLandmark").innerHTML = gridRow.Landmark;
-            document.getElementById("spanContactNo").innerHTML = gridRow.ContactNo;
-            document.getElementById("spanCourier").innerHTML = gridRow.Courier;
-            document.getElementById("spanRemarks").innerHTML = gridRow.Remarks;
-            document.getElementById("spanClientNotes").innerHTML = gridRow.ClientNotes;
-            document.getElementById("textCopyPaste").innerHTML = "[" + gridRow.ReferenceNo + "] " + gridRow.FirstName + " " +
-                gridRow.LastName + " (" + gridRow.AccountNo + ") " + gridRow.Address1 + " " + (gridRow.Address2 == "" ? "" : gridRow.Address2 + " ") +
-                gridRow.City + (gridRow.Landmark == "" ? "" : " (" + gridRow.Landmark + ")") +
-                (gridRow.ContactNo == "" ? "" : " " + gridRow.ContactNo) + (gridRow.ClientNotes == "" ? "" : " (" + gridRow.ClientNotes + ")");
-            document.getElementById("spanPrinted").innerHTML = (gridRow.DatePrintedNullFlag == "True" ? "For Printing" : (gridRow.PrintedFlag == "True" ? "Yes (" + gridRow.DatePrintedString + ")" : "No"));
-            document.getElementById("spanRelayed").innerHTML = (gridRow.RelayedFlag == "True" ? "Yes (" + gridRow.DateRelayedString + ")" : "No");
-            document.getElementById("spanLastCall").innerHTML = (gridRow.LastCallFlag == "True" ? "Yes (" + gridRow.DateLastCallString + ")" : "No");
-            document.getElementById("spanCancelRelayed").innerHTML = (gridRow.CancelRelayedFlag == "True" ? "Yes (" + gridRow.DateCancelRelayedString + ")" : "No");
-            document.getElementById("spanCancelNoted").innerHTML = (gridRow.CancelNotedFlag == "True" ? "Yes (" + gridRow.DateCancelNotedString + ")" : "No");
-            document.getElementById("spanRemarksRelayed").innerHTML = (gridRow.RemarksRelayedFlag == "True" ? "Yes (" + gridRow.DateRemarksRelayedString + ")" : "No");
-            document.getElementById("spanRemarksNoted").innerHTML = (gridRow.RemarksNotedFlag == "True" ? "Yes (" + gridRow.DateRemarksNotedString + ")" : "No");
-            $("#divBookingDetails").dialog("open");
-        }
-    });
-    $(gridElement).jqGrid('navGrid',pagerElement,{edit:false,add:false,del:false},{},{},{},{multipleSearch:true});
-}
-
-function initStatsGrid(title, gridElement, pagerElement, dataUrl)
-{
-    $(gridElement).jqGrid({
-        url:dataUrl,
-        datatype:'json',
-        colNames:['SeqNo','Courier','Total','Cancelled','Printed','Relayed','LastCall','Action'],
-        colModel:[
-            {name:'SeqNo',index:'SeqNo',width:80,hidden:true},
-            {name:'Courier',index:'Courier', width:120,sortable:true},
-            {name:'Total',index:'Total',width:60,sortable:true},
-            {name:'Cancelled',index:'Cancelled',width:60,sortable:true},
-            {name:'Printed',index:'Printed', width:60,sortable:true},
-            {name:'Relayed',index:'Relayed', width:60,sortable:true},
-            {name:'LastCall',index:'LastCall',width:60,sortable:true},
-            {name:'Action',index:'Action',width:135,sortable:false}
-        ],
-        multiselect: true,
-        multiboxonly: true,
-        height:500,
-        rowNum:30,
-        rowList:[30,60,90],
-        pager:pagerElement,
-        sortname:'Courier',
-        viewrecords:true,
-        sortorder:"desc",
-        caption:title,
-        loadComplete: function(data) {
-            var count = $(this).getGridParam("records");
-            $(this).setCaption(title + ' (' + count + ')');
-            
-            // reload dependent grids
-            if ($(this).data('Dependency') != null)
-            {
-                var i;
-                var dependency = $(this).data('Dependency');
-                for (i = 0; i < dependency.length; i++)
-                {
-                    $(dependency[i]).trigger("reloadGrid");
-                }
-            }
             
             var ids = $(this).getDataIDs();
             for (var i = 0; i < ids.length; i++) {
                 var rowId = ids[i];
-                $(this).jqGrid('setRowData', rowId, {Action:"<a href='#' onclick='addTab(\"" +
-                    $(this).getCell(rowId, 'Courier') + "\")'>Manage</a>&nbsp" +
-                    "<a href='#' onclick='printPOP(\"" + $(this).getCell(rowId, 'Courier') +
-                    "\", \"" + document.getElementById("txtDate").value + "\")'>Print</a>&nbsp" +
-                    "<a href='#' onclick='printLastCall(\"" + $(this).getCell(rowId, 'Courier') +
-                    "\", \"" + document.getElementById("txtDate").value + "\")'>Last Call</a>"});
+                $(this).jqGrid('setRowData', rowId, {Action:"<a href='#' onclick='disApply(\"" +
+                    $(this).getCell(rowId, 'itemid') + "\", " +
+                    "\"" + $(this).getCell(rowId, 'charge_fee') + "\"," + 
+                    "\"" + $(this).getCell(rowId, 'patient_name') + "\"," +
+                    "\"" + $(this).getCell(rowId, 'med_service') + "\"" +
+                    ")'>Disapply</a>&nbsp" });
             }
+            
+            
         }
     });
     $(gridElement).jqGrid('navGrid',pagerElement,{edit:false,add:false,del:false,search:false},{},{},{},{multipleSearch:true});
 }
 
+
+
+function initTrnxsGrid(title, gridElement, pagerElement, dataUrl)
+{
+    $(gridElement).jqGrid({
+        url:dataUrl,
+        datatype:'json',
+        colNames:['itemid','Pay To', "HMO", "Patient", "Doctor", "Med Svc", "Charge Type", "Charge Fee", "Avail Date", "Encode Date","Patient-HMO","Service","Charge","Is Applied", "Action"],
+        colModel:[
+            {name:'itemid',index:'itemid',width:80,hidden:true},
+            {name:'payto',index:'payto', width:120,sortable:false,hidden:true},            
+            {name:'hmo_name',index:'hmo_name', width:120,sortable:false,hidden:true},            
+            {name:'patient_name',index:'patient_name', width:120,sortable:false,hidden:true}, 
+            {name:'claim_doctor_name',index:'claim_doctor_name', width:120,sortable:false,hidden:true},            
+            {name:'med_service',index:'med_service', width:120,sortable:false,hidden:true},            
+            {name:'charge_type',index:'charge_type', width:120,sortable:false,hidden:true},            
+            {name:'charge_fee',index:'charge_fee', width:120,sortable:false,hidden:true},            
+            {name:'avail_date',index:'avail_date', width:120,sortable:false,hidden:true},            
+            {name:'entry_date',index:'entry_date', width:120,sortable:false,hidden:true},  
+            {name:'detail_patient',index:'detail_patient', width:120,sortable:false,hidden:false},            
+            {name:'detail_service',index:'detail_service', width:200,sortable:false,hidden:false},            
+            {name:'detail_charge',index:'detail_charge', width:120,sortable:false,hidden:false},  
+            {name:'isapplied',index:'isapplied',width:80,hidden:true},
+            {name:'Action',index:'Action',width:100,sortable:false}          
+            
+        ],
+        multiselect: false,
+        multiboxonly: false,
+        height:500,
+        rowNum:30,
+        rowList:[30,60,90],
+        pager:pagerElement,
+        sortname:'itemid',
+        viewrecords:true,
+        sortorder:"desc",
+        caption:title,
+        loadComplete: function(data) {
+            var count = $(this).getGridParam("records");
+            
+            var ids = $(this).getDataIDs();
+            for (var i = 0; i < ids.length; i++) {
+                var rowId = ids[i];
+                flagapplied = $(this).getCell(rowId, 'isapplied');
+                if (parseInt(flagapplied) == 0){
+                    $(this).jqGrid('setRowData', rowId, {Action:"<a href='#' onclick='applyCheck(\"" +
+                    $(this).getCell(rowId, 'itemid') + "\", " +
+                    "\"" + $(this).getCell(rowId, 'charge_fee') + "\"," + 
+                    "\"" + $(this).getCell(rowId, 'patient_name') + "\"," +
+                    "\"" + $(this).getCell(rowId, 'med_service') + "\"" +
+                    ")'>Apply Check</a>&nbsp" });
+                }else{
+                    $(this).jqGrid('setRowData', rowId, {Action:"<span style='color:red'>Applied</span>" });
+                }
+                
+                
+                
+            }
+            
+            
+        }
+    });
+    $(gridElement).jqGrid('navGrid',pagerElement,{edit:false,add:false,del:false,search:false},{},{},{},{multipleSearch:true});
+}
+
+function initHmoTrnxsGrid(title, gridElement, pagerElement, dataUrl)
+{
+    $(gridElement).jqGrid({
+        url:dataUrl,
+        datatype:'json', 
+        colNames:['itemid', "Patient", 'HMO', 'Pay To', 'Medical Service',  "Fee", "Encode Date","Paid","Tax","Provider Excess","Member Excess","HMO Excess","Is Applied", "Check No", "Action"],
+        //colNames:['itemid', "Patient", 'HMO', 'Pay To', 'Doctor', "Med Svc", "Fee", "Avail Date", "Encode Date","Paid","Tax","Provider Excess","Member Excess","HMO Excess","Is Applied", "Check No", "Action"],
+        colModel:[
+            {name:'itemid',index:'itemid',width:80,hidden:true},
+            {name:'patient_name',index:'patient_name', width:120,sortable:false,hidden:false},
+            {name:'hmo_name',index:'hmo_name', width:120,sortable:false,hidden:true},            
+            {name:'payto',index:'payto', width:120,sortable:false,hidden:false},        
+            {name:'claim_doctor_name',index:'claim_doctor_name', width:240,sortable:false,hidden:false},            
+            //{name:'med_service',index:'med_service', width:120,sortable:false,hidden:false},            
+            {name:'charge_fee',index:'charge_fee', width:120,sortable:false,hidden:false},            
+            //{name:'avail_date',index:'avail_date', width:120,sortable:false,hidden:false},            
+            {name:'entry_date',index:'entry_date', width:120,sortable:false,hidden:true},  
+            {name:'paid_amnt',index:'paid_amnt',width:80,hidden:false},
+            {name:'wtax',index:'wtax',width:80,hidden:false},
+            {name:'provider_xces',index:'provider_xces',width:80,hidden:false},
+            {name:'member_xces',index:'member_xces',width:80,hidden:false},
+            {name:'hmo_xces',index:'hmo_xces',width:80,hidden:false},
+            {name:'isapplied',index:'isapplied',width:80,hidden:true},
+            {name:'hmo_billing_id',index:'hmo_billing_id',width:80,hidden:false},       
+            {name:'Action',index:'Action',width:100,sortable:false}   
+            
+            
+        ],
+        multiselect: false,
+        multiboxonly: false,
+        height:500,
+        rowNum:50,
+        rowList:[50,100,500,1000],
+        pager:pagerElement,
+        sortname:'itemid',
+        viewrecords:true,
+        sortorder:"desc",
+        caption:title,
+        loadComplete: function(data) {
+            var count = $(this).getGridParam("records");
+            
+            var ids = $(this).getDataIDs();
+            for (var i = 0; i < ids.length; i++) {
+                var rowId = ids[i];
+                flagapplied = $(this).getCell(rowId, 'isapplied');
+                if (parseInt(flagapplied) == 0){
+                    /*
+                    $(this).jqGrid('setRowData', rowId, {Action:"<a href='#' onclick='applyCheck(\"" +
+                    $(this).getCell(rowId, 'itemid') + "\", " +
+                    "\"" + $(this).getCell(rowId, 'charge_fee') + "\"," + 
+                    "\"" + $(this).getCell(rowId, 'patient_name') + "\"," +
+                    "\"" + $(this).getCell(rowId, 'med_service') + "\"" +
+                    ")'>Apply Check</a>&nbsp" });*/
+                    $(this).jqGrid('setRowData', rowId, {Action:"<span style='z-index:99999; cursor: pointer;'  onMouseOver=\"this.style.color='#000'\"  onMouseOut=\"this.style.color='#000'\"  onclick='applyCheck(\"" +
+                    $(this).getCell(rowId, 'itemid') + "\", " +
+                    "\"" + $(this).getCell(rowId, 'charge_fee') + "\"," + 
+                    "\"" + $(this).getCell(rowId, 'patient_name') + "\"," +
+                    "\"" + $(this).getCell(rowId, 'med_service') + "\"" +
+                    ")'>Apply Check</span><br/><span style='z-index:99999; cursor: pointer;'  onMouseOver=\"this.style.color='#000'\"  onMouseOut=\"this.style.color='#000'\" onclick='QuickCheckApply(\"" +
+                    $(this).getCell(rowId, 'itemid') + "\", " +
+                    "\"" + $(this).getCell(rowId, 'charge_fee') + "\"," + 
+                    "\"" + $(this).getCell(rowId, 'patient_name') + "\"," +
+                    "\"" + $(this).getCell(rowId, 'med_service') + "\"" +
+                    ")'>Quick Apply</span>" });
+                    
+                }else{
+                  $(this).jqGrid('setRowData', rowId, {Action:"<span style='color:red'>Applied</span><br/><span style='z-index:99999; cursor: pointer;'  onMouseOver=\"this.style.color='#000'\"  onMouseOut=\"this.style.color='#000'\" onclick='disApply(\"" +
+                    $(this).getCell(rowId, 'itemid') + "\", " +
+                    "\"" + $(this).getCell(rowId, 'charge_fee') + "\"," + 
+                    "\"" + $(this).getCell(rowId, 'patient_name') + "\"," +
+                    "\"" + $(this).getCell(rowId, 'med_service') + "\"" +
+                    ")'>Disapply</span>&nbsp" });
+                    
+                /*$(this).jqGrid('setRowData', rowId, {Action:"<a href='#' onclick='disApply(\"" +
+                    $(this).getCell(rowId, 'itemid') + "\", " +
+                    "\"" + $(this).getCell(rowId, 'charge_fee') + "\"," + 
+                    "\"" + $(this).getCell(rowId, 'patient_name') + "\"," +
+                    "\"" + $(this).getCell(rowId, 'med_service') + "\"" +
+                    ")'>Disapply</a>&nbsp" });*/
+                }
+                
+  
+            }
+            
+            
+        }
+    });
+    $(gridElement).jqGrid('navGrid',pagerElement,{edit:false,add:false,del:false,search:false},{},{},{},{multipleSearch:true});
+}
+
+function initHmoPaidTrnxsGrid(title, gridElement, pagerElement, dataUrl)
+{
+    $(gridElement).jqGrid({
+        url:dataUrl,
+        datatype:'json',
+        colNames:['itemid', "Patient", 'HMO', 'Pay To', 'Doctor', "Med Svc", "Fee", "Avail Date", "Encode Date","Paid","Tax","Provider Excess","Member Excess","HMO Excess","Is Applied", "HMO Excess Rem", "SOA No", "Action"],
+        colModel:[
+            {name:'itemid',index:'itemid',width:80,hidden:true},
+            {name:'patient_name',index:'patient_name', width:120,sortable:false,hidden:false},
+            {name:'hmo_name',index:'hmo_name', width:120,sortable:false,hidden:false},            
+            {name:'payto',index:'payto', width:120,sortable:false,hidden:false},        
+            {name:'claim_doctor_name',index:'claim_doctor_name', width:120,sortable:false,hidden:false},            
+            {name:'med_service',index:'med_service', width:120,sortable:false,hidden:false},            
+            {name:'charge_fee',index:'charge_fee', width:120,sortable:false,hidden:false},            
+            {name:'avail_date',index:'avail_date', width:120,sortable:false,hidden:true},            
+            {name:'entry_date',index:'entry_date', width:120,sortable:false,hidden:true},  
+            {name:'paid_amnt',index:'paid_amnt',width:80,hidden:false},
+            {name:'wtax',index:'wtax',width:80,hidden:false},
+            {name:'provider_xces',index:'provider_xces',width:80,hidden:false},
+            {name:'member_xces',index:'member_xces',width:80,hidden:false},
+            {name:'hmo_xces',index:'hmo_xces',width:80,hidden:false},
+            {name:'isapplied',index:'isapplied',width:80,hidden:true},
+            {name:'hmo_xces_rem',index:'hmo_xces_rem',width:80,hidden:false},
+            {name:'hmo_billing_id',index:'hmo_billing_id',width:80,hidden:false},       
+            {name:'Action',index:'Action',width:100,sortable:false}   
+            
+            
+        ],
+        multiselect: false,
+        multiboxonly: false,
+        height:500,
+        rowNum:50,
+        rowList:[50,100,500,1000],
+        pager:pagerElement,
+        sortname:'itemid',
+        viewrecords:true,
+        sortorder:"desc",
+        caption:title,
+        loadComplete: function(data) {
+            var count = $(this).getGridParam("records");
+            
+            var ids = $(this).getDataIDs();
+            for (var i = 0; i < ids.length; i++) {
+                var rowId = ids[i];
+                flagapplied = $(this).getCell(rowId, 'isapplied');
+                if (parseInt(flagapplied) == 0){
+                    $(this).jqGrid('setRowData', rowId, {Action:"<span style='z-index:99999; cursor: pointer;'  onMouseOver=\"this.style.color='#000'\"  onMouseOut=\"this.style.color='#000'\" onclick='applyCheck(\"" +
+                    $(this).getCell(rowId, 'itemid') + "\", " +
+                    "\"" + $(this).getCell(rowId, 'charge_fee') + "\"," + 
+                    "\"" + $(this).getCell(rowId, 'patient_name') + "\"," +
+                    "\"" + $(this).getCell(rowId, 'med_service') + "\"" +
+                    ")'>Apply Check</span>&nbsp" });
+                }else{
+                  //$(this).jqGrid('setRowData', rowId, {Action:"<span style='color:red'>Applied</span>" });
+                    
+                $(this).jqGrid('setRowData', rowId, {Action:"<span style='z-index:99999; cursor: pointer;'  onMouseOver=\"this.style.color='#000'\"  onMouseOut=\"this.style.color='#000'\" onclick='disApply(\"" +
+                    $(this).getCell(rowId, 'itemid') + "\", " +
+                    "\"" + $(this).getCell(rowId, 'charge_fee') + "\"," + 
+                    "\"" + $(this).getCell(rowId, 'patient_name') + "\"," +
+                    "\"" + $(this).getCell(rowId, 'med_service') + "\"" +
+                    ")'>Disapply</span>&nbsp" });
+                }
+                
+                
+                
+            }
+            
+            
+        }
+    });
+    $(gridElement).jqGrid('navGrid',pagerElement,{edit:false,add:false,del:false,search:false},{},{},{},{multipleSearch:true});
+}
