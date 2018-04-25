@@ -155,7 +155,7 @@ body{
 #sidebar .portlet {
     position: fixed;
     width: 100%;
-    bottom: 27px;
+    bottom: 0px;
     background: rgba(200,255,88, 0.8);
     border-top: 1px solid lightgray;
     border-bottom: 1px solid lightgray;

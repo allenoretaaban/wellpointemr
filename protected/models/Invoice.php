@@ -114,7 +114,7 @@ class Invoice extends CActiveRecord
 		$criteria->compare('total',$this->total);
 		$criteria->compare('preparedby',$this->preparedby,true);
 		$criteria->compare('LOWER(patientname)',strtolower($this->patientname),true);
-        $criteria->order='date desc';
+        $criteria->order='id desc';
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
