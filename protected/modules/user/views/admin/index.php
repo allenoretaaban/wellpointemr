@@ -33,7 +33,6 @@ $('.search-form form').submit(function(){
 </div><!-- search-form -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	//'template'=>'{summary}\n{pager}\n{items}\n{pager}\n{summary}',
 	'id'=>'user-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
