@@ -250,7 +250,7 @@ if ($hmo_bill):
 
             <div style="margin-top:10px">
                 <?php
-                $this->renderPartial('ajaxsearchresult', array('model'=>$model), false, true);
+                    $this->renderPartial('ajaxsearchresult', array('model'=>$model), false, true);
                 ?>
             </div>
 

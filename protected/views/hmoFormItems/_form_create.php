@@ -300,10 +300,12 @@
         				$('#button_form_submit').click(function(ev) {
         					ev.preventDefault();
         					computeChargeFee();
-        					if($("#HmoFormItems_claim_doctor_id").val == "0") {
-        						$("#HmoFormItems_claim_doctor_name").focus();
-        						alert("Please select a doctor properly.");
-        						return false;
+	        				if($("#HmoFormItems_payto").val() == "DOCTOR") {
+	        					if($("#HmoFormItems_claim_doctor_id").val() == "0" || $("#HmoFormItems_claim_doctor_id").val() == "" || $("#HmoFormItems_claim_doctor_id").val() == null) {
+	        						$("#HmoFormItems_claim_doctor_name").focus();
+	        						alert("Please select a doctor properly.");
+	        						return false;
+	        					}
         					}
 							$('#hmo-form-items-form').submit();
         				});

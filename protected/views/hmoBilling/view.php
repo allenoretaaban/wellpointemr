@@ -9,9 +9,9 @@ $this->menu=array(
 	//array('label'=>'Create HmoBilling', 'url'=>array('create')),
 	//array('label'=>'Update HmoBilling', 'url'=>array('update', 'id'=>$model->id)),
 	//array('label'=>'Delete HmoBilling', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-    array('label'=>'Print Billing', 'url'=>array('printbilling', 'id'=>$model->id), 'target'=>'_blank'),
-    array('label'=>'Print Billing with Categories', 'url'=>array('printbillingCategory', 'id'=>$model->id), 'target'=>'_blank'),
-	array('label'=>'Back to Billings List', 'url'=>array('admin'), 'target'=>'_blank'),
+    array('label'=>'Print Billing', 'url'=>array('printbilling', 'id'=>$model->id)),
+    array('label'=>'Print Billing with Categories', 'url'=>array('printbillingCategory', 'id'=>$model->id)),
+	array('label'=>'Back to Billings List', 'url'=>array('admin')),
 );
 ?>
 

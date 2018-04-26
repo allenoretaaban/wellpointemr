@@ -15,10 +15,6 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
-
-	<?php
-		$GLOBALS['dasma_address'] = "SM CITY DASMARIÑAS BRANCH<br/>LGF Carpark Bldg., Unit CP052 & CP056A, Governor's Drive,<br>Barangay Sampaloc 1,  City of Dasmariñas, Cavite<br/>Tel. No. (046) 435-1906 / (02) 519-4591";
-	?>
 </head>
 
 <body>
