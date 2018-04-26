@@ -74,11 +74,13 @@
                     }
                     $excess = floatval($chk["provider_xces"]) + floatval($chk["member_xces"]);
                     $approved =  floatval($frmtrnx["charge_fee"]) - $excess ;
-                    $net_fee  = (floatval($approved) - floatval($chk["wtax"])) - floatval($chk["doc_tax"]);
+                    //$net_fee  = (floatval($approved) - floatval($chk["wtax"])) - floatval($chk["doc_tax"]);
+                    $net_fee  = floatval($approved) - (floatval($approved)*.1); //floatval($chk["doc_tax"]);
                     
                     $run_wtax += floatval($chk["wtax"]);
                     $run_gross += floatval($chk["paid_amnt"]);
-                    $run_doctax += floatval($chk["doc_tax"]);
+                    //$run_doctax += floatval($chk["doc_tax"]);
+                    $run_doctax += floatval($approved)*.1;
                     $run_net += $net_fee;        
                     
                     $fee_total += floatval($frmtrnx["charge_fee"]);
@@ -89,17 +91,17 @@
                                 <td>".strtoupper($doctor_name)."</td>
                                 <td>".$chk["name"]."</td>
                                 <td>".$chk["check_no"]."</td>
-                                <td>".$chk["check_date"]."</td>
+                                <td style='text-align:center;'>".$chk["check_date"]."</td>
                                 <td>".$frmtrnx["patient_name"]."</td>
                                 <td>".$frmtrnx["med_service"]."</td>
-                                <td>".$frmtrnx["avail_date"]."</td>
+                                <td style='text-align:center;'>".$frmtrnx["avail_date"]."</td>
                                 <td class='money'>".number_format($frmtrnx["charge_fee"],2)."</td>
                                 <td class='money'>".number_format($excess, 2)."</td>
                                 <td class='money'>".number_format($approved, 2)."</td>
                                 <td class='money'>".number_format($chk["wtax"],2)."</td>
                                 <td class='money'>".number_format($chk["paid_amnt"],2)."</td>
                                 
-                                <td class='money'>".number_format($chk["doc_tax"],2)."</td>
+                                <td class='money'>".number_format((floatval($approved)*.1),2)."</td>
                                 <td class='money'>".number_format($net_fee,2)."</td>
                                 
                                 </tr>    "    ;     

@@ -118,7 +118,7 @@ if ($toexcel == "1"){
                                             <tr>
                                                 
                                                 <td >HMO</td>
-                                                <td >15% Tax</td>
+                                                <td >10% Tax</td>
                                                 <td >SOA</td>
                                             </tr>
                                             <tr>
@@ -140,7 +140,7 @@ if ($toexcel == "1"){
                                                             on a.bank_id = c.bankid
                                                             where a.payto = 'WPCLINIC' and 
                                                             a.entry_date between '$dstart' and '$dend'
-                                                            order by a.entry_date asc, b.name asc";  
+                                                            order by b.name asc, a.entry_date asc";  
                                             $command=$connection->createCommand($query);
                                             $datareader=$command->query();
                                             while(($row=$datareader->read())!==false) { 
@@ -177,7 +177,7 @@ if ($toexcel == "1"){
                                                     $dochmo_total  += floatval($row_doc_chktot["chktotal"]);
                                                     $doc_chktot = number_format($row_doc_chktot["chktotal"],2 );
                                                     
-                                                    $doc_chktot_tax = floatval($row_doc_chktot["chktotal"]) * .15;
+                                                    $doc_chktot_tax = floatval($row_doc_chktot["chktotal"]) * .10;
                                                     $doch10perc_total  += floatval($doc_chktot_tax);
                                                     
                                                     $doc_chktot_tax_str = number_format($doc_chktot_tax, 2);

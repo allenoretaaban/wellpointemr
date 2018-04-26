@@ -652,7 +652,7 @@ class ReportsController extends Controller
         $dr_tmp=$command->query();
         
         while(($row=$dr_tmp->read())!==false) { 
-                $doctax = floatval($row["paid_amnt"]) * .15;
+                $doctax = floatval($row["paid_amnt"]) * .10;
                 //echo $row["form_itemid"]. " - ". $row["check_no"]. "- ".$row["paid_amnt"]." / $doctax <br/>";
                 $qry = "UPDATE hmoar_chkapply a
                             set a.doc_tax = $doctax
